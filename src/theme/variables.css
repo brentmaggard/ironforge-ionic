@@ -1,0 +1,15 @@
+/* For information on how to create your own theme, please see:
+http://ionicframework.com/docs/theming/ */
+
+/* Dashboard Color Variables */
+:root {
+  --progress-green: #4CAF50;
+  --progress-blue: #2196F3;
+  --progress-orange: #FF9800;
+  --card-background: #FFFFFF;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --icon-background-green: rgba(76, 175, 80, 0.1);
+  --icon-background-blue: rgba(33, 150, 243, 0.1);
+}
