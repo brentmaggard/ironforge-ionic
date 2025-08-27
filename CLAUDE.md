@@ -43,6 +43,7 @@ IronForge is a comprehensive fitness tracking application built with Ionic 8 and
 - **Global Header**: Centralized header component with app branding and user menu
 - **Tab Navigation**: Extracted bottom tab navigation for reusability
 - **Page-based routing**: Clean separation of concerns with individual page components
+- **Modal Profile Page**: Overlay routing pattern for profile functionality
 
 ### 2. Styling Approach
 - **Ionic CSS Variables**: Leveraged native Ionic theming system
@@ -60,6 +61,8 @@ IronForge is a comprehensive fitness tracking application built with Ionic 8 and
 - **Swipeable Components**: Horizontal scrolling for progress metrics
 - **Progress Indicators**: Circular and linear progress bars for visual feedback
 - **Icon-driven Navigation**: Clear visual hierarchy with appropriate icons
+- **Modal Overlays**: Profile page slides over main app content
+- **Action Sheets**: Native mobile patterns for photo selection
 
 ## App Page Hierarchy
 
@@ -69,7 +72,7 @@ IronForge App
 │   ├── Barbell Icon (rotated -35°)
 │   ├── App Title: "IronForge"
 │   └── Menu (Right)
-│       ├── Profile
+│       ├── Profile → Navigates to Profile Page
 │       ├── Settings
 │       └── Logout
 │
@@ -96,6 +99,26 @@ IronForge App
 │   │
 │   └── Workout (/workout)
 │       └── [Placeholder - ExploreContainer]
+│
+├── Profile (/profile) - Modal Overlay
+│   ├── Custom Header Bar
+│   │   ├── Back Button (Circular)
+│   │   └── "My Profile" Title
+│   ├── Profile Photo Section
+│   │   ├── Avatar Placeholder/Photo
+│   │   └── Camera Button (Edit Photo)
+│   ├── User Information
+│   │   ├── Name: "John Doe"
+│   │   └── Tagline: "Fitness Enthusiast"
+│   ├── Stats Section
+│   │   ├── Workouts: 127
+│   │   ├── Days Active: 89
+│   │   └── Goals Achieved: 12
+│   └── Photo Action Sheet
+│       ├── Take Photo
+│       ├── Choose from Gallery
+│       ├── Remove Photo
+│       └── Cancel
 │
 └── Bottom Tab Navigation (Fixed)
     ├── Dashboard (Home Icon)
@@ -128,10 +151,33 @@ IronForge App
    - Exercise count and duration
    - Completion status icons
 
+### Profile Page Features
+1. **Modal Overlay Design**
+   - Slides in from right over global header
+   - Fixed positioning with high z-index
+   - Custom Ionic header with back button
+
+2. **Profile Photo Management**
+   - 85px circular avatar with border
+   - Person icon placeholder when no photo
+   - Camera button for photo actions
+   - Action sheet with photo options
+
+3. **User Information Display**
+   - Name and tagline section
+   - Gradient background design
+   - Proper Ionic component structure
+
+4. **Statistics Grid**
+   - Three-column stats layout
+   - Workouts, Days Active, Goals Achieved
+   - Responsive design with IonGrid
+
 ### Navigation & Routing
-- Clean URL structure (/dashboard, /progress, /workout)
+- Clean URL structure (/dashboard, /progress, /workout, /profile)
 - Default redirect to dashboard
 - Tab highlighting and state management
+- Profile modal overlay navigation
 
 ### Design System
 - **Color Palette**:
@@ -151,6 +197,7 @@ IronForge App
 ### Safe Area Handling
 - CSS safe area insets for modern devices with notches
 - `calc(env(safe-area-inset-top, 0px) + 60px)` for header spacing
+- Profile page respects safe area for overlay positioning
 
 ### Swiper Configuration
 - `slidesPerView={3}` for optimal mobile viewing
@@ -161,6 +208,13 @@ IronForge App
 - Dynamic color generation with transparency for trails
 - Centered text positioning with flexbox
 - Responsive sizing (100px diameter on mobile)
+
+### Profile Page Implementation
+- Fixed positioning overlay pattern (`z-index: 9999`)
+- Route outside IonTabs structure for proper layering
+- Proper Ionic component usage (IonHeader, IonToolbar, IonItem, IonGrid)
+- CSS keyframe animations for slide-in transitions
+- Action sheet integration for photo selection
 
 ## Future Enhancements
 - Real data integration with backend API

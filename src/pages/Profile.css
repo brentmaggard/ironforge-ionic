@@ -81,11 +81,15 @@
 }
 
 .profile-avatar {
-  width: 120px;
-  height: 120px;
+  width: 85px;
+  height: 85px;
   border: 4px solid rgba(255, 255, 255, 0.3);
   cursor: pointer;
   transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .profile-avatar:hover {
@@ -93,8 +97,8 @@
 }
 
 .avatar-placeholder {
-  font-size: 48px;
-  color: rgba(255, 255, 255, 0.8);
+  font-size: 40px !important;
+  color: rgba(255, 255, 255, 0.3) !important;
 }
 
 .camera-button {
