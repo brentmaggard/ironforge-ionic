@@ -76,27 +76,273 @@
   --color: var(--ion-color-dark);
   --placeholder-color: var(--ion-color-medium);
   --icon-color: var(--ion-color-medium);
+  flex: 1;
 }
 
-/* Filter Section */
-.exercise-filter-section {
-  padding: 0 16px 16px 16px;
+/* Search Section with Filter Button */
+.exercise-search-section {
+  padding: 16px;
   background: var(--ion-background-color);
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.exercise-filters {
-  --background: var(--ion-color-light);
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+.exercise-searchbar {
+  flex: 1;
 }
 
-.exercise-filters ion-segment-button {
+.filter-button {
   --color: var(--ion-color-medium);
-  --color-checked: var(--progress-blue);
-  --background-checked: rgba(33, 150, 243, 0.1);
-  --border-radius: 8px;
-  margin: 4px;
+  --padding-start: 8px;
+  --padding-end: 8px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  --background: var(--ion-color-light);
+}
+
+.filter-button ion-icon {
+  font-size: 22px;
+}
+
+.filter-button:hover {
+  --color: var(--progress-blue);
+}
+
+/* Filter Drawer Modal */
+.filter-drawer-modal {
+  --backdrop-opacity: 0.6;
+  --background: var(--ion-color-light-shade);
+  --border-radius: 12px 12px 0 0;
+  --box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1);
+  --height: 380px;
+  --min-height: 380px;
+  --max-height: 380px;
+}
+
+.filter-drawer-modal::part(content) {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 380px;
+}
+
+.filter-drawer-header-fixed {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  --background: var(--ion-color-light-shade);
+  --border-width: 0;
+  border-radius: 12px 12px 0 0;
+}
+
+.filter-drawer-toolbar {
+  --background: var(--ion-color-light-shade);
+  --padding-start: 20px;
+  --padding-end: 20px;
+  --min-height: 60px;
+}
+
+.filter-drawer-content {
+  --background: var(--ion-color-light-shade);
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 20px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.filter-drawer-handle {
+  width: 40px;
+  height: 4px;
+  background: var(--ion-color-medium);
+  border-radius: 2px;
+  margin: 12px auto 16px auto;
+  opacity: 0.5;
+}
+
+.filter-drawer-header {
+  --background: transparent;
+  --padding-start: 20px;
+  --padding-end: 20px;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter-drawer-toolbar ion-title {
+  --color: var(--ion-color-dark);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.filter-header-button {
+  --color: var(--progress-blue);
+  --padding-start: 8px;
+  --padding-end: 8px;
+  font-size: 0.75rem;
+  /*font-weight: 500;*/
+}
+
+.filter-header-button:hover {
+  --color: var(--progress-blue);
+  opacity: 0.7;
+}
+
+/* Filter Sections */
+.filter-section {
+  --background: transparent !important;
+  background: transparent !important;
+  margin: 0;
+  margin-bottom: 5px;
+}
+
+.filter-section-header {
+  --background: transparent;
+  --padding-start: 20px;
+  --padding-end: 20px;
+  margin-bottom: 4px;
+}
+
+.filter-section-header h3 {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--ion-color-dark);
+  margin: 0;
+}
+
+/* Exercise Type Options */
+.exercise-type-options {
+  --background: transparent !important;
+  background: transparent !important;
+  padding: 0 20px;
+  margin: 0;
+}
+
+.exercise-type-item {
+  --background: transparent;
+  --padding-start: 0;
+  --padding-end: 0;
+  --inner-padding-start: 0;
+  --inner-padding-end: 0;
+  --inner-padding-top: 0;
+  --inner-padding-bottom: 0;
+  --min-height: 16px;
+  margin-bottom: -2px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.exercise-type-checkbox {
+  --size: 15px;
+  --color-checked: var(--ion-color-danger);
+  --border-color: var(--progress-blue);
+  --background-checked: var(--ion-color-danger);
+  margin: 0 12px 0 0;
+  padding: 0;
+}
+
+.exercise-type-icon {
+  font-size: 20px;
+  margin-right: 6px;
+}
+
+.strength-icon {
+  color: var(--ion-color-danger);
+}
+
+.cardio-icon {
+  color: var(--progress-blue);
+}
+
+.mobility-icon {
+  color: var(--progress-green);
+}
+
+.exercise-type-label {
+  font-size: 0.85rem !important;
   font-weight: 500;
+  color: var(--ion-color-dark);
+  text-align: left !important;
+  flex: none !important;
+  margin: 0 !important;
+}
+
+/* Muscle Groups */
+.muscle-groups-container {
+  padding: 0 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.muscle-group-chip {
+  --background: rgba(255, 255, 255, 0.1);
+  --color: var(--ion-color-medium);
+  border: 1px solid var(--ion-color-light-tint);
+  border-radius: 20px;
+  margin: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.muscle-group-chip.selected {
+  --background: var(--progress-blue);
+  --color: white;
+  border-color: var(--progress-blue);
+}
+
+.muscle-group-chip ion-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Equipment */
+.equipment-container {
+  padding: 0 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.equipment-chip {
+  --background: rgba(255, 255, 255, 0.1);
+  --color: var(--ion-color-medium);
+  border: 1px solid var(--ion-color-light-tint);
+  border-radius: 20px;
+  margin: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.equipment-chip.selected {
+  --background: var(--progress-blue);
+  --color: white;
+  border-color: var(--progress-blue);
+}
+
+.equipment-chip ion-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.filter-drawer-actions {
+  padding: 20px;
+  margin-top: 16px;
+}
+
+.apply-filter-button {
+  --background: var(--progress-blue);
+  --color: white;
+  --border-radius: 12px;
+  font-weight: 600;
 }
 
 /* Exercise List */
@@ -113,8 +359,8 @@
   --padding-end: 8px;
   --inner-padding-start: 0;
   --inner-padding-end: 0;
-  --inner-padding-top: 16px;
-  --inner-padding-bottom: 16px;
+  --inner-padding-top: 8px;
+  --inner-padding-bottom: 8px;
   --background: transparent;
   --border-color: var(--ion-color-light);
 }
@@ -128,7 +374,7 @@
 
 .exercise-name {
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700 !important;
   color: var(--ion-color-dark);
   margin: 0;
 }
@@ -157,7 +403,11 @@
   margin-left: 4px;
 }
 
-.info-button ion-icon, .menu-button ion-icon {
+.info-button ion-icon {
+  font-size: 24px;
+}
+
+.menu-button ion-icon {
   font-size: 20px;
 }
 

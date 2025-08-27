@@ -9,14 +9,15 @@ import {
   IonButton,
   IonIcon,
   IonSearchbar,
-  IonSegment,
-  IonSegmentButton,
   IonLabel,
   IonList,
   IonItem,
-  IonPopover
+  IonPopover,
+  IonModal,
+  IonCheckbox,
+  IonChip
 } from '@ionic/react';
-import { arrowBack, add, helpCircle, ellipsisVertical, heart, bookmark, share, trash } from 'ionicons/icons';
+import { arrowBack, add, helpCircleOutline, ellipsisVertical, heart, bookmark, share, trash, optionsOutline, person, barbell, walk, accessibility } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import './Exercise.css';
 
@@ -24,7 +25,11 @@ const Exercise: React.FC = () => {
   const history = useHistory();
   const [searchText, setSearchText] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('all');
+  const [selectedExerciseTypes, setSelectedExerciseTypes] = useState<string[]>(['strength', 'cardio', 'mobility']);
+  const [selectedMuscleGroups, setSelectedMuscleGroups] = useState<string[]>([]);
+  const [selectedEquipment, setSelectedEquipment] = useState<string[]>([]);
   const [popoverOpen, setPopoverOpen] = useState<{open: boolean, event?: Event}>({open: false});
+  const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
 
   const handleBack = () => {
     history.goBack();
@@ -41,6 +46,30 @@ const Exercise: React.FC = () => {
   const handleExerciseMenu = (event: Event, exercise: string) => {
     setPopoverOpen({open: true, event});
     console.log('Show menu for:', exercise);
+  };
+
+  const toggleExerciseType = (type: string) => {
+    setSelectedExerciseTypes(prev => 
+      prev.includes(type) 
+        ? prev.filter(t => t !== type)
+        : [...prev, type]
+    );
+  };
+
+  const toggleMuscleGroup = (group: string) => {
+    setSelectedMuscleGroups(prev => 
+      prev.includes(group) 
+        ? prev.filter(g => g !== group)
+        : [...prev, group]
+    );
+  };
+
+  const toggleEquipment = (equipment: string) => {
+    setSelectedEquipment(prev => 
+      prev.includes(equipment) 
+        ? prev.filter(e => e !== equipment)
+        : [...prev, equipment]
+    );
   };
 
   const exercises = [
@@ -93,28 +122,13 @@ const Exercise: React.FC = () => {
             placeholder="Search exercises..."
             className="exercise-searchbar"
           />
-        </div>
-        
-        {/* Filter Options */}
-        <div className="exercise-filter-section">
-          <IonSegment 
-            value={selectedFilter} 
-            onIonChange={(e) => setSelectedFilter(e.detail.value as string)}
-            className="exercise-filters"
+          <IonButton
+            fill="clear"
+            className="filter-button"
+            onClick={() => setFilterDrawerOpen(true)}
           >
-            <IonSegmentButton value="all">
-              <IonLabel>All</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="compound">
-              <IonLabel>Compound</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="isolation">
-              <IonLabel>Isolation</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="bodyweight">
-              <IonLabel>Bodyweight</IonLabel>
-            </IonSegmentButton>
-          </IonSegment>
+            <IonIcon icon={optionsOutline} />
+          </IonButton>
         </div>
 
         {/* Exercise List */}
@@ -132,7 +146,7 @@ const Exercise: React.FC = () => {
                 onClick={() => handleExerciseInfo(exercise.name)}
                 slot="end"
               >
-                <IonIcon icon={helpCircle} />
+                <IonIcon icon={helpCircleOutline} />
               </IonButton>
               
               <IonButton
@@ -175,6 +189,133 @@ const Exercise: React.FC = () => {
             </IonList>
           </IonContent>
         </IonPopover>
+
+        {/* Filter Drawer Modal */}
+        <IonModal
+          isOpen={filterDrawerOpen}
+          onDidDismiss={() => setFilterDrawerOpen(false)}
+          handle={false}
+          showBackdrop={true}
+          className="filter-drawer-modal"
+        >
+          <IonHeader className="filter-drawer-header-fixed">
+            <IonToolbar className="filter-drawer-toolbar">
+              <IonButton 
+                fill="clear" 
+                size="small" 
+                slot="start"
+                onClick={() => {
+                  setSelectedExerciseTypes(['strength', 'cardio', 'mobility']);
+                  setSelectedMuscleGroups([]);
+                  setSelectedEquipment([]);
+                }}
+                className="filter-header-button"
+              >
+                Reset
+              </IonButton>
+              <IonTitle>Filter</IonTitle>
+              <IonButton 
+                fill="clear" 
+                size="small" 
+                slot="end"
+                onClick={() => setFilterDrawerOpen(false)}
+                className="filter-header-button"
+              >
+                Apply
+              </IonButton>
+            </IonToolbar>
+          </IonHeader>
+
+          <IonContent className="filter-drawer-content">
+            
+            {/* Exercise Type Section */}
+            <IonList className="filter-section">
+              <IonItem lines="none" className="filter-section-header">
+                <IonLabel>
+                  <h3>Exercise type</h3>
+                </IonLabel>
+              </IonItem>
+              
+              <IonList className="exercise-type-options">
+                <IonItem lines="none" className="exercise-type-item">
+                  <IonCheckbox
+                    checked={selectedExerciseTypes.includes('strength')}
+                    onIonChange={() => toggleExerciseType('strength')}
+                    className="exercise-type-checkbox"
+                    slot="start"
+                  />
+                  <IonIcon icon={barbell} className="exercise-type-icon strength-icon" slot="start" />
+                  <IonLabel className="exercise-type-label">Strength</IonLabel>
+                </IonItem>
+                
+                <IonItem lines="none" className="exercise-type-item">
+                  <IonCheckbox
+                    checked={selectedExerciseTypes.includes('cardio')}
+                    onIonChange={() => toggleExerciseType('cardio')}
+                    className="exercise-type-checkbox"
+                    slot="start"
+                  />
+                  <IonIcon icon={walk} className="exercise-type-icon cardio-icon" slot="start" />
+                  <IonLabel className="exercise-type-label">Cardio</IonLabel>
+                </IonItem>
+                
+                <IonItem lines="none" className="exercise-type-item">
+                  <IonCheckbox
+                    checked={selectedExerciseTypes.includes('mobility')}
+                    onIonChange={() => toggleExerciseType('mobility')}
+                    className="exercise-type-checkbox"
+                    slot="start"
+                  />
+                  <IonIcon icon={accessibility} className="exercise-type-icon mobility-icon" slot="start" />
+                  <IonLabel className="exercise-type-label">Mobility</IonLabel>
+                </IonItem>
+              </IonList>
+            </IonList>
+
+            {/* Muscle Groups Section */}
+            <IonList className="filter-section">
+              <IonItem lines="none" className="filter-section-header">
+                <IonLabel>
+                  <h3>Muscle groups</h3>
+                </IonLabel>
+              </IonItem>
+            </IonList>
+            
+            <div className="muscle-groups-container">
+              {['Posterior thighs', 'Neck', 'Forearms', 'Triceps', 'Quads', 'Biceps', 'Hip flexor', 'Abs', 'Shoulders', 'Back', 'Lower legs', 'Glutes', 'Chest'].map((group) => (
+                <IonChip
+                  key={group}
+                  className={`muscle-group-chip ${selectedMuscleGroups.includes(group) ? 'selected' : ''}`}
+                  onClick={() => toggleMuscleGroup(group)}
+                >
+                  <IonLabel>{group}</IonLabel>
+                </IonChip>
+              ))}
+            </div>
+
+            {/* Equipment Section */}
+            <IonList className="filter-section">
+              <IonItem lines="none" className="filter-section-header">
+                <IonLabel>
+                  <h3>Equipment</h3>
+                </IonLabel>
+              </IonItem>
+            </IonList>
+            
+            <div className="equipment-container">
+              {['Barbell', 'Dumbbell', 'Machine', 'Kettlebell', 'Body Weight', 'Resistance Band', 'Cable Machine', 'Other', 'None'].map((equipment) => (
+                <IonChip
+                  key={equipment}
+                  className={`equipment-chip ${selectedEquipment.includes(equipment) ? 'selected' : ''}`}
+                  onClick={() => toggleEquipment(equipment)}
+                >
+                  <IonLabel>{equipment}</IonLabel>
+                </IonChip>
+              ))}
+            </div>
+            
+          </IonContent>
+        </IonModal>
 
       </IonContent>
     </IonPage>

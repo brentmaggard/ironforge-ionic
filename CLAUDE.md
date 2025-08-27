@@ -45,18 +45,24 @@ IronForge is a comprehensive fitness tracking application built with Ionic 8 and
 - **Page-based routing**: Clean separation of concerns with individual page components
 - **Modal Profile Page**: Overlay routing pattern for profile functionality
 
-### 2. Styling Approach
+### 2. Ionic Framework Standards
+- **Always Use Ionic Components**: Prioritize native Ionic components (IonList, IonItem, IonButton, etc.) over HTML divs for proper mobile behavior and theming
+- **Avoid Generic Divs**: Only use divs when Ionic components don't provide the needed layout pattern (e.g., flex containers for chips)
+- **Component Hierarchy**: Follow Ionic's component structure guidelines for accessibility and consistent styling
+- **Semantic HTML**: Use appropriate Ionic components for their intended purpose (IonLabel for text, IonIcon for icons, etc.)
+
+### 3. Styling Approach
 - **Ionic CSS Variables**: Leveraged native Ionic theming system
 - **Custom CSS Variables**: Added for consistent color theming
 - **Mobile-first Design**: Responsive breakpoints prioritizing mobile experience
 - **CSS Modules**: Page-specific styling with .css imports
 
-### 3. Data Management
+### 4. Data Management
 - **Mock Data**: Static data structures for prototyping and development
 - **Component State**: React hooks for local component state management
 - **Props Drilling**: Simple prop passing for current scope
 
-### 4. UI/UX Patterns
+### 5. UI/UX Patterns
 - **Card-based Layout**: Consistent card design throughout the app
 - **Swipeable Components**: Horizontal scrolling for progress metrics
 - **Progress Indicators**: Circular and linear progress bars for visual feedback
@@ -121,6 +127,13 @@ IronForge App
 │   │       ├── Add to Workout
 │   │       ├── Share Exercise
 │   │       └── Delete Exercise
+│   ├── Bottom Filter Drawer Modal
+│   │   ├── Fixed Header (IonHeader/IonToolbar)
+│   │   │   ├── Reset Button (left)
+│   │   │   ├── "Filter" Title (center)
+│   │   │   └── Apply Button (right)
+│   │   ├── Drag Handle
+│   │   └── Scrollable Filter Options (checkboxes)
 │   └── Sample Exercises (10 alphabetically sorted):
 │       ├── Barbell Back Squat
 │       ├── Bench Press
@@ -233,22 +246,29 @@ IronForge App
 2. **Search & Filter Functionality**
    - Real-time search across exercise names and descriptions
    - Four filter categories: All, Compound, Isolation, Bodyweight
-   - Responsive search bar with proper Ionic styling
-   - Segment-based filter selection
+   - Responsive search bar with options-outline filter button positioned to the right
+   - Bottom drawer modal for filter selection (replaces inline segment filter)
 
-3. **Exercise List Display**
+3. **Filter Drawer Modal**
+   - Fixed-height bottom drawer (320px) that slides up from bottom
+   - Sticky header with IonHeader/IonToolbar containing Reset, Filter title, and Apply buttons
+   - Scrollable content area with checkbox-based filter options
+   - Proper Ionic component structure using IonModal with breakpoints disabled
+   - Custom drag handle and rounded top corners (12px radius)
+
+4. **Exercise List Display**
    - Proper IonList with IonItem components (not cards)
-   - IonLabel for exercise name and description
+   - IonLabel for exercise name (bold with font-weight: 700) and description
    - Alphabetically sorted exercise database
    - Optimized spacing with reduced margins for better text distribution
 
-4. **Interactive Elements**
-   - Info button (? icon) in blue circle for exercise details
-   - Menu button (3 dots) with popover containing actions
+5. **Interactive Elements**
+   - Info button (helpCircleOutline icon, 24px) in blue circle for exercise details
+   - Menu button (3 dots, 20px) with popover containing actions
    - Compact button layout pushed to the right edge
    - Action menu: Add to Favorites, Add to Workout, Share, Delete
 
-5. **Navigation Integration**
+6. **Navigation Integration**
    - Accessible via Global Header menu with library icon
    - Route configured for proper modal overlay behavior
    - Consistent with app's navigation patterns
@@ -324,6 +344,7 @@ IronForge App
 - Optimized component structure using proper Ionic patterns instead of divs
 - Action sheet integration for photo selection (EditProfile only)
 - Popover menus for exercise actions (Exercise Library only)
+- Bottom drawer modal implementation with fixed positioning and scrollable content
 
 ## Future Enhancements
 - Real data integration with backend API
