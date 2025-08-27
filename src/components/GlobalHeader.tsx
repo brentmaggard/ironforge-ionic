@@ -11,7 +11,7 @@ import {
   IonItem,
   IonLabel
 } from '@ionic/react';
-import { menuOutline, person, settings, logOut, barbell } from 'ionicons/icons';
+import { menuOutline, person, settings, logOut, barbell, library } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 
 const GlobalHeader: React.FC = () => {
@@ -24,6 +24,9 @@ const GlobalHeader: React.FC = () => {
     switch (action) {
       case 'profile':
         history.push('/profile');
+        break;
+      case 'exercise':
+        history.push('/exercise');
         break;
       case 'settings':
         console.log('Settings clicked');
@@ -64,6 +67,10 @@ const GlobalHeader: React.FC = () => {
               <IonItem button onClick={() => handleMenuAction('profile')}>
                 <IonIcon icon={person} slot="start" />
                 <IonLabel>Profile</IonLabel>
+              </IonItem>
+              <IonItem button onClick={() => handleMenuAction('exercise')}>
+                <IonIcon icon={library} slot="start" />
+                <IonLabel>Exercise Library</IonLabel>
               </IonItem>
               <IonItem button onClick={() => handleMenuAction('settings')}>
                 <IonIcon icon={settings} slot="start" />

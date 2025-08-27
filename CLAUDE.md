@@ -100,6 +100,39 @@ IronForge App
 │   └── Workout (/workout)
 │       └── [Placeholder - ExploreContainer]
 │
+├── Exercise Library (/exercise) - Modal Overlay
+│   ├── Custom Header Bar
+│   │   ├── Back Button (Circular)
+│   │   ├── "Exercise Library" Title
+│   │   └── Add Button (Plus Icon)
+│   ├── Search Section
+│   │   └── Search Bar with placeholder "Search exercises..."
+│   ├── Filter Section
+│   │   ├── All Exercises
+│   │   ├── Compound Movements
+│   │   ├── Isolation Exercises
+│   │   └── Bodyweight Exercises
+│   ├── Exercise List (IonList)
+│   │   ├── Exercise Name & Description
+│   │   ├── Info Button (? icon in blue circle)
+│   │   ├── Menu Button (3 dots icon)
+│   │   └── Popover Menu Options:
+│   │       ├── Add to Favorites
+│   │       ├── Add to Workout
+│   │       ├── Share Exercise
+│   │       └── Delete Exercise
+│   └── Sample Exercises (10 alphabetically sorted):
+│       ├── Barbell Back Squat
+│       ├── Bench Press
+│       ├── Deadlift
+│       ├── Dumbbell Bicep Curl
+│       ├── Lat Pulldown
+│       ├── Leg Press
+│       ├── Overhead Press
+│       ├── Pull-ups
+│       ├── Romanian Deadlift
+│       └── Tricep Dips
+│
 ├── Profile (/profile) - Modal Overlay
 │   ├── Custom Header Bar
 │   │   ├── Back Button (Circular)
@@ -191,6 +224,35 @@ IronForge App
    - Workouts, Days Active, Goals Achieved
    - Responsive design with IonGrid
 
+### Exercise Library Page Features
+1. **Modal Overlay Design**
+   - Slides in from right over global header
+   - High z-index (11000) to appear above other pages
+   - Custom header with Back/Add buttons
+
+2. **Search & Filter Functionality**
+   - Real-time search across exercise names and descriptions
+   - Four filter categories: All, Compound, Isolation, Bodyweight
+   - Responsive search bar with proper Ionic styling
+   - Segment-based filter selection
+
+3. **Exercise List Display**
+   - Proper IonList with IonItem components (not cards)
+   - IonLabel for exercise name and description
+   - Alphabetically sorted exercise database
+   - Optimized spacing with reduced margins for better text distribution
+
+4. **Interactive Elements**
+   - Info button (? icon) in blue circle for exercise details
+   - Menu button (3 dots) with popover containing actions
+   - Compact button layout pushed to the right edge
+   - Action menu: Add to Favorites, Add to Workout, Share, Delete
+
+5. **Navigation Integration**
+   - Accessible via Global Header menu with library icon
+   - Route configured for proper modal overlay behavior
+   - Consistent with app's navigation patterns
+
 ### Edit Profile Page Features
 1. **Modal Overlay Design**
    - Slides in from right over Profile page
@@ -216,10 +278,11 @@ IronForge App
    - Consistent with app's design patterns
 
 ### Navigation & Routing
-- Clean URL structure (/dashboard, /progress, /workout, /profile)
+- Clean URL structure (/dashboard, /progress, /workout, /profile, /exercise, /edit-profile)
 - Default redirect to dashboard
 - Tab highlighting and state management
-- Profile modal overlay navigation
+- Modal overlay navigation for Profile, EditProfile, and Exercise Library pages
+- Global header menu integration for Profile and Exercise Library access
 
 ### Design System
 - **Color Palette**:
@@ -251,14 +314,16 @@ IronForge App
 - Centered text positioning with flexbox
 - Responsive sizing (100px diameter on mobile)
 
-### Profile Pages Implementation
-- **Profile Page**: Fixed positioning overlay pattern (`z-index: 9999`)
+### Modal Pages Implementation
+- **Profile Page**: Fixed positioning overlay (`z-index: 9999`)
 - **EditProfile Page**: Higher z-index (10000) to layer above Profile
+- **Exercise Library Page**: Highest z-index (11000) to appear above all other pages
 - Routes outside IonTabs structure for proper modal layering
-- Proper Ionic component usage (IonHeader, IonToolbar, IonItem, IonGrid)
+- Proper Ionic component usage throughout (IonHeader, IonToolbar, IonItem, IonList, IonLabel)
 - CSS keyframe animations for slide-in transitions from right
-- Clear separation between read-only Profile and editable EditProfile
+- Optimized component structure using proper Ionic patterns instead of divs
 - Action sheet integration for photo selection (EditProfile only)
+- Popover menus for exercise actions (Exercise Library only)
 
 ## Future Enhancements
 - Real data integration with backend API
