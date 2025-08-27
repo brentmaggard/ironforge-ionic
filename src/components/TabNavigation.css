@@ -1,0 +1,22 @@
+/* Workout Action Sheet Styling */
+.workout-action-sheet {
+  --backdrop-opacity: 0.6;
+  --background: var(--ion-background-color);
+}
+
+/* Specific button colors */
+.workout-action-start {
+  --color: #2196F3;
+}
+
+.workout-action-repeat {
+  --color: #4CAF50;
+}
+
+.workout-action-plan {
+  --color: #FF9800;
+}
+
+.workout-action-cancel {
+  --color: var(--ion-color-medium);
+}

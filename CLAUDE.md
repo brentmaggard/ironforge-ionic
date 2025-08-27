@@ -211,10 +211,35 @@ IronForge App
 │       ├── Remove Photo
 │       └── Cancel
 │
+├── Workout Builder (/workout-builder) - Modal Overlay
+│   ├── Custom Header Bar
+│   │   ├── Back Button (Circular)
+│   │   ├── "Workout Builder" / "Active Workout" Title (Dynamic)
+│   │   └── Start/Finish Button (Context-sensitive)
+│   ├── Workout Info Card
+│   │   ├── Workout Name Display
+│   │   ├── Status Indicator (Planning/Active with icons)
+│   │   └── Exercise Count
+│   ├── Exercise List (When exercises exist)
+│   │   ├── Exercise Name and Primary Muscles
+│   │   ├── Sets Grid with Reps/Weight/Completion tracking
+│   │   ├── Rest Time Information
+│   │   └── Set Completion Buttons (Interactive during active workout)
+│   ├── Empty State (No exercises)
+│   │   ├── Barbell Icon Placeholder
+│   │   ├── Motivational Text
+│   │   └── "Add Your First Exercise" Button
+│   └── Floating Action Button (Add Exercise when exercises exist)
+│
 └── Bottom Tab Navigation (Fixed)
     ├── Dashboard (Home Icon)
     ├── Progress (TrendingUp Icon)
-    └── Workout (Barbell Icon)
+    └── Workout (Barbell Icon) → Triggers Action Sheet
+        ├── Workout Action Sheet
+        │   ├── "Start New Workout" → Navigates to Workout Builder
+        │   ├── "Train a Logged Workout Again" → Coming Soon
+        │   ├── "Plan a Workout" → Coming Soon
+        │   └── Cancel
 ```
 
 ## Key Features Implemented
@@ -412,13 +437,48 @@ IronForge App
    - Open Graph and Twitter Card metadata for social sharing
    - Full-screen immersive experience when installed
 
+### Workout Management System
+1. **Workout Action Sheet Integration**
+   - Custom workout tab click handler replaces direct navigation
+   - IonActionSheet with 3 workout options and proper backdrop styling
+   - Color-coded buttons: Start New (blue), Train Again (green), Plan (orange)
+   - Proper Ionic CSS variables for backdrop opacity and button styling
+   - Clean component implementation following Ionic best practices
+
+2. **WorkoutBuilder Page**
+   - Custom header with dynamic title (Workout Builder → Active Workout)
+   - Context-sensitive action buttons (Start Workout → Finish Workout)
+   - Modal overlay positioning outside global header while preserving tab navigation
+   - Fixed positioning with calculated height (100vh - 56px) to show bottom tabs
+
+3. **Exercise Management**
+   - Add exercises with sample data structure (sets, reps, weight, rest time)
+   - Sets tracking grid with completion status for each set
+   - Primary muscle group display with colored chips
+   - Empty state with motivational messaging and first exercise CTA
+   - Floating Action Button for adding exercises during workout building
+
+4. **Workout State Management**
+   - Planning vs Active workout modes with visual indicators
+   - Set completion tracking with interactive buttons
+   - Workout progress indicators (exercise count, status icons)
+   - Sample exercise data with realistic sets/reps/weight structure
+
+5. **Navigation Integration**
+   - WorkoutBuilder route outside IonTabs structure for custom header
+   - Preserved bottom tab navigation for seamless app navigation
+   - Proper z-index layering (45000) with tab navigation remaining visible
+   - Smooth slide-in animation from right matching other modal pages
+
 ### Navigation & Routing
-- Clean URL structure (/dashboard, /progress, /workout, /profile, /exercise, /edit-profile)
+- Clean URL structure (/dashboard, /progress, /workout, /profile, /exercise, /edit-profile, /workout-builder)
 - Default redirect to dashboard
 - Tab highlighting and state management
-- Modal overlay navigation for Profile, EditProfile, Exercise Library, and Exercise Details pages
+- Modal overlay navigation for Profile, EditProfile, Exercise Library, Exercise Details, and WorkoutBuilder pages
 - Global header menu integration for Profile and Exercise Library access
 - Exercise Details uses modal-based state management for better UX (no URL routing)
+- Workout tab uses action sheet pattern instead of direct navigation
+- WorkoutBuilder positioned outside global header while preserving bottom tab navigation
 
 ### Design System
 - **Color Palette**:
@@ -635,3 +695,60 @@ Following the ExerciseDetails modal implementation, the app was transformed into
 - **Cross-Platform Compatibility** - Supports iOS Safari, Android Chrome, and desktop browsers
 
 This PWA implementation transforms IronForge from a web application into a production-ready, installable fitness app with native mobile capabilities and offline resilience.
+
+### Workout Management System Implementation
+Following the PWA implementation, a comprehensive workout management system was developed to provide users with workout creation, tracking, and management capabilities through an intuitive action sheet and dedicated workout builder interface.
+
+#### Workout Action Sheet Development
+- **Tab Navigation Enhancement** - Converted workout tab from direct navigation to action sheet trigger
+- **Action Sheet Implementation** - Created IonActionSheet with 3 workout options using proper Ionic best practices
+- **Clean CSS Styling** - Used Ionic CSS variables (--backdrop-opacity: 0.6) for proper gray backdrop effect
+- **Color-Coded Interface** - Implemented distinct button colors: Start New (blue), Train Again (green), Plan (orange), Cancel (gray)
+- **Component Architecture** - Followed Ionic framework conventions without inline styles or DOM manipulation
+
+#### WorkoutBuilder Page Creation
+- **Custom Header Design** - Dedicated workout header with dynamic title and context-sensitive buttons
+- **Modal Overlay Structure** - Positioned outside global header while preserving bottom tab navigation visibility
+- **Responsive Layout** - Fixed positioning with calculated height (calc(100vh - 56px)) ensuring tabs remain accessible
+- **Proper Z-Index Management** - Used z-index: 45000 to layer above content but below navigation elements
+
+#### Exercise Management Features
+- **Exercise Data Structure** - Comprehensive exercise objects with sets, reps, weight, rest time, and muscle groups
+- **Interactive Sets Grid** - Real-time set completion tracking with visual feedback during active workouts
+- **Empty State Design** - Motivational interface with clear call-to-action for first exercise addition
+- **Floating Action Button** - Context-aware exercise addition during workout building phase
+- **Sample Exercise Integration** - Included realistic Barbell Back Squat sample with 3 progressive sets
+
+#### Workout State Management
+- **Dual Mode System** - Planning vs Active workout states with distinct visual indicators
+- **Progress Tracking** - Exercise count, completion status, and workout duration monitoring
+- **Interactive Elements** - Set completion buttons enabled only during active workout mode
+- **Status Indicators** - Icon-based status display (planning clock, active flame) with descriptive text
+
+#### Navigation & Layout Integration
+- **Route Configuration** - Added /workout-builder route outside IonTabs for custom header experience
+- **Tab Preservation** - Maintained bottom navigation accessibility throughout workout sessions
+- **Slide Animation** - Consistent right-to-left slide transition matching other modal pages
+- **Back Navigation** - Proper history management with workout session preservation
+
+#### Technical Architecture
+- **Component Separation** - TabNavigation.tsx handles action sheet, WorkoutBuilder.tsx manages workout interface
+- **CSS Organization** - Separate styling files with proper Ionic component targeting
+- **State Management** - React hooks for workout state, exercise tracking, and UI interactions
+- **Route Structure** - Outside tabs for header independence, inside app routing for proper navigation
+
+#### Key Files Created/Modified
+- **src/components/TabNavigation.tsx**: Enhanced workout tab with action sheet functionality
+- **src/components/TabNavigation.css**: Clean Ionic CSS variables for action sheet styling
+- **src/pages/WorkoutBuilder.tsx**: Comprehensive workout creation and tracking interface
+- **src/pages/WorkoutBuilder.css**: Modal overlay styling with tab navigation preservation
+- **src/App.tsx**: Added workout-builder route outside IonTabs structure
+
+#### User Experience Achievements
+- **Intuitive Workout Start** - Clear action sheet with 3 distinct workout initiation options
+- **Seamless Navigation** - Bottom tabs remain accessible during workout building and execution
+- **Professional Interface** - Consistent with fitness app patterns and IronForge design system
+- **Context-Aware UI** - Dynamic button states and titles based on workout progress
+- **Efficient Workflow** - Streamlined path from workout intent to active training session
+
+This workout management implementation establishes IronForge as a comprehensive fitness application with professional workout creation, tracking, and management capabilities while maintaining the app's design consistency and navigation patterns.
