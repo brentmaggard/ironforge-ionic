@@ -13,6 +13,7 @@ import { IonReactRouter } from '@ionic/react-router';
 import Tab1 from './pages/Dashboard';
 import Progress from './pages/Progress';
 import Workout from './pages/Workout';
+import Profile from './pages/Profile';
 import GlobalHeader from './components/GlobalHeader';
 import TabNavigation from './components/TabNavigation';
 
@@ -51,8 +52,8 @@ setupIonicReact();
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      <GlobalHeader />
       <IonTabs>
+        <GlobalHeader />
         <IonRouterOutlet>
           <Route exact path="/dashboard">
             <Tab1 />
@@ -60,7 +61,7 @@ const App: React.FC = () => (
           <Route exact path="/progress">
             <Progress />
           </Route>
-          <Route path="/workout">
+          <Route exact path="/workout">
             <Workout />
           </Route>
           <Route exact path="/">
@@ -69,6 +70,9 @@ const App: React.FC = () => (
         </IonRouterOutlet>
         <TabNavigation />
       </IonTabs>
+      <Route exact path="/profile">
+        <Profile />
+      </Route>
     </IonReactRouter>
   </IonApp>
 );

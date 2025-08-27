@@ -224,10 +224,10 @@ const Dashboard: React.FC = () => {
           ))}
         </div>
 
-        {/* Recent Activity */}
+        {/* Latest Workout */}
         <div className="section-header">
           <IonText>
-            <h2>Recent Activity</h2>
+            <h2>Latest Workout</h2>
           </IonText>
         </div>
         

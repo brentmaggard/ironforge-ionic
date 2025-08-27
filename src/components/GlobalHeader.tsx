@@ -12,9 +12,29 @@ import {
   IonLabel
 } from '@ionic/react';
 import { menuOutline, person, settings, logOut, barbell } from 'ionicons/icons';
+import { useHistory } from 'react-router-dom';
 
 const GlobalHeader: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const history = useHistory();
+
+  const handleMenuAction = (action: string) => {
+    setIsMenuOpen(false);
+    
+    switch (action) {
+      case 'profile':
+        history.push('/profile');
+        break;
+      case 'settings':
+        console.log('Settings clicked');
+        break;
+      case 'logout':
+        console.log('Logout clicked');
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <IonHeader>
@@ -41,15 +61,15 @@ const GlobalHeader: React.FC = () => {
             showBackdrop={true}
           >
             <IonList>
-              <IonItem button>
+              <IonItem button onClick={() => handleMenuAction('profile')}>
                 <IonIcon icon={person} slot="start" />
                 <IonLabel>Profile</IonLabel>
               </IonItem>
-              <IonItem button>
+              <IonItem button onClick={() => handleMenuAction('settings')}>
                 <IonIcon icon={settings} slot="start" />
                 <IonLabel>Settings</IonLabel>
               </IonItem>
-              <IonItem button>
+              <IonItem button onClick={() => handleMenuAction('logout')}>
                 <IonIcon icon={logOut} slot="start" />
                 <IonLabel>Logout</IonLabel>
               </IonItem>
