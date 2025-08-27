@@ -15,7 +15,11 @@ import {
   IonChip,
   IonLabel,
   IonList,
-  IonItem
+  IonItem,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonText
 } from '@ionic/react';
 import { close, helpCircleOutline } from 'ionicons/icons';
 import './ExerciseDetails.css';
@@ -272,7 +276,9 @@ const ExerciseDetails: React.FC<ExerciseDetailsProps> = ({ exerciseId, isOpen, o
         <IonContent className="exercise-details-content">
           <IonCard>
             <IonCardContent>
-              <p>Exercise not found. Please try again.</p>
+              <IonText>
+                <p>Exercise not found. Please try again.</p>
+              </IonText>
             </IonCardContent>
           </IonCard>
         </IonContent>
@@ -298,20 +304,7 @@ const ExerciseDetails: React.FC<ExerciseDetailsProps> = ({ exerciseId, isOpen, o
         {/* Muscle Diagram Section */}
         <IonCard className="muscle-diagram-card">
           <IonCardContent className="muscle-diagram-content">
-            <div className="muscle-diagram-placeholder">
-              <div className="body-diagram">
-                <div className="body-front">
-                  <div className="body-silhouette">👤</div>
-                </div>
-                <div className="body-back">
-                  <div className="body-silhouette">👤</div>
-                </div>
-              </div>
-              <div className="diagram-indicators">
-                <div className="indicator-dot primary"></div>
-                <div className="indicator-dot secondary"></div>
-              </div>
-            </div>
+            <IonText className="body-silhouette">👤</IonText>
           </IonCardContent>
         </IonCard>
 
@@ -321,28 +314,36 @@ const ExerciseDetails: React.FC<ExerciseDetailsProps> = ({ exerciseId, isOpen, o
             <IonCardTitle>Muscles worked</IonCardTitle>
           </IonCardHeader>
           <IonCardContent className="muscles-worked-content">
-            <div className="muscle-groups-section">
-              <div className="muscle-group">
-                <h4>Primary</h4>
-                <div className="muscle-chips">
-                  {exercise.primaryMuscles.map((muscle, index) => (
-                    <IonChip key={index} className="primary-muscle-chip">
-                      <IonLabel>{muscle}</IonLabel>
-                    </IonChip>
-                  ))}
-                </div>
-              </div>
-              <div className="muscle-group">
-                <h4>Secondary</h4>
-                <div className="muscle-chips">
-                  {exercise.secondaryMuscles.map((muscle, index) => (
-                    <IonChip key={index} className="secondary-muscle-chip">
-                      <IonLabel>{muscle}</IonLabel>
-                    </IonChip>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <IonGrid className="muscle-groups-section">
+              <IonRow className="muscle-group">
+                <IonCol size="12">
+                  <IonText>
+                    <h4>Primary</h4>
+                  </IonText>
+                  <div className="muscle-chips">
+                    {exercise.primaryMuscles.map((muscle, index) => (
+                      <IonChip key={index} className="primary-muscle-chip">
+                        <IonLabel>{muscle}</IonLabel>
+                      </IonChip>
+                    ))}
+                  </div>
+                </IonCol>
+              </IonRow>
+              <IonRow className="muscle-group">
+                <IonCol size="12">
+                  <IonText>
+                    <h4>Secondary</h4>
+                  </IonText>
+                  <div className="muscle-chips">
+                    {exercise.secondaryMuscles.map((muscle, index) => (
+                      <IonChip key={index} className="secondary-muscle-chip">
+                        <IonLabel>{muscle}</IonLabel>
+                      </IonChip>
+                    ))}
+                  </div>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
           </IonCardContent>
         </IonCard>
 
@@ -368,7 +369,9 @@ const ExerciseDetails: React.FC<ExerciseDetailsProps> = ({ exerciseId, isOpen, o
             <IonCardTitle>Commentary</IonCardTitle>
           </IonCardHeader>
           <IonCardContent className="commentary-content">
-            <p>{exercise.commentary}</p>
+            <IonText>
+              <p>{exercise.commentary}</p>
+            </IonText>
           </IonCardContent>
         </IonCard>
 
@@ -406,7 +409,9 @@ const ExerciseDetails: React.FC<ExerciseDetailsProps> = ({ exerciseId, isOpen, o
           </IonCardContent>
         </IonCard>
 
-        <div className="exercise-details-spacer"></div>
+        <IonItem className="exercise-details-spacer" lines="none">
+          <IonLabel></IonLabel>
+        </IonItem>
 
       </IonContent>
     </IonPage>
