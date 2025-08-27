@@ -1,0 +1,398 @@
+/* Exercise Details Page Overlay */
+.exercise-details-page-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999999 !important;
+  background: var(--ion-background-color, #f8f9fa);
+  animation: slideInFromRight 0.3s ease-out;
+}
+
+.exercise-details-content {
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  height: 100vh;
+  --background: transparent;
+}
+
+/* Exercise Details Header Bar */
+.exercise-details-header-bar {
+  --background: linear-gradient(135deg, var(--progress-blue) 0%, var(--progress-purple) 100%);
+  --border-width: 0;
+  --color: white;
+}
+
+.exercise-details-toolbar {
+  --background: transparent;
+  --color: white;
+  --padding-start: 20px;
+  --padding-end: 20px;
+  --padding-top: calc(env(safe-area-inset-top, 0px) + 8px);
+  --min-height: 60px;
+}
+
+.exercise-details-page-overlay .close-button {
+  --color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  --background: transparent;
+  --background-hover: rgba(255, 255, 255, 0.3) !important;
+  --background-hover-opacity: 1 !important;
+  --border-radius: 50% !important;
+  --ripple-color: transparent !important;
+}
+
+.exercise-details-page-overlay .close-button-icon {
+  font-size: 24px;
+  color: white;
+}
+
+.exercise-details-title {
+  --color: white;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* Muscle Diagram Card */
+.muscle-diagram-card {
+  margin: 16px 16px 0 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --background: var(--ion-card-background, white);
+}
+
+.muscle-diagram-content {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.muscle-diagram-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  color: var(--ion-color-medium);
+}
+
+.body-diagram {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.body-front, .body-back {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.body-silhouette {
+  font-size: 80px;
+  opacity: 0.3;
+  filter: grayscale(100%);
+}
+
+.diagram-indicators {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.indicator-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.indicator-dot.primary {
+  background: var(--ion-color-danger);
+}
+
+.indicator-dot.secondary {
+  background: var(--ion-color-warning);
+}
+
+.indicator-dot::after {
+  content: attr(data-label);
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--ion-color-medium);
+  white-space: nowrap;
+}
+
+/* Muscles Worked Card */
+.muscles-worked-card {
+  margin: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --background: var(--ion-card-background, white);
+}
+
+.muscles-worked-card ion-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--ion-color-dark);
+}
+
+.muscles-worked-content {
+  padding: 0 20px 20px 20px;
+}
+
+.muscle-groups-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.muscle-group h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ion-color-dark);
+  margin: 0 0 8px 0;
+}
+
+.muscle-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.primary-muscle-chip {
+  --background: var(--ion-color-danger);
+  --color: white;
+  border-radius: 16px;
+  margin: 0;
+}
+
+.primary-muscle-chip ion-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.secondary-muscle-chip {
+  --background: var(--ion-color-warning);
+  --color: white;
+  border-radius: 16px;
+  margin: 0;
+}
+
+.secondary-muscle-chip ion-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Instructions Card */
+.instructions-card {
+  margin: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --background: var(--ion-card-background, white);
+}
+
+.instructions-card ion-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--ion-color-dark);
+}
+
+.instructions-content {
+  padding: 0 20px 20px 20px;
+}
+
+.instructions-list {
+  margin: 0;
+  padding-left: 20px;
+  list-style: none;
+  counter-reset: instruction-counter;
+}
+
+.instruction-item {
+  counter-increment: instruction-counter;
+  margin-bottom: 12px;
+  padding-left: 8px;
+  position: relative;
+  color: var(--ion-color-dark);
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.instruction-item::before {
+  content: counter(instruction-counter);
+  position: absolute;
+  left: -28px;
+  top: 0;
+  background: var(--progress-blue);
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Commentary Card */
+.commentary-card {
+  margin: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --background: var(--ion-card-background, white);
+}
+
+.commentary-card ion-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--ion-color-dark);
+}
+
+.commentary-content {
+  padding: 0 20px 20px 20px;
+}
+
+.commentary-content p {
+  margin: 0;
+  color: var(--ion-color-dark);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Similar Exercises Card */
+.similar-exercises-card {
+  margin: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --background: var(--ion-card-background, white);
+}
+
+.similar-exercises-card ion-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--ion-color-dark);
+}
+
+.similar-exercises-content {
+  padding: 0;
+}
+
+.similar-exercises-list {
+  --background: transparent;
+  margin: 0;
+}
+
+.similar-exercise-item {
+  --padding-start: 20px;
+  --padding-end: 16px;
+  --inner-padding-start: 0;
+  --inner-padding-end: 0;
+  --inner-padding-top: 12px;
+  --inner-padding-bottom: 12px;
+  --background: transparent;
+  --border-color: var(--ion-color-light);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.similar-exercise-item:hover {
+  --background: rgba(var(--ion-color-light-rgb), 0.5);
+}
+
+.similar-exercise-label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--ion-color-dark);
+}
+
+.similar-exercise-info-button {
+  --color: var(--progress-blue);
+  --padding-start: 4px;
+  --padding-end: 4px;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  width: 36px;
+  height: 36px;
+  --background: rgba(33, 150, 243, 0.1);
+  --border-radius: 50%;
+}
+
+.similar-exercise-info-button ion-icon {
+  font-size: 20px;
+  color: var(--progress-blue);
+}
+
+.similar-exercise-info-button:hover {
+  --background: rgba(33, 150, 243, 0.2);
+}
+
+/* Bottom Spacer */
+.exercise-details-spacer {
+  height: 60px;
+}
+
+/* Page slide-in animation */
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Slide-out animation when navigating back */
+.exercise-details-page-overlay.slide-out {
+  animation: slideOutToRight 0.3s ease-in forwards;
+}
+
+@keyframes slideOutToRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .muscle-diagram-card,
+  .muscles-worked-card,
+  .instructions-card,
+  .commentary-card,
+  .similar-exercises-card {
+    margin: 12px;
+  }
+  
+  .body-diagram {
+    gap: 20px;
+  }
+  
+  .body-silhouette {
+    font-size: 60px;
+  }
+  
+  .muscle-groups-section {
+    gap: 16px;
+  }
+  
+  .instruction-item {
+    font-size: 0.9rem;
+  }
+  
+  .commentary-content p {
+    font-size: 0.9rem;
+  }
+}

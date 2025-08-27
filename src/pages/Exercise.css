@@ -5,7 +5,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 11000;
+  z-index: 50000;
   background: var(--ion-background-color, #f8f9fa);
   animation: slideInFromRight 0.3s ease-out;
 }

@@ -122,7 +122,7 @@ IronForge App
 │   │   └── Bodyweight Exercises
 │   ├── Exercise List (IonList)
 │   │   ├── Exercise Name & Description
-│   │   ├── Info Button (? icon in blue circle)
+│   │   ├── Info Button (? icon in blue circle) → Navigates to Exercise Details
 │   │   ├── Menu Button (3 dots icon)
 │   │   └── Popover Menu Options:
 │   │       ├── Add to Favorites
@@ -147,6 +147,24 @@ IronForge App
 │       ├── Pull-ups
 │       ├── Romanian Deadlift
 │       └── Tricep Dips
+│
+├── Exercise Details (/exercise-details/:exerciseId) - Modal Overlay
+│   ├── Custom Header Bar
+│   │   ├── Close Button (X icon)
+│   │   └── Exercise Name as Title
+│   ├── Muscle Diagram Section
+│   │   ├── Placeholder Body Diagrams (Front/Back)
+│   │   └── Primary/Secondary Muscle Indicators
+│   ├── Muscles Worked Card
+│   │   ├── Primary Muscles (Red chips)
+│   │   └── Secondary Muscles (Orange chips)
+│   ├── Instructions Card
+│   │   └── Numbered Step-by-Step Instructions
+│   ├── Commentary Card
+│   │   └── Exercise Benefits and Tips
+│   └── Similar Exercises Card
+│       ├── List of Related Exercises
+│       └── Info Buttons (Navigate to their details)
 │
 ├── Profile (/profile) - Modal Overlay
 │   ├── Custom Header Bar
@@ -277,7 +295,7 @@ IronForge App
    - Seamless integration between chip clicks and drawer selections
 
 6. **Interactive Elements**
-   - Info button (helpCircleOutline icon, 24px) in blue circle for exercise details
+   - Info button (helpCircleOutline icon, 24px) in blue circle navigates to Exercise Details
    - Menu button (3 dots, 20px) with popover containing actions
    - Action menu: Add to Favorites, Add to Workout, Share, Delete
    - Hoverable muscle group chips with selection states
@@ -285,7 +303,46 @@ IronForge App
 7. **Navigation Integration**
    - Accessible via Global Header menu with library icon
    - Route configured for proper modal overlay behavior
+   - Info buttons navigate to detailed exercise pages
    - Consistent with app's navigation patterns
+
+### Exercise Details Page Features
+1. **Modal Overlay Design**
+   - Slides in from right over Exercise Library without closing it
+   - Highest z-index (999999) to appear above all pages including global header
+   - Custom header with Close button and exercise name as title
+   - Solid background design for focused reading experience
+
+2. **Comprehensive Exercise Information**
+   - Expanded exercise data structure with detailed information
+   - All 10 exercises include: instructions, commentary, primary/secondary muscles, similar exercises
+   - Modal-based state management instead of URL routing
+   - Embedded within Exercise Library component for seamless integration
+
+3. **Muscle Diagram Section**
+   - Placeholder body diagrams (front and back views)
+   - Visual indicators for primary and secondary muscles
+   - Consistent with fitness app design patterns
+
+4. **Detailed Content Cards**
+   - **Muscles Worked Card**: Primary (red) and secondary (orange) muscle chips
+   - **Instructions Card**: Numbered step-by-step exercise instructions with circular numbered bullets
+   - **Commentary Card**: Exercise benefits, tips, and form guidance
+   - **Similar Exercises Card**: Related exercises with functional navigation buttons
+
+5. **Interactive Navigation & UX**
+   - Similar exercises are clickable and seamlessly change content within same modal
+   - Auto-scroll to top (300ms smooth animation) when exercise changes via similar exercise navigation
+   - Info buttons on similar exercises for continuous exploration
+   - Close button returns to Exercise Library at exact previous position
+   - No page replacement - Exercise Library remains loaded underneath
+
+6. **Enhanced User Experience**
+   - **Context preservation**: Exercise Library state, filters, and scroll position maintained
+   - **Smooth transitions**: No flash effects or jarring page changes
+   - **Proper layering**: Modal appears above global header without double-header issues
+   - **Consistent styling**: Matches app's card-based design with subtle shadows
+   - **Responsive design**: Mobile-optimized spacing and touch targets
 
 ### Edit Profile Page Features
 1. **Modal Overlay Design**
@@ -315,8 +372,9 @@ IronForge App
 - Clean URL structure (/dashboard, /progress, /workout, /profile, /exercise, /edit-profile)
 - Default redirect to dashboard
 - Tab highlighting and state management
-- Modal overlay navigation for Profile, EditProfile, and Exercise Library pages
+- Modal overlay navigation for Profile, EditProfile, Exercise Library, and Exercise Details pages
 - Global header menu integration for Profile and Exercise Library access
+- Exercise Details uses modal-based state management for better UX (no URL routing)
 
 ### Design System
 - **Color Palette**:
@@ -349,16 +407,18 @@ IronForge App
 - Responsive sizing (100px diameter on mobile)
 
 ### Modal Pages Implementation
-- **Profile Page**: Fixed positioning overlay (`z-index: 9999`)
-- **EditProfile Page**: Higher z-index (10000) to layer above Profile
-- **Exercise Library Page**: Highest z-index (11000) to appear above all other pages
-- Routes outside IonTabs structure for proper modal layering
-- Proper Ionic component usage throughout (IonHeader, IonToolbar, IonItem, IonList, IonLabel)
+- **Profile Page**: Fixed positioning overlay (`z-index: 40000`)
+- **EditProfile Page**: Higher z-index (45000) to layer above Profile
+- **Exercise Library Page**: High z-index (50000) to appear above global header and other pages
+- **Exercise Details Page**: Highest z-index (999999 !important) to appear above all elements including global header
+- Routes outside IonTabs structure for proper modal layering (except ExerciseDetails which is embedded)
+- Proper Ionic component usage throughout (IonHeader, IonToolbar, IonItem, IonList, IonLabel, IonCard)
 - CSS keyframe animations for slide-in transitions from right
 - Optimized component structure using proper Ionic patterns instead of divs
 - Action sheet integration for photo selection (EditProfile only)
 - Popover menus for exercise actions (Exercise Library only)
 - Bottom drawer modal implementation with fixed positioning and scrollable content
+- **Exercise Details**: Modal-based state management with auto-scroll functionality and similar exercise navigation
 
 ### Consistent Button Styling System
 - **Default State**: All header buttons (back, add, edit, save) have transparent backgrounds
@@ -394,5 +454,15 @@ npm run lint
 ```
 
 ---
-*Last Updated: 2025-01-28*
+*Last Updated: 2025-08-27*
 *Generated with Claude Code*
+
+## Recent Updates (2025-08-27)
+
+### Exercise Details Modal Enhancement
+- **Converted from route-based to modal-based navigation** for seamless user experience
+- **Fixed z-index layering issues** - ExerciseDetails now properly appears above global header
+- **Added auto-scroll functionality** - smoothly scrolls to top when navigating between similar exercises
+- **Implemented similar exercise navigation** - users can explore related exercises within the same modal
+- **Enhanced context preservation** - Exercise Library state remains intact underneath modal
+- **Improved UX flow** - no page flashing or jarring transitions when opening/closing details
