@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IronForge Icon Generator</title>
+    <style>
+        canvas { 
+            border: 1px solid #ccc; 
+            margin: 10px;
+            display: block;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>IronForge App Icon Generator</h2>
+    <p>This will generate the PWA icons for IronForge. Right-click each canvas to save as PNG:</p>
+    
+    <h3>192x192 Icon:</h3>
+    <canvas id="icon192" width="192" height="192"></canvas>
+    
+    <h3>512x512 Icon:</h3>
+    <canvas id="icon512" width="512" height="512"></canvas>
+
+    <script>
+        function drawIcon(canvas) {
+            const ctx = canvas.getContext('2d');
+            const size = canvas.width;
+            
+            // Background gradient (blue to purple)
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#2196F3');
+            gradient.addColorStop(1, '#9C27B0');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // White barbell icon
+            ctx.fillStyle = '#FFFFFF';
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = size * 0.02;
+            
+            // Barbell shaft
+            const centerX = size / 2;
+            const centerY = size / 2;
+            const shaftLength = size * 0.6;
+            const shaftThickness = size * 0.04;
+            
+            ctx.fillRect(centerX - shaftLength/2, centerY - shaftThickness/2, shaftLength, shaftThickness);
+            
+            // Left weight plate
+            const plateWidth = size * 0.12;
+            const plateHeight = size * 0.25;
+            ctx.fillRect(centerX - shaftLength/2 - plateWidth, centerY - plateHeight/2, plateWidth, plateHeight);
+            
+            // Right weight plate
+            ctx.fillRect(centerX + shaftLength/2, centerY - plateHeight/2, plateWidth, plateHeight);
+            
+            // Left grip
+            const gripLength = size * 0.08;
+            const gripThickness = size * 0.06;
+            ctx.fillRect(centerX - gripLength/2 - size * 0.15, centerY - gripThickness/2, gripLength, gripThickness);
+            
+            // Right grip
+            ctx.fillRect(centerX - gripLength/2 + size * 0.15, centerY - gripThickness/2, gripLength, gripThickness);
+            
+            // App name below barbell (for larger icon)
+            if (size >= 512) {
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = `bold ${size * 0.08}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.fillText('IronForge', centerX, centerY + size * 0.25);
+            }
+        }
+        
+        // Generate both icons
+        drawIcon(document.getElementById('icon192'));
+        drawIcon(document.getElementById('icon512'));
+        
+        // Add download functionality
+        document.getElementById('icon192').addEventListener('click', function() {
+            const link = document.createElement('a');
+            link.download = 'icon-192x192.png';
+            link.href = this.toDataURL();
+            link.click();
+        });
+        
+        document.getElementById('icon512').addEventListener('click', function() {
+            const link = document.createElement('a');
+            link.download = 'icon-512x512.png';
+            link.href = this.toDataURL();
+            link.click();
+        });
+        
+        console.log('Icons generated! Click on each canvas to download the PNG files.');
+        console.log('Save them as:');
+        console.log('- icon-192x192.png');
+        console.log('- icon-512x512.png');
+        console.log('Place them in public/assets/icon/ directory');
+    </script>
+</body>
+</html>

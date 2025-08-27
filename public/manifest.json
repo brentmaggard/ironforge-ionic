@@ -1,21 +1,36 @@
 {
-  "short_name": "Ionic App",
-  "name": "My Ionic App",
+  "short_name": "IronForge",
+  "name": "IronForge - Fitness Tracker",
+  "description": "A comprehensive fitness tracking application for workout monitoring and progress tracking",
   "icons": [
     {
-      "src": "assets/icon/favicon.png",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "assets/icon/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
     },
     {
-      "src": "assets/icon/icon.png",
-      "type": "image/png",
+      "src": "assets/icon/icon-512x512.png",
       "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icon/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "maskable"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff"
+  "orientation": "portrait-primary",
+  "theme_color": "#2196F3",
+  "background_color": "#f8f9fa",
+  "categories": ["fitness", "health", "lifestyle"],
+  "lang": "en-US"
 }

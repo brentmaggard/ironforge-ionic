@@ -34,8 +34,8 @@ IronForge is a comprehensive fitness tracking application built with Ionic 8 and
 - **Jest DOM**: ^5.16.5
 
 ### PWA Support
-- **Vite Plugin PWA**: ^1.0.3
-- **Vite Plugin Legacy**: ^5.0.0
+- **Vite Plugin PWA**: ^1.0.3 (Service worker generation and PWA optimization)
+- **Vite Plugin Legacy**: ^5.0.0 (Legacy browser support)
 
 ## Architecture Decisions
 
@@ -71,6 +71,14 @@ IronForge is a comprehensive fitness tracking application built with Ionic 8 and
 - **Action Sheets**: Native mobile patterns for photo selection
 - **Consistent Button Styling**: Unified circular button hover effects across all pages
 - **Interactive Feedback**: Smooth transitions and hover states for all interactive elements
+
+### 6. Progressive Web App (PWA) Architecture
+- **Service Worker**: Automatic generation via Vite PWA plugin with Workbox
+- **Caching Strategy**: Cache-first for fonts and static assets, runtime caching for dynamic content
+- **Offline Support**: Custom offline page with IronForge branding and feature list
+- **Install Prompts**: Cross-platform installation with custom iOS Safari instructions
+- **App Manifest**: Comprehensive PWA manifest with proper icons and metadata
+- **Theme Integration**: Native mobile browser theming with app color scheme
 
 ## App Page Hierarchy
 
@@ -368,6 +376,42 @@ IronForge App
    - Professional form layout with proper spacing
    - Consistent with app's design patterns
 
+### Progressive Web App (PWA) Features
+1. **Service Worker & Caching**
+   - Automatic service worker generation via Vite PWA plugin
+   - Workbox-powered caching strategies for optimal performance
+   - Cache-first strategy for static assets (CSS, JS, images)
+   - Runtime caching for Google Fonts and external resources
+   - Offline fallback page with IronForge branding
+
+2. **App Installation**
+   - Cross-platform install prompt integration in Global Header menu
+   - Custom useInstallPrompt hook for installation management
+   - Android/Chrome: Native beforeinstallprompt event handling
+   - iOS Safari: Custom instruction alert with step-by-step guidance
+   - Automatic detection of installed state
+
+3. **PWA Manifest & Branding**
+   - Comprehensive web app manifest with IronForge branding
+   - App icons in multiple sizes (192x192, 512x512, maskable)
+   - Standalone display mode for app-like experience
+   - Theme color integration (#2196F3) for native browser styling
+   - Portrait-primary orientation lock
+
+4. **Offline Capabilities**
+   - Custom offline.html page with gradient background matching app theme
+   - Automatic network status detection and reconnection attempts
+   - Cached app shell for instant loading
+   - Local storage persistence for user data
+   - Graceful degradation when network is unavailable
+
+5. **Mobile Optimization**
+   - iOS homescreen support with apple-touch-icon meta tags
+   - Android Chrome theme-color for address bar styling
+   - Microsoft PWA support with browserconfig
+   - Open Graph and Twitter Card metadata for social sharing
+   - Full-screen immersive experience when installed
+
 ### Navigation & Routing
 - Clean URL structure (/dashboard, /progress, /workout, /profile, /exercise, /edit-profile)
 - Default redirect to dashboard
@@ -430,20 +474,32 @@ IronForge App
 - **Technical Implementation**: Uses `--background-hover: transparent` and `--ripple-color: transparent` to disable default Ionic button backgrounds while maintaining custom circular hover effects
 
 ## Future Enhancements
+- **Swipe-to-Close Modal Navigation**: Implement swipe-right gesture to close modal pages using Ionic's Gestures API for native iOS/Android-like behavior on Exercise Library, Exercise Details, Profile, and Edit Profile pages
+- **Push Notifications**: Implement workout reminders and progress notifications using PWA notification APIs
+- **Background Sync**: Add background synchronization for workout data when connection is restored
 - Real data integration with backend API
 - User authentication and profile management
 - Workout creation and tracking functionality
 - Progress analytics and reporting
 - Social features and sharing
-- Offline capability with PWA features
+- Advanced PWA features (app shortcuts, file handling, contact picker)
 
 ## Development Commands
 ```bash
-# Development
+# Development (regular features)
 npm run dev
 
-# Build
+# Build (required for PWA features)
 npm run build
+
+# Preview (test PWA features locally)
+npm run preview
+
+# Preview with mobile access (for phone testing)
+npm run preview -- --host
+
+# Preview with HTTPS (for full PWA testing)
+npm run preview -- --host --https
 
 # Testing
 npm run test.unit
@@ -452,6 +508,26 @@ npm run test.e2e
 # Linting
 npm run lint
 ```
+
+## PWA Development Notes
+
+### Testing PWA Features
+- **Development Mode**: `npm run dev` - Regular development, PWA features disabled
+- **PWA Testing**: `npm run build && npm run preview` - Full PWA functionality enabled
+- **Mobile Testing**: Use `npm run preview -- --host` and access via local IP on mobile devices
+- **Install Testing**: HTTPS required for install prompts on mobile (`--https` flag)
+
+### PWA Build Requirements
+- Service worker only generated during production build
+- Web app manifest requires production environment
+- Install prompts need HTTPS (except localhost)
+- Mobile theme-color only applies to built/served applications
+
+### Troubleshooting
+- **Build Errors**: Remove invalid Workbox configurations (e.g., `cacheKeyWillBeUsed`)
+- **No Install Prompt**: Ensure HTTPS and valid manifest with required fields
+- **Theme Color Issues**: Update both `index.html` meta tag and PWA manifest
+- **Service Worker Issues**: Check browser dev tools Application tab for registration status
 
 ---
 *Last Updated: 2025-08-27*
@@ -508,3 +584,54 @@ This session involved the complete implementation and enhancement of the Exercis
 - **Context preservation** - all filters and scroll positions maintained when closing modal
 
 This implementation demonstrates successful conversion from route-based to modal-based navigation while maintaining proper Ionic component architecture and delivering an enhanced user experience.
+
+### Progressive Web App (PWA) Implementation
+Following the ExerciseDetails modal implementation, the app was transformed into a full-featured Progressive Web App with comprehensive offline support and native app-like capabilities.
+
+#### PWA Configuration & Setup
+- **Vite PWA Plugin Integration** - Configured automatic service worker generation with Workbox
+- **Web App Manifest Creation** - Comprehensive manifest with IronForge branding, theme colors, and app metadata
+- **Icon System Implementation** - Created PWA icon structure with 192x192 and 512x512 sizes including maskable variants
+- **Service Worker Registration** - Added automatic service worker registration in main.tsx
+
+#### Offline Support & Caching
+- **Custom Offline Page** - Designed branded offline.html with gradient background and feature list
+- **Caching Strategies** - Implemented cache-first for static assets and runtime caching for external fonts
+- **Network Detection** - Added automatic network status monitoring and reconnection attempts
+- **App Shell Caching** - Configured comprehensive asset precaching for instant loading
+
+#### Installation & Mobile Integration
+- **Install Prompt Hook** - Created useInstallPrompt custom hook for cross-platform installation
+- **Global Header Integration** - Added "Install App" menu item with platform-specific handling
+- **iOS Safari Support** - Custom instruction alert for iOS users with step-by-step Add to Home Screen guidance
+- **Android Chrome Support** - Native beforeinstallprompt event handling for seamless installation
+
+#### Mobile Browser Optimization
+- **Theme Color Integration** - Applied #2196F3 theme color for native browser styling
+- **iOS Meta Tags** - Comprehensive iOS homescreen support with apple-touch-icon configurations
+- **Microsoft PWA Support** - Added Windows PWA meta tags and browserconfig support
+- **Social Media Meta** - Included Open Graph and Twitter Card metadata for sharing
+
+#### Technical Implementation
+- **Build Process Enhancement** - Configured production-only PWA feature generation
+- **Development Workflow** - Established build + preview testing pattern for PWA functionality
+- **Error Resolution** - Fixed Workbox configuration issues (cacheKeyWillBeUsed removal)
+- **HTTPS Testing Setup** - Documented mobile testing requirements with host and HTTPS flags
+
+#### Key Files Created/Modified
+- **vite.config.ts**: Added VitePWA plugin configuration with manifest and caching strategies
+- **public/manifest.json**: Updated with IronForge branding and comprehensive PWA metadata  
+- **index.html**: Enhanced with PWA meta tags, theme colors, and cross-platform support
+- **public/offline.html**: Created custom offline page with IronForge styling
+- **src/hooks/useInstallPrompt.ts**: Developed installation management hook
+- **src/components/GlobalHeader.tsx**: Integrated install prompt and iOS instructions
+- **public/assets/icon/**: Established icon directory with placeholder PWA icons
+
+#### PWA Capabilities Achieved
+- **Installable App Experience** - Users can install IronForge as native-like app on any platform
+- **Offline Functionality** - Core features work without internet connection
+- **Fast Loading Performance** - Cached assets for instant startup and smooth navigation
+- **Mobile-Optimized UI** - Native browser theming and full-screen standalone mode
+- **Cross-Platform Compatibility** - Supports iOS Safari, Android Chrome, and desktop browsers
+
+This PWA implementation transforms IronForge from a web application into a production-ready, installable fitness app with native mobile capabilities and offline resilience.
