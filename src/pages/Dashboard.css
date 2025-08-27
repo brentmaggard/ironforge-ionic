@@ -6,6 +6,7 @@
 
 /* Section Headers */
 .section-header {
+  --background: transparent;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -149,6 +150,7 @@
 }
 
 .goal-content {
+  --background: transparent;
   display: flex;
   align-items: center;
   margin-bottom: 12px;

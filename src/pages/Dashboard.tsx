@@ -146,11 +146,11 @@ const Dashboard: React.FC = () => {
         </IonGrid>
 
         {/* Your Progress */}
-        <div className="section-header">
-          <IonText>
+        <IonItem lines="none" className="section-header">
+          <IonLabel>
             <h2>Your Progress</h2>
-          </IonText>
-        </div>
+          </IonLabel>
+        </IonItem>
         
         <div className="progress-swiper-container">
           <Swiper
@@ -186,30 +186,28 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Active Goals */}
-        <div className="section-header">
-          <IonText>
+        <IonItem lines="none" className="section-header">
+          <IonLabel>
             <h2>Active Goals</h2>
-          </IonText>
-          <IonButton fill="clear" color="success">
+          </IonLabel>
+          <IonButton fill="clear" color="success" slot="end">
             View All
           </IonButton>
-        </div>
+        </IonItem>
         
         <div className="goals-section">
           {mockData.activeGoals.map((goal) => (
             <IonCard key={goal.id} className="goal-card" button onClick={() => handleGoalClick(goal.id)}>
               <IonCardContent>
-                <div className="goal-content">
-                  <div className="goal-icon" style={{ backgroundColor: `${goal.color}20` }}>
+                <IonItem lines="none" className="goal-content">
+                  <div className="goal-icon" slot="start" style={{ backgroundColor: `${goal.color}20` }}>
                     <IonIcon icon={goal.icon} style={{ color: goal.color }} />
                   </div>
-                  <div className="goal-info">
-                    <IonText>
-                      <h3>{goal.title}</h3>
-                      <p>{goal.current} {goal.unit} → {goal.target} {goal.unit}</p>
-                    </IonText>
-                  </div>
-                  <div className="goal-stats">
+                  <IonLabel className="goal-info">
+                    <h3>{goal.title}</h3>
+                    <p>{goal.current} {goal.unit} → {goal.target} {goal.unit}</p>
+                  </IonLabel>
+                  <div className="goal-stats" slot="end">
                     <IonText className="progress-percentage">
                       {goal.progress}%
                     </IonText>
@@ -217,7 +215,7 @@ const Dashboard: React.FC = () => {
                       <p>{goal.daysLeft} days left</p>
                     </IonText>
                   </div>
-                </div>
+                </IonItem>
                 <IonProgressBar value={goal.progress / 100} color="warning" className="goal-progress" />
               </IonCardContent>
             </IonCard>
@@ -225,11 +223,11 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Latest Workout */}
-        <div className="section-header">
-          <IonText>
+        <IonItem lines="none" className="section-header">
+          <IonLabel>
             <h2>Latest Workout</h2>
-          </IonText>
-        </div>
+          </IonLabel>
+        </IonItem>
         
         <IonCard className="activity-card">
           <IonCardContent>
