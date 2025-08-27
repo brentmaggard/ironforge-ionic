@@ -15,7 +15,8 @@ import {
   IonPopover,
   IonModal,
   IonCheckbox,
-  IonChip
+  IonChip,
+  IonBadge
 } from '@ionic/react';
 import { arrowBack, add, helpCircleOutline, ellipsisVertical, heart, bookmark, share, trash, optionsOutline, person, barbell, walk, accessibility } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
@@ -28,6 +29,7 @@ const Exercise: React.FC = () => {
   const [selectedExerciseTypes, setSelectedExerciseTypes] = useState<string[]>(['strength', 'cardio', 'mobility']);
   const [selectedMuscleGroups, setSelectedMuscleGroups] = useState<string[]>([]);
   const [selectedEquipment, setSelectedEquipment] = useState<string[]>([]);
+  const [activeMuscleFilter, setActiveMuscleFilter] = useState<string | null>(null);
   const [popoverOpen, setPopoverOpen] = useState<{open: boolean, event?: Event}>({open: false});
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
 
@@ -73,22 +75,96 @@ const Exercise: React.FC = () => {
   };
 
   const exercises = [
-    { name: 'Barbell Back Squat', description: 'Compound lower body exercise targeting quads, glutes, and hamstrings' },
-    { name: 'Bench Press', description: 'Upper body compound movement for chest, shoulders, and triceps' },
-    { name: 'Deadlift', description: 'Full body compound exercise focusing on posterior chain' },
-    { name: 'Dumbbell Bicep Curl', description: 'Isolation exercise for bicep development' },
-    { name: 'Lat Pulldown', description: 'Upper body pulling exercise for back and biceps' },
-    { name: 'Leg Press', description: 'Machine-based lower body exercise for quad development' },
-    { name: 'Overhead Press', description: 'Standing shoulder press for deltoid strength' },
-    { name: 'Pull-ups', description: 'Bodyweight upper body pulling exercise' },
-    { name: 'Romanian Deadlift', description: 'Hip-hinge movement targeting hamstrings and glutes' },
-    { name: 'Tricep Dips', description: 'Bodyweight exercise for tricep development' }
+    { 
+      name: 'Barbell Back Squat', 
+      description: 'Compound lower body exercise targeting quads, glutes, and hamstrings',
+      completionCount: 23,
+      muscleGroups: ['Quads', 'Glutes', 'Back']
+    },
+    { 
+      name: 'Bench Press', 
+      description: 'Upper body compound movement for chest, shoulders, and triceps',
+      completionCount: 18,
+      muscleGroups: ['Chest', 'Shoulders', 'Triceps']
+    },
+    { 
+      name: 'Deadlift', 
+      description: 'Full body compound exercise focusing on posterior chain',
+      completionCount: 15,
+      muscleGroups: ['Back', 'Glutes', 'Posterior thighs']
+    },
+    { 
+      name: 'Dumbbell Bicep Curl', 
+      description: 'Isolation exercise for bicep development',
+      completionCount: 31,
+      muscleGroups: ['Biceps', 'Forearms']
+    },
+    { 
+      name: 'Lat Pulldown', 
+      description: 'Upper body pulling exercise for back and biceps',
+      completionCount: 12,
+      muscleGroups: ['Back', 'Biceps']
+    },
+    { 
+      name: 'Leg Press', 
+      description: 'Machine-based lower body exercise for quad development',
+      completionCount: 8,
+      muscleGroups: ['Quads', 'Glutes']
+    },
+    { 
+      name: 'Overhead Press', 
+      description: 'Standing shoulder press for deltoid strength',
+      completionCount: 14,
+      muscleGroups: ['Shoulders', 'Triceps', 'Abs']
+    },
+    { 
+      name: 'Pull-ups', 
+      description: 'Bodyweight upper body pulling exercise',
+      completionCount: 27,
+      muscleGroups: ['Back', 'Biceps', 'Forearms']
+    },
+    { 
+      name: 'Romanian Deadlift', 
+      description: 'Hip-hinge movement targeting hamstrings and glutes',
+      completionCount: 9,
+      muscleGroups: ['Posterior thighs', 'Glutes', 'Back']
+    },
+    { 
+      name: 'Tricep Dips', 
+      description: 'Bodyweight exercise for tricep development',
+      completionCount: 22,
+      muscleGroups: ['Triceps', 'Chest', 'Shoulders']
+    }
   ].sort((a, b) => a.name.localeCompare(b.name));
 
-  const filteredExercises = exercises.filter(exercise =>
-    exercise.name.toLowerCase().includes(searchText.toLowerCase()) ||
-    exercise.description.toLowerCase().includes(searchText.toLowerCase())
-  );
+  const handleMuscleChipClick = (muscleGroup: string) => {
+    setActiveMuscleFilter(activeMuscleFilter === muscleGroup ? null : muscleGroup);
+  };
+
+  const handleApplyFilters = () => {
+    // Apply muscle group filter from drawer selections
+    if (selectedMuscleGroups.length === 1) {
+      setActiveMuscleFilter(selectedMuscleGroups[0]);
+    } else if (selectedMuscleGroups.length === 0) {
+      setActiveMuscleFilter(null);
+    } else {
+      // Multiple selections - for now, use the first one
+      setActiveMuscleFilter(selectedMuscleGroups[0]);
+    }
+    setFilterDrawerOpen(false);
+  };
+
+  const filteredExercises = exercises.filter(exercise => {
+    // Search filter
+    const matchesSearch = exercise.name.toLowerCase().includes(searchText.toLowerCase()) ||
+      exercise.description.toLowerCase().includes(searchText.toLowerCase());
+    
+    // Muscle group filter
+    const matchesMuscleFilter = !activeMuscleFilter || 
+      exercise.muscleGroups.some(muscle => muscle === activeMuscleFilter);
+    
+    return matchesSearch && matchesMuscleFilter;
+  });
 
   return (
     <IonPage className="exercise-page-overlay">
@@ -96,17 +172,13 @@ const Exercise: React.FC = () => {
         <IonToolbar className="exercise-toolbar">
           <IonButtons slot="start">
             <IonButton onClick={handleBack} className="back-button" fill="clear">
-              <div className="back-button-circle">
-                <IonIcon icon={arrowBack} />
-              </div>
+              <IonIcon icon={arrowBack} className="back-button-icon" />
             </IonButton>
           </IonButtons>
           <IonTitle className="exercise-title">Exercise Library</IonTitle>
           <IonButtons slot="end">
             <IonButton onClick={handleAddExercise} className="add-button" fill="clear">
-              <div className="add-button-circle">
-                <IonIcon icon={add} />
-              </div>
+              <IonIcon icon={add} className="add-button-icon" />
             </IonButton>
           </IonButtons>
         </IonToolbar>
@@ -115,7 +187,7 @@ const Exercise: React.FC = () => {
       <IonContent className="exercise-content">
         
         {/* Search Bar */}
-        <div className="exercise-search-section">
+        <IonItem className="exercise-search-section" lines="none">
           <IonSearchbar
             value={searchText}
             onIonInput={(e) => setSearchText(e.detail.value!)}
@@ -126,10 +198,11 @@ const Exercise: React.FC = () => {
             fill="clear"
             className="filter-button"
             onClick={() => setFilterDrawerOpen(true)}
+            slot="end"
           >
             <IonIcon icon={optionsOutline} />
           </IonButton>
-        </div>
+        </IonItem>
 
         {/* Exercise List */}
         <IonList className="exercise-list">
@@ -137,7 +210,21 @@ const Exercise: React.FC = () => {
             <IonItem key={index} className="exercise-item">
               <IonLabel className="exercise-info">
                 <h3 className="exercise-name">{exercise.name}</h3>
-                <p className="exercise-description">{exercise.description}</p>
+                <div className="workout-count">
+                  <IonBadge color="primary" className="completion-badge">{exercise.completionCount}</IonBadge>
+                  <span className="logged-text">Logged workouts</span>
+                </div>
+                <div className="muscle-groups">
+                  {exercise.muscleGroups.map((muscle, muscleIndex) => (
+                    <IonChip 
+                      key={muscleIndex} 
+                      className={`muscle-group-tag ${activeMuscleFilter === muscle ? 'active' : ''}`}
+                      onClick={() => handleMuscleChipClick(muscle)}
+                    >
+                      <IonLabel>{muscle}</IonLabel>
+                    </IonChip>
+                  ))}
+                </div>
               </IonLabel>
               
               <IonButton
@@ -218,7 +305,7 @@ const Exercise: React.FC = () => {
                 fill="clear" 
                 size="small" 
                 slot="end"
-                onClick={() => setFilterDrawerOpen(false)}
+                onClick={handleApplyFilters}
                 className="filter-header-button"
               >
                 Apply

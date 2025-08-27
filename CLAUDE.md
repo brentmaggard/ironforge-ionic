@@ -69,6 +69,8 @@ IronForge is a comprehensive fitness tracking application built with Ionic 8 and
 - **Icon-driven Navigation**: Clear visual hierarchy with appropriate icons
 - **Modal Overlays**: Profile page slides over main app content
 - **Action Sheets**: Native mobile patterns for photo selection
+- **Consistent Button Styling**: Unified circular button hover effects across all pages
+- **Interactive Feedback**: Smooth transitions and hover states for all interactive elements
 
 ## App Page Hierarchy
 
@@ -245,30 +247,42 @@ IronForge App
 
 2. **Search & Filter Functionality**
    - Real-time search across exercise names and descriptions
-   - Four filter categories: All, Compound, Isolation, Bodyweight
-   - Responsive search bar with options-outline filter button positioned to the right
-   - Bottom drawer modal for filter selection (replaces inline segment filter)
+   - IonItem-based search section with IonSearchbar and filter button
+   - Bottom drawer modal for advanced filtering (replaces inline segment filter)
+   - Dual filtering: Direct muscle group chip clicks + drawer-based Apply filtering
 
 3. **Filter Drawer Modal**
-   - Fixed-height bottom drawer (320px) that slides up from bottom
-   - Sticky header with IonHeader/IonToolbar containing Reset, Filter title, and Apply buttons
-   - Scrollable content area with checkbox-based filter options
-   - Proper Ionic component structure using IonModal with breakpoints disabled
-   - Custom drag handle and rounded top corners (12px radius)
+   - Fixed-height bottom drawer (380px) with sticky header
+   - IonHeader/IonToolbar with Reset, Filter title, and Apply buttons
+   - Three filter sections: Exercise Types, Muscle Groups, Equipment
+   - Exercise Types: Checkboxes with icons (Strength/barbell, Cardio/walk, Mobility/accessibility)
+   - Muscle Groups: 13 selectable IonChip components with compact styling
+   - Equipment: 9 selectable IonChip options (Barbell, Dumbbell, Machine, etc.)
+   - Ultra-compact spacing with negative margins for mobile optimization
 
-4. **Exercise List Display**
-   - Proper IonList with IonItem components (not cards)
-   - IonLabel for exercise name (bold with font-weight: 700) and description
-   - Alphabetically sorted exercise database
-   - Optimized spacing with reduced margins for better text distribution
+4. **Enhanced Exercise List Display**
+   - Proper IonList with IonItem components using semantic Ionic structure
+   - Exercise name with bold font-weight: 700
+   - Completion count badge (small blue badge showing workout frequency)
+   - "Logged workouts" text with completion statistics
+   - Clickable muscle group chips for instant filtering
+   - Alphabetically sorted exercise database with realistic completion counts
+   - Optimized compact spacing throughout
 
-5. **Interactive Elements**
+5. **Interactive Filtering System**
+   - Click muscle group chips directly for immediate filtering
+   - Filter drawer Apply button integrates with main filtering system
+   - Active filter states with visual feedback (selected chips highlight)
+   - Reset functionality clears all filter selections
+   - Seamless integration between chip clicks and drawer selections
+
+6. **Interactive Elements**
    - Info button (helpCircleOutline icon, 24px) in blue circle for exercise details
    - Menu button (3 dots, 20px) with popover containing actions
-   - Compact button layout pushed to the right edge
    - Action menu: Add to Favorites, Add to Workout, Share, Delete
+   - Hoverable muscle group chips with selection states
 
-6. **Navigation Integration**
+7. **Navigation Integration**
    - Accessible via Global Header menu with library icon
    - Route configured for proper modal overlay behavior
    - Consistent with app's navigation patterns
@@ -346,6 +360,15 @@ IronForge App
 - Popover menus for exercise actions (Exercise Library only)
 - Bottom drawer modal implementation with fixed positioning and scrollable content
 
+### Consistent Button Styling System
+- **Default State**: All header buttons (back, add, edit, save) have transparent backgrounds
+- **Hover Effects**: Circular background appears on hover with page-specific scoping
+- **Ionic Integration**: Proper use of Ionic CSS variables to override default button behavior
+- **Cross-Page Consistency**: Unified styling approach across Exercise, Profile, and EditProfile pages
+- **Exercise Page**: Direct IonIcon approach with scoped hover effects
+- **Profile/EditProfile Pages**: Div-based structure with targeted hover styling
+- **Technical Implementation**: Uses `--background-hover: transparent` and `--ripple-color: transparent` to disable default Ionic button backgrounds while maintaining custom circular hover effects
+
 ## Future Enhancements
 - Real data integration with backend API
 - User authentication and profile management
@@ -371,5 +394,5 @@ npm run lint
 ```
 
 ---
-*Last Updated: 2025-01-27*
+*Last Updated: 2025-01-28*
 *Generated with Claude Code*

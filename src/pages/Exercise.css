@@ -33,28 +33,33 @@
   --min-height: 60px;
 }
 
-.back-button, .add-button {
+.exercise-page-overlay .back-button, .exercise-page-overlay .add-button {
   --color: white;
-}
-
-.back-button-circle, .add-button-circle {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(10px);
+  --background: transparent;
 }
 
-.back-button-circle ion-icon, .add-button-circle ion-icon {
+.exercise-page-overlay .back-button:hover, .exercise-page-overlay .add-button:hover {
+  --background-hover: rgba(255, 255, 255, 0.3) !important;
+  --background-hover-opacity: 1 !important;
+  --border-radius: 50% !important;
+  --ripple-color: transparent !important;
+}
+
+.exercise-page-overlay .back-button-icon, .exercise-page-overlay .add-button-icon {
   font-size: 22px;
   color: white;
 }
 
-.add-button-circle {
-  background: rgba(76, 175, 80, 0.3);
+.exercise-page-overlay .add-button {
+  --background: transparent;
+}
+
+.exercise-page-overlay .add-button:hover {
+  --background-hover: rgba(76, 175, 80, 0.4) !important;
+  --background-hover-opacity: 1 !important;
 }
 
 .exercise-title {
@@ -65,8 +70,12 @@
 
 /* Search Section */
 .exercise-search-section {
-  padding: 16px;
-  background: var(--ion-background-color);
+  --background: var(--ion-background-color);
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  --inner-padding-end: 12px;
 }
 
 .exercise-searchbar {
@@ -76,19 +85,6 @@
   --color: var(--ion-color-dark);
   --placeholder-color: var(--ion-color-medium);
   --icon-color: var(--ion-color-medium);
-  flex: 1;
-}
-
-/* Search Section with Filter Button */
-.exercise-search-section {
-  padding: 16px;
-  background: var(--ion-background-color);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.exercise-searchbar {
   flex: 1;
 }
 
@@ -379,11 +375,71 @@
   margin: 0;
 }
 
-.exercise-description {
-  font-size: 0.5rem;
+.workout-count {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.completion-badge {
+  --background: var(--progress-blue);
+  --color: white;
+  font-size: 0.6rem;
+  font-weight: 600;
+  padding: 2px 4px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.logged-text {
+  font-size: 0.75rem;
   color: var(--ion-color-medium);
+  font-weight: 400;
+}
+
+.muscle-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 8px;
+}
+
+.muscle-group-tag {
+  --background: rgba(33, 150, 243, 0.1);
+  --color: var(--progress-blue);
+  border: 1px solid rgba(33, 150, 243, 0.2);
+  border-radius: 6px;
   margin: 0;
-  line-height: 1.4;
+  font-size: 0.65rem;
+  height: auto;
+  min-height: auto !important;
+  padding: 1px 4px !important;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.muscle-group-tag:hover {
+  --background: rgba(33, 150, 243, 0.15);
+}
+
+.muscle-group-tag.active {
+  --background: var(--progress-blue);
+  --color: white;
+  border-color: var(--progress-blue);
+}
+
+.muscle-group-tag ion-label {
+  font-size: 0.65rem;
+  font-weight: 500;
+  margin: 2px !important;
+  padding: 0 !important;
+  line-height: 1.1;
 }
 
 .exercise-actions {

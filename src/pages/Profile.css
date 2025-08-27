@@ -40,11 +40,21 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(10px);
+  transition: background 0.2s ease;
+}
+
+.back-button:hover, .edit-button:hover {
+  --background-hover: transparent !important;
+  --background-hover-opacity: 1 !important;
+  --ripple-color: transparent !important;
+}
+
+.back-button:hover .back-button-circle, .edit-button:hover .edit-button-circle {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .back-button-circle ion-icon, .edit-button-circle ion-icon {
