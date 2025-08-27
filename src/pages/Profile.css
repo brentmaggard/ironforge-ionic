@@ -32,11 +32,11 @@
   --min-height: 60px;
 }
 
-.back-button {
+.back-button, .edit-button {
   --color: white;
 }
 
-.back-button-circle {
+.back-button-circle, .edit-button-circle {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -47,7 +47,7 @@
   backdrop-filter: blur(10px);
 }
 
-.back-button-circle ion-icon {
+.back-button-circle ion-icon, .edit-button-circle ion-icon {
   font-size: 22px;
   color: white;
 }

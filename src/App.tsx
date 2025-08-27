@@ -14,6 +14,7 @@ import Tab1 from './pages/Dashboard';
 import Progress from './pages/Progress';
 import Workout from './pages/Workout';
 import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile';
 import GlobalHeader from './components/GlobalHeader';
 import TabNavigation from './components/TabNavigation';
 
@@ -72,6 +73,9 @@ const App: React.FC = () => (
       </IonTabs>
       <Route exact path="/profile">
         <Profile />
+      </Route>
+      <Route exact path="/edit-profile">
+        <EditProfile />
       </Route>
     </IonReactRouter>
   </IonApp>

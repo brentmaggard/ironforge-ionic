@@ -103,17 +103,34 @@ IronForge App
 ├── Profile (/profile) - Modal Overlay
 │   ├── Custom Header Bar
 │   │   ├── Back Button (Circular)
-│   │   └── "My Profile" Title
+│   │   ├── "My Profile" Title
+│   │   └── Edit Button (Pencil Icon)
 │   ├── Profile Photo Section
-│   │   ├── Avatar Placeholder/Photo
-│   │   └── Camera Button (Edit Photo)
+│   │   └── Avatar Placeholder/Photo (Display Only)
 │   ├── User Information
 │   │   ├── Name: "John Doe"
 │   │   └── Tagline: "Fitness Enthusiast"
-│   ├── Stats Section
-│   │   ├── Workouts: 127
-│   │   ├── Days Active: 89
-│   │   └── Goals Achieved: 12
+│   └── Stats Section
+│       ├── Workouts: 127
+│       ├── Days Active: 89
+│       └── Goals Achieved: 12
+│
+├── Edit Profile (/edit-profile) - Modal Overlay
+│   ├── Custom Header Bar
+│   │   ├── Back Button (Circular)
+│   │   ├── "Edit Profile" Title
+│   │   └── Save Button (Checkmark Icon)
+│   ├── Profile Photo Section
+│   │   ├── Large Avatar Placeholder/Photo
+│   │   ├── Round Edit Badge (Camera Icon)
+│   │   └── "Tap to change photo" Text
+│   ├── Personal Information Form
+│   │   ├── Name Input
+│   │   ├── Tagline Input
+│   │   ├── Email Input
+│   │   └── Phone Input
+│   ├── About Me Section
+│   │   └── Bio Textarea
 │   └── Photo Action Sheet
 │       ├── Take Photo
 │       ├── Choose from Gallery
@@ -154,24 +171,49 @@ IronForge App
 ### Profile Page Features
 1. **Modal Overlay Design**
    - Slides in from right over global header
-   - Fixed positioning with high z-index
-   - Custom Ionic header with back button
+   - Fixed positioning with high z-index (9999)
+   - Custom Ionic header with navigation buttons
 
-2. **Profile Photo Management**
-   - 85px circular avatar with border
+2. **Profile Display (Read-Only)**
+   - 85px circular avatar with gradient border
    - Person icon placeholder when no photo
-   - Camera button for photo actions
-   - Action sheet with photo options
+   - Display-only avatar (no photo editing capabilities)
+   - Edit pencil button in header navigates to EditProfile page
+   - Clean, view-only interface without camera functionality
 
 3. **User Information Display**
    - Name and tagline section
-   - Gradient background design
+   - Gradient background design matching app theme
    - Proper Ionic component structure
 
 4. **Statistics Grid**
    - Three-column stats layout
    - Workouts, Days Active, Goals Achieved
    - Responsive design with IonGrid
+
+### Edit Profile Page Features
+1. **Modal Overlay Design**
+   - Slides in from right over Profile page
+   - Higher z-index (10000) to appear above Profile
+   - Custom header with Save/Back buttons
+
+2. **Profile Photo Management**
+   - 120px circular avatar with edit functionality
+   - Round orange edit badge (40px) with camera icon
+   - "Tap to change photo" instruction text
+   - Action sheet with photo options (Take, Gallery, Remove)
+   - Proper circular styling with backdrop-filter effect
+
+3. **Editable Form Fields**
+   - Personal Information card with Name, Tagline, Email, Phone
+   - About Me section with Bio textarea
+   - Proper Ionic form components with validation-ready structure
+   - Save functionality with form state management
+
+4. **User Experience**
+   - Clear visual hierarchy with photo at top
+   - Professional form layout with proper spacing
+   - Consistent with app's design patterns
 
 ### Navigation & Routing
 - Clean URL structure (/dashboard, /progress, /workout, /profile)
@@ -209,12 +251,14 @@ IronForge App
 - Centered text positioning with flexbox
 - Responsive sizing (100px diameter on mobile)
 
-### Profile Page Implementation
-- Fixed positioning overlay pattern (`z-index: 9999`)
-- Route outside IonTabs structure for proper layering
+### Profile Pages Implementation
+- **Profile Page**: Fixed positioning overlay pattern (`z-index: 9999`)
+- **EditProfile Page**: Higher z-index (10000) to layer above Profile
+- Routes outside IonTabs structure for proper modal layering
 - Proper Ionic component usage (IonHeader, IonToolbar, IonItem, IonGrid)
-- CSS keyframe animations for slide-in transitions
-- Action sheet integration for photo selection
+- CSS keyframe animations for slide-in transitions from right
+- Clear separation between read-only Profile and editable EditProfile
+- Action sheet integration for photo selection (EditProfile only)
 
 ## Future Enhancements
 - Real data integration with backend API

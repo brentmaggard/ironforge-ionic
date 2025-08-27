@@ -1,0 +1,189 @@
+/* Edit Profile Page Overlay */
+.edit-profile-page-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+  background: var(--ion-background-color, #f8f9fa);
+  animation: slideInFromRight 0.3s ease-out;
+}
+
+.edit-profile-content {
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  height: 100vh;
+}
+
+/* Edit Profile Header Bar */
+.edit-profile-header-bar {
+  --background: linear-gradient(135deg, var(--progress-blue) 0%, var(--progress-green) 100%);
+  --border-width: 0;
+  --color: white;
+}
+
+.edit-profile-toolbar {
+  --background: transparent;
+  --color: white;
+  --padding-start: 20px;
+  --padding-end: 20px;
+  --padding-top: calc(env(safe-area-inset-top, 0px) + 8px);
+  --min-height: 60px;
+}
+
+/* Profile Photo Section */
+.edit-profile-photo-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 32px 16px 24px 16px;
+  background: var(--ion-background-color);
+}
+
+.edit-profile-photo-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.edit-main-profile-avatar {
+  width: 120px;
+  height: 120px;
+  border: 4px solid var(--ion-color-light);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ion-color-light);
+}
+
+.edit-main-profile-avatar:hover {
+  transform: scale(1.05);
+}
+
+.edit-main-avatar-placeholder {
+  font-size: 48px !important;
+  color: var(--ion-color-medium) !important;
+}
+
+.edit-photo-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  --background: var(--progress-orange);
+  --color: white;
+  --border-radius: 50%;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.edit-photo-badge ion-icon {
+  font-size: 18px;
+}
+
+.photo-edit-text {
+  font-size: 0.9rem;
+  color: var(--ion-color-medium);
+  text-align: center;
+  margin: 0;
+}
+
+.back-button, .save-button {
+  --color: white;
+}
+
+.back-button-circle, .save-button-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.back-button-circle ion-icon, .save-button-circle ion-icon {
+  font-size: 22px;
+  color: white;
+}
+
+.save-button-circle {
+  background: rgba(76, 175, 80, 0.3);
+}
+
+.edit-profile-title {
+  --color: white;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* Form Cards */
+.edit-form-card, .bio-card {
+  margin: 16px;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.edit-form-card ion-card-title, .bio-card ion-card-title {
+  color: var(--ion-color-dark);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.edit-form-card ion-item, .bio-card ion-item {
+  --padding-start: 0;
+  --padding-end: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 16px;
+}
+
+.edit-form-card ion-label, .bio-card ion-label {
+  font-weight: 500;
+  color: var(--ion-color-dark);
+}
+
+.edit-form-card ion-input, .bio-card ion-textarea {
+  --color: var(--ion-color-dark);
+  --placeholder-color: var(--ion-color-medium);
+}
+
+/* Page slide-in animation */
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Slide-out animation when navigating back */
+.edit-profile-page-overlay.slide-out {
+  animation: slideOutToRight 0.3s ease-in forwards;
+}
+
+@keyframes slideOutToRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .edit-form-card, .bio-card {
+    margin: 12px;
+  }
+}
