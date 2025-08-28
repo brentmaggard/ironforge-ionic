@@ -21,9 +21,12 @@ import {
   IonRow,
   IonCol,
   IonAlert,
-  IonActionSheet
+  IonActionSheet,
+  IonPopover,
+  IonInput,
+  IonList
 } from '@ionic/react';
-import { close, add, checkmark, time, barbell, flame, pause, play, settings } from 'ionicons/icons';
+import { close, add, checkmark, time, barbell, flame, pause, play, settings, ellipsisVertical } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import AddExercise from '../components/AddExercise';
 import './Workout.css';
@@ -38,6 +41,9 @@ const Workout: React.FC = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [showSettingsActionSheet, setShowSettingsActionSheet] = useState(false);
   const [showAddExercise, setShowAddExercise] = useState(false);
+  const [editingSet, setEditingSet] = useState<{exerciseIndex: number, setIndex: number, field: 'reps' | 'weight'} | null>(null);
+  const [editValue, setEditValue] = useState('');
+  const [setMenuOpen, setSetMenuOpen] = useState<{open: boolean, event?: Event, exerciseIndex?: number, setIndex?: number}>({open: false});
 
   // Timer effect - starts when component mounts, pauses when isPaused is true
   useEffect(() => {
@@ -151,6 +157,38 @@ const Workout: React.FC = () => {
     setExercises(updatedExercises);
   };
 
+  const handleSetComplete = (exerciseIndex: number, setIndex: number) => {
+    const updatedExercises = [...exercises];
+    updatedExercises[exerciseIndex].sets[setIndex].completed = !updatedExercises[exerciseIndex].sets[setIndex].completed;
+    setExercises(updatedExercises);
+  };
+
+  const handleEditSet = (exerciseIndex: number, setIndex: number, field: 'reps' | 'weight') => {
+    const currentValue = exercises[exerciseIndex].sets[setIndex][field];
+    setEditValue(currentValue.toString());
+    setEditingSet({ exerciseIndex, setIndex, field });
+  };
+
+  const handleSaveEdit = () => {
+    if (editingSet) {
+      const updatedExercises = [...exercises];
+      const numValue = parseInt(editValue) || 0;
+      updatedExercises[editingSet.exerciseIndex].sets[editingSet.setIndex][editingSet.field] = numValue;
+      setExercises(updatedExercises);
+    }
+    setEditingSet(null);
+    setEditValue('');
+  };
+
+  const handleCancelEdit = () => {
+    setEditingSet(null);
+    setEditValue('');
+  };
+
+  const handleSetMenu = (event: Event, exerciseIndex: number, setIndex: number) => {
+    setSetMenuOpen({ open: true, event, exerciseIndex, setIndex });
+  };
+
   const handleStartWorkout = () => {
     setWorkoutStarted(true);
     console.log('Workout started!');
@@ -211,34 +249,46 @@ const Workout: React.FC = () => {
             <IonGrid className="sets-grid">
               <IonRow className="sets-header-row">
                 <IonCol size="2"><IonText><small>Set</small></IonText></IonCol>
-                <IonCol size="3"><IonText><small>Reps</small></IonText></IonCol>
-                <IonCol size="3"><IonText><small>Weight</small></IonText></IonCol>
-                <IonCol size="2"><IonText><small>Done</small></IonText></IonCol>
+                <IonCol size="4"><IonText><small>Reps</small></IonText></IonCol>
+                <IonCol size="4"><IonText><small>Weight</small></IonText></IonCol>
+                <IonCol size="2"></IonCol>
               </IonRow>
               {exercise.sets.map((set: any, setIndex: number) => (
                 <IonRow key={setIndex} className="set-row">
                   <IonCol size="2">
-                    <IonText className="set-number">{setIndex + 1}</IonText>
+                    <IonButton
+                      fill="clear"
+                      className={`set-complete-btn ${set.completed ? 'completed' : ''}`}
+                      onClick={() => handleSetComplete(index, setIndex)}
+                    >
+                      {setIndex + 1}
+                    </IonButton>
                   </IonCol>
-                  <IonCol size="3">
-                    <IonText className="set-reps">{set.reps}</IonText>
+                  <IonCol size="4">
+                    <IonButton
+                      fill="clear"
+                      className="set-edit-btn"
+                      onClick={() => handleEditSet(index, setIndex, 'reps')}
+                    >
+                      {set.reps}
+                    </IonButton>
                   </IonCol>
-                  <IonCol size="3">
-                    <IonText className="set-weight">{set.weight} lbs</IonText>
+                  <IonCol size="4">
+                    <IonButton
+                      fill="clear" 
+                      className="set-edit-btn"
+                      onClick={() => handleEditSet(index, setIndex, 'weight')}
+                    >
+                      {set.weight} lbs
+                    </IonButton>
                   </IonCol>
                   <IonCol size="2">
-                    <IonButton 
-                      fill={set.completed ? "solid" : "outline"} 
-                      size="small"
-                      className={`set-complete-btn ${set.completed ? 'completed' : ''}`}
-                      disabled={!workoutStarted}
-                      onClick={() => {
-                        const updatedExercises = [...exercises];
-                        updatedExercises[index].sets[setIndex].completed = !set.completed;
-                        setExercises(updatedExercises);
-                      }}
+                    <IonButton
+                      fill="clear"
+                      className="set-menu-btn"
+                      onClick={(e) => handleSetMenu(e.nativeEvent, index, setIndex)}
                     >
-                      <IonIcon icon={checkmark} />
+                      <IonIcon icon={ellipsisVertical} />
                     </IonButton>
                   </IonCol>
                 </IonRow>
@@ -409,6 +459,60 @@ const Workout: React.FC = () => {
           }
         ]}
       />
+
+      {/* Edit Set Input Alert */}
+      <IonAlert
+        isOpen={editingSet !== null}
+        onDidDismiss={handleCancelEdit}
+        header={`Edit ${editingSet?.field === 'reps' ? 'Reps' : 'Weight'}`}
+        inputs={[
+          {
+            name: 'value',
+            type: 'number',
+            placeholder: `Enter ${editingSet?.field === 'reps' ? 'reps' : 'weight'}`,
+            value: editValue
+          }
+        ]}
+        buttons={[
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: handleCancelEdit
+          },
+          {
+            text: 'Save',
+            handler: (data) => {
+              setEditValue(data.value);
+              handleSaveEdit();
+            }
+          }
+        ]}
+      />
+
+      {/* Set Menu Popover */}
+      <IonPopover
+        isOpen={setMenuOpen.open}
+        event={setMenuOpen.event}
+        onDidDismiss={() => setSetMenuOpen({open: false})}
+        showBackdrop={true}
+      >
+        <IonContent>
+          <IonList>
+            <IonItem button onClick={() => setSetMenuOpen({open: false})}>
+              <IonLabel>Duplicate Set</IonLabel>
+            </IonItem>
+            <IonItem button onClick={() => setSetMenuOpen({open: false})}>
+              <IonLabel>Insert Set Above</IonLabel>
+            </IonItem>
+            <IonItem button onClick={() => setSetMenuOpen({open: false})}>
+              <IonLabel>Insert Set Below</IonLabel>
+            </IonItem>
+            <IonItem button onClick={() => setSetMenuOpen({open: false})} lines="none">
+              <IonLabel color="danger">Delete Set</IonLabel>
+            </IonItem>
+          </IonList>
+        </IonContent>
+      </IonPopover>
 
       {/* Add Exercise Modal */}
       <AddExercise 
