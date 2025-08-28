@@ -17,6 +17,8 @@ import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
 import Exercise from './pages/Exercise';
 import TabNavigation from './components/TabNavigation';
+import RestTimer from './components/RestTimer';
+import { RestTimerProvider, useRestTimer } from './contexts/RestTimerContext';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -50,37 +52,56 @@ import './theme/variables.css';
 
 setupIonicReact();
 
+const AppContent: React.FC = () => {
+  const { isTimerVisible, restTime, resetTrigger, workoutPaused, hideRestTimer } = useRestTimer();
+
+  return (
+    <IonApp>
+      <IonReactRouter>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route exact path="/dashboard">
+              <Tab1 />
+            </Route>
+            <Route exact path="/progress">
+              <Progress />
+            </Route>
+            <Route exact path="/workout">
+              <Workout />
+            </Route>
+            <Route exact path="/">
+              <Redirect to="/dashboard" />
+            </Route>
+          </IonRouterOutlet>
+          <TabNavigation />
+        </IonTabs>
+        <Route exact path="/profile">
+          <Profile />
+        </Route>
+        <Route exact path="/edit-profile">
+          <EditProfile />
+        </Route>
+        <Route exact path="/exercise">
+          <Exercise />
+        </Route>
+        
+        {/* Global Rest Timer */}
+        <RestTimer
+          isVisible={isTimerVisible}
+          onClose={hideRestTimer}
+          initialTime={restTime}
+          resetTrigger={resetTrigger}
+          workoutPaused={workoutPaused}
+        />
+      </IonReactRouter>
+    </IonApp>
+  );
+};
+
 const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/dashboard">
-            <Tab1 />
-          </Route>
-          <Route exact path="/progress">
-            <Progress />
-          </Route>
-          <Route exact path="/workout">
-            <Workout />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/dashboard" />
-          </Route>
-        </IonRouterOutlet>
-        <TabNavigation />
-      </IonTabs>
-      <Route exact path="/profile">
-        <Profile />
-      </Route>
-      <Route exact path="/edit-profile">
-        <EditProfile />
-      </Route>
-      <Route exact path="/exercise">
-        <Exercise />
-      </Route>
-    </IonReactRouter>
-  </IonApp>
+  <RestTimerProvider>
+    <AppContent />
+  </RestTimerProvider>
 );
 
 export default App;

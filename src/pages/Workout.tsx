@@ -10,8 +10,6 @@ import {
   IonIcon,
   IonCard,
   IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
   IonItem,
   IonLabel,
   IonText,
@@ -24,16 +22,19 @@ import {
   IonInput,
   IonList
 } from '@ionic/react';
-import { close, add, checkmark, time, barbell, flame, pause, play, settings, ellipsisVertical } from 'ionicons/icons';
+import { close, add, checkmark, time, barbell, flame, pause, play, settings } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import AddExercise from '../components/AddExercise';
+import ExerciseCard from '../components/ExerciseCard';
+import { useRestTimer } from '../contexts/RestTimerContext';
 import './Workout.css';
 
 const Workout: React.FC = () => {
   const history = useHistory();
+  const { startRestTimer, resetRestTimer, isTimerVisible, setWorkoutPaused } = useRestTimer();
   const [workoutName, setWorkoutName] = useState('New Workout');
   const [exercises, setExercises] = useState<any[]>([]);
-  const [workoutStarted, setWorkoutStarted] = useState(false);
+  const [workoutStarted, setWorkoutStarted] = useState(true);
   const [showCancelAlert, setShowCancelAlert] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -53,6 +54,13 @@ const Workout: React.FC = () => {
       return () => clearInterval(interval);
     }
   }, [isPaused]);
+
+  // Reset workout pause state on component unmount
+  useEffect(() => {
+    return () => {
+      setWorkoutPaused(false);
+    };
+  }, [setWorkoutPaused]);
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
@@ -75,6 +83,9 @@ const Workout: React.FC = () => {
     setWorkoutName('New Workout');
     setShowCancelAlert(false);
     
+    // Reset global workout pause state
+    setWorkoutPaused(false);
+    
     // Navigate to dashboard
     history.replace('/dashboard');
     return true;
@@ -85,7 +96,9 @@ const Workout: React.FC = () => {
   };
 
   const handlePauseResume = () => {
-    setIsPaused(!isPaused);
+    const newPausedState = !isPaused;
+    setIsPaused(newPausedState);
+    setWorkoutPaused(newPausedState);
   };
 
   const handleSettingsClick = () => {
@@ -134,7 +147,7 @@ const Workout: React.FC = () => {
         { reps: 10, weight: 0, completed: false }
       ],
       primaryMuscles: exercise.primaryMuscles || exercise.muscleGroups?.slice(0, 2) || ['Unknown'],
-      restTime: 180 // seconds
+      restTime: 120 // seconds
     };
     setExercises([...exercises, workoutExercise]);
   };
@@ -157,8 +170,25 @@ const Workout: React.FC = () => {
 
   const handleSetComplete = (exerciseIndex: number, setIndex: number) => {
     const updatedExercises = [...exercises];
-    updatedExercises[exerciseIndex].sets[setIndex].completed = !updatedExercises[exerciseIndex].sets[setIndex].completed;
+    const wasCompleted = updatedExercises[exerciseIndex].sets[setIndex].completed;
+    const isNowCompleted = !wasCompleted;
+    
+    updatedExercises[exerciseIndex].sets[setIndex].completed = isNowCompleted;
     setExercises(updatedExercises);
+
+    // Start or reset rest timer if workout is active and set is being marked complete (not uncompleted)
+    if (workoutStarted && isNowCompleted) {
+      // Get rest time from exercise data (default to 120 seconds if not set)
+      const restTime = updatedExercises[exerciseIndex].restTime || 120;
+      
+      if (isTimerVisible) {
+        // Timer is already running, reset it to new duration
+        resetRestTimer(restTime);
+      } else {
+        // Timer is not visible, start it
+        startRestTimer(restTime);
+      }
+    }
   };
 
   const handleEditSet = (exerciseIndex: number, setIndex: number, field: 'reps' | 'weight') => {
@@ -238,71 +268,15 @@ const Workout: React.FC = () => {
         
         {/* Exercise Cards */}
         {exercises.map((exercise, index) => (
-          <IonCard key={exercise.id} className="exercise-card">
-            <IonCardHeader>
-              <IonCardTitle className="exercise-name">{exercise.name}</IonCardTitle>
-            </IonCardHeader>
-            
-            {/* Sets Grid */}
-            <IonGrid className="sets-grid">
-              <IonRow className="sets-header-row">
-                <IonCol size="2"><IonText><small>Set</small></IonText></IonCol>
-                <IonCol size="4"><IonText><small>Reps</small></IonText></IonCol>
-                <IonCol size="4"><IonText><small>Weight</small></IonText></IonCol>
-                <IonCol size="2"></IonCol>
-              </IonRow>
-              {exercise.sets.map((set: any, setIndex: number) => (
-                <IonRow key={setIndex} className="set-row">
-                  <IonCol size="2">
-                    <IonButton
-                      fill="clear"
-                      className={`set-complete-btn ${set.completed ? 'completed' : ''}`}
-                      onClick={() => handleSetComplete(index, setIndex)}
-                    >
-                      {setIndex + 1}
-                    </IonButton>
-                  </IonCol>
-                  <IonCol size="4">
-                    <IonButton
-                      fill="clear"
-                      className="set-edit-btn"
-                      onClick={() => handleEditSet(index, setIndex, 'reps')}
-                    >
-                      {set.reps} <span className="unit-text">reps</span>
-                    </IonButton>
-                  </IonCol>
-                  <IonCol size="4">
-                    <IonButton
-                      fill="clear" 
-                      className="set-edit-btn"
-                      onClick={() => handleEditSet(index, setIndex, 'weight')}
-                    >
-                      {set.weight} <span className="unit-text">lbs</span>
-                    </IonButton>
-                  </IonCol>
-                  <IonCol size="2">
-                    <IonButton
-                      fill="clear"
-                      className="set-menu-btn"
-                      onClick={(e) => handleSetMenu(e.nativeEvent, index, setIndex)}
-                    >
-                      <IonIcon icon={ellipsisVertical} />
-                    </IonButton>
-                  </IonCol>
-                </IonRow>
-              ))}
-            </IonGrid>
-            
-            {/* Add Set Button */}
-            <IonButton 
-              fill="clear" 
-              className="add-set-button"
-              onClick={() => handleAddSet(index)}
-            >
-              <IonIcon icon={add} slot="start" />
-              Add Set
-            </IonButton>
-          </IonCard>
+          <ExerciseCard
+            key={exercise.id}
+            exercise={exercise}
+            exerciseIndex={index}
+            onSetComplete={handleSetComplete}
+            onSetEdit={handleEditSet}
+            onSetMenu={handleSetMenu}
+            onAddSet={handleAddSet}
+          />
         ))}
         
         {/* Exercise and Special Set Buttons */}
@@ -332,6 +306,7 @@ const Workout: React.FC = () => {
             </IonCol>
           </IonRow>
         </IonGrid>
+
         
         {/* Workout Info Card */}
         <IonCard className="workout-info-card">
@@ -340,15 +315,9 @@ const Workout: React.FC = () => {
               <IonLabel>
                 <h2 className="workout-name">{workoutName}</h2>
                 <p className="workout-meta">
-                  {workoutStarted ? (
-                    <span className="workout-status active">
-                      <IonIcon icon={flame} /> Active • {exercises.length} exercises
-                    </span>
-                  ) : (
-                    <span className="workout-status planning">
-                      <IonIcon icon={time} /> Planning • {exercises.length} exercises
-                    </span>
-                  )}
+                  <span className="workout-status active">
+                    <IonIcon icon={flame} /> Active • {exercises.length} exercises
+                  </span>
                 </p>
               </IonLabel>
             </IonItem>

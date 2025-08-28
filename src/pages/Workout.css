@@ -49,6 +49,18 @@
 
 /* Close button circle styling removed - now handled by IonButton directly */
 
+/* Start Workout Button */
+.start-workout-button {
+  --background: linear-gradient(135deg, var(--progress-blue) 0%, #1976D2 100%);
+  --color: white;
+  --border-radius: 12px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 .workout-page-overlay .close-button ion-icon {
   font-size: 24px;
   color: #F44336;
@@ -148,20 +160,6 @@
   font-size: 16px;
 }
 
-/* Exercise Cards - Individual */
-.exercise-card {
-  margin: 8px 16px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --background: var(--ion-card-background, white);
-}
-
-.exercise-card ion-card-title {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--ion-color-dark);
-  margin: 0;
-}
 
 /* Muscle Groups Item */
 .muscle-groups-item {
@@ -206,153 +204,6 @@
   color: var(--ion-color-medium);
 }
 
-/* Sets Grid */
-.sets-grid {
-  --ion-grid-padding: 0;
-  --ion-grid-column-padding: 4px;
-  margin: 0 16px;
-  border: 1px solid var(--ion-color-light);
-  border-top: none;
-  border-radius: 0 0 12px 12px;
-  background: var(--ion-color-light-tint);
-}
-
-.sets-header-row {
-  background: var(--ion-color-light-shade);
-  font-weight: 600;
-}
-
-.sets-header-row ion-col {
-  padding: 8px 4px;
-  text-align: center;
-}
-
-.sets-header-row small {
-  color: var(--ion-color-medium);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.set-row {
-  border-top: 1px solid var(--ion-color-light);
-}
-
-.set-row ion-col {
-  padding: 12px 4px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.set-number,
-.set-reps,
-.set-weight {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--ion-color-dark);
-}
-
-/* Set Completion Button */
-.set-complete-btn {
-  --color: var(--ion-color-medium);
-  --background: transparent;
-  --background-hover: var(--ion-color-light-tint);
-  --border-color: var(--ion-color-light);
-  --border-style: solid;
-  --border-width: 2px;
-  --border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin: 0;
-}
-
-.set-complete-btn:hover {
-  --color: var(--ion-color-primary);
-  --border-color: var(--ion-color-primary);
-}
-
-.set-complete-btn.completed {
-  --color: var(--ion-color-success);
-  --background: rgba(76, 175, 80, 0.1);
-  --border-color: var(--ion-color-success);
-}
-
-.set-complete-btn ion-icon {
-  font-size: 16px;
-}
-
-/* Set Edit Buttons */
-.set-edit-btn {
-  --color: var(--ion-color-dark);
-  --background: transparent;
-  --background-hover: var(--ion-color-light-tint);
-  --border-radius: 6px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  min-height: 36px;
-  margin: 0;
-}
-
-.set-edit-btn:hover {
-  --color: var(--ion-color-primary);
-}
-
-.set-edit-btn .unit-text {
-  font-size: 0.7rem;
-  color: var(--ion-color-medium);
-  font-weight: 400;
-}
-
-/* Set Menu Button */
-.set-menu-btn {
-  --color: var(--ion-color-medium);
-  --background: transparent;
-  --background-hover: var(--ion-color-light-tint);
-  --border-radius: 50%;
-  --padding-start: 0;
-  --padding-end: 0;
-  --padding-top: 0;
-  --padding-bottom: 0;
-  width: 32px;
-  height: 32px;
-  margin: 0;
-  min-width: 32px;
-  min-height: 32px;
-}
-
-.set-menu-btn:hover {
-  --color: var(--ion-color-primary);
-}
-
-.set-menu-btn ion-icon {
-  font-size: 20px;
-}
-
-/* Add Set Button */
-.add-set-button {
-  --color: var(--ion-color-primary);
-  --background: transparent;
-  --background-hover: var(--ion-color-primary-tint);
-  margin: 8px 16px 16px 16px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  border-radius: 8px;
-  border: 1px dashed var(--ion-color-primary);
-  width: calc(100% - 32px);
-}
-
-.add-set-button ion-icon {
-  font-size: 18px;
-  margin-right: 4px;
-}
-
-.set-complete-btn ion-icon {
-  font-size: 16px;
-}
 
 /* Empty State */
 .empty-state-card {
@@ -527,10 +378,6 @@
   
   .workout-name {
     font-size: 1.3rem;
-  }
-  
-  .exercise-name {
-    font-size: 1rem;
   }
   
   .empty-state-content {

@@ -1,0 +1,125 @@
+/* Rest Timer Component Styles - Now using IonCard */
+.rest-timer-overlay {
+  position: fixed;
+  bottom: 56px; /* Above tab navigation (56px height) */
+  left: 16px;
+  right: 16px;
+  z-index: 10000;
+  pointer-events: all;
+  margin: 0;
+  background: linear-gradient(135deg, var(--progress-blue) 0%, #1976D2 100%);
+  backdrop-filter: blur(10px);
+  animation: slideUp 0.3s ease-out;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+}
+
+.rest-timer-container {
+  --background: transparent;
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  padding: 12px 16px;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.rest-timer-display {
+  display: block;
+}
+
+.rest-timer-display h1,
+.rest-timer-display p {
+  margin: 0;
+  padding: 0;
+}
+
+.rest-timer-text {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  line-height: 1;
+}
+
+.rest-timer-label {
+  font-size: 0.75rem;
+  color: white;
+  opacity: 0.9;
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.rest-timer-reset,
+.rest-timer-control {
+  --color: white;
+  --background: rgba(255, 255, 255, 0.15);
+  --background-hover: rgba(255, 255, 255, 0.25) !important;
+  --background-activated: rgba(255, 255, 255, 0.35);
+  --background-hover-opacity: 1 !important;
+  --border-radius: 50%;
+  --ripple-color: transparent !important;
+  --padding-start: 0;
+  --padding-end: 0;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  transition: all 0.2s ease;
+}
+
+.rest-timer-reset ion-icon,
+.rest-timer-control ion-icon {
+  font-size: 22px;
+  color: white;
+}
+
+.rest-timer-reset:hover,
+.rest-timer-control:hover {
+  transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .rest-timer-overlay {
+    left: 12px;
+    right: 12px;
+  }
+  
+  .rest-timer-container {
+    padding: 10px 16px;
+  }
+  
+  .rest-timer-text {
+    font-size: 1.75rem;
+  }
+  
+  .rest-timer-reset,
+  .rest-timer-control {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .rest-timer-reset ion-icon,
+  .rest-timer-control ion-icon {
+    font-size: 18px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .rest-timer-overlay {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+}
