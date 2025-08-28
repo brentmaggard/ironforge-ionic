@@ -73,7 +73,9 @@ const Workout: React.FC = () => {
     setWorkoutName('New Workout');
     setShowCancelAlert(false);
     
-    history.push('/dashboard');
+    // Navigate to dashboard
+    history.replace('/dashboard');
+    return true;
   };
 
   const handleKeepWorkout = () => {
