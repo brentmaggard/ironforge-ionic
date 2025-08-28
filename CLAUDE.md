@@ -641,7 +641,14 @@ Following the header architecture refactor, the workout page was enhanced with a
 - **Preserved Flex Containers**: Maintained acceptable divs for muscle-groups chips and custom overlays per architecture guidelines
 - **CSS Cleanup**: Updated selectors and removed unnecessary styling for eliminated wrapper elements
 
-This implementation transforms the workout page into a professional workout management interface with real-time timing, comprehensive controls, proper Ionic component structure, and polished user experience.
+#### Additional Workout Interface Enhancements
+- **Exercise Management Buttons**: Added dual-button layout using proper `IonGrid`/`IonRow`/`IonCol` structure above workout card
+- **Exercise Button**: Left-side button with plus icon for adding exercises to workout
+- **Special Set Button**: Right-side button with matching styling for specialized workout sets
+- **Consistent Button Design**: Both buttons use `fill="outline"`, blue theme (`var(--progress-blue)`), 8px border-radius, and responsive `expand="block"`
+- **Workout Reset Functionality**: Complete state reset when user confirms workout cancellation (timer, exercises, status all cleared)
+
+This implementation transforms the workout page into a professional workout management interface with real-time timing, comprehensive controls, proper Ionic component structure, intuitive exercise management, and polished user experience.
 
 ### Header Architecture Refactor
 Following the workout management system implementation, the global header architecture was refactored to eliminate conflicts and provide each page with appropriate header functionality.
@@ -837,3 +844,48 @@ Following the PWA implementation, a comprehensive workout management system was 
 - **Efficient Workflow** - Streamlined path from workout intent to active training session
 
 This workout management implementation establishes IronForge as a comprehensive fitness application with professional workout creation, tracking, and management capabilities while maintaining the app's design consistency and navigation patterns.
+
+### AddExercise Modal Implementation
+Following the workout management system, an AddExercise modal component was developed to provide seamless exercise selection during workout building sessions.
+
+#### Component Architecture & Integration
+- **Modal Component Design** - Created as a reusable component instead of a full page to preserve workout state and context
+- **Workout Page Integration** - Integrated with state management in Workout.tsx using `showAddExercise` modal state
+- **Exercise Data Reuse** - Leverages same exercise database from Exercise Library for consistency
+- **Context Preservation** - Maintains workout timer, progress, and session state while exercise selection is active
+
+#### User Interface & Experience
+- **Clean Layout Design** - Simplified styling to match existing Exercise page patterns and IronForge theme
+- **Search Functionality** - Real-time exercise search across names and descriptions
+- **Filter Segments** - "Most used" vs "All exercises" sorting with transparent indicators and rounded corners
+- **Copy Last Workout** - Checkbox option to copy sets from previous workout sessions
+- **Exercise Selection** - Multiple exercise selection with visual feedback (primary blue tint and checkmarks)
+- **Info Button Integration** - Exercise info buttons (?) matching Exercise Library design patterns
+
+#### Technical Implementation
+- **Consistent Alignment** - All elements (search, copy option, segments, exercise list) use matching 13px effective padding
+- **Proper Ionic Structure** - Uses IonItem, IonSearchbar, IonSegment, IonList components following project architecture
+- **Modal Overlay** - Highest z-index (999999) with slide-in animation matching other modal pages
+- **Exercise Addition Logic** - Creates workout exercises with default 3 sets (10 reps, 0 weight) and proper muscle group mapping
+- **TypeScript Integration** - Proper typing for exercise selection and workout integration
+
+#### Styling & Theme Consistency
+- **Exercise Page Matching** - Identical styling patterns to Exercise Library for seamless user experience
+- **IronForge Theme** - Gradient header, proper color usage, consistent border radius (12px)
+- **Responsive Design** - Mobile-optimized spacing and touch targets
+- **Clean Visual Hierarchy** - Simple exercise names with info buttons, no unnecessary decorative elements
+- **Footer Action Button** - Dynamic "Add X Exercise(s)" button with proper IronForge primary styling
+
+#### Key Files Created/Modified
+- **src/components/AddExercise.tsx** - Main modal component with search, filter, and selection functionality
+- **src/components/AddExercise.css** - Clean styling matching Exercise page patterns
+- **src/pages/Workout.tsx** - Modal state management and exercise addition integration
+
+#### User Experience Achievements
+- **Seamless Workflow** - Exercise selection without losing workout context or timer state
+- **Familiar Interface** - Consistent with Exercise Library for intuitive navigation
+- **Efficient Selection** - Multi-select capability with clear visual feedback
+- **Quick Access** - Modal slides in/out quickly without page navigation overhead
+- **Context-Aware Design** - Integrates naturally with workout building and active workout flows
+
+This AddExercise modal implementation provides a professional, efficient exercise selection experience that maintains the IronForge design consistency while delivering the functionality needed for comprehensive workout building.

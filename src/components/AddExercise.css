@@ -1,0 +1,255 @@
+/* Add Exercise Modal Overlay */
+.add-exercise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999999 !important;
+  background: var(--ion-background-color, #f8f9fa);
+  animation: slideInFromRight 0.3s ease-out;
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.add-exercise-content {
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 80px;
+  height: 100vh;
+}
+
+/* Header Styling - Match Exercise page */
+.add-exercise-header-bar {
+  --background: linear-gradient(135deg, var(--progress-blue) 0%, var(--progress-green) 100%);
+  --border-width: 0;
+  --color: white;
+}
+
+.add-exercise-toolbar {
+  --background: transparent;
+  --color: white;
+  --padding-start: 20px;
+  --padding-end: 20px;
+  --padding-top: calc(env(safe-area-inset-top, 0px) + 8px);
+  --min-height: 60px;
+}
+
+.add-exercise-title {
+  --color: white;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.add-exercise-header-bar .back-button,
+.add-exercise-header-bar .close-button {
+  --color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  --background: transparent;
+}
+
+.add-exercise-header-bar .back-button:hover,
+.add-exercise-header-bar .close-button:hover {
+  --background-hover: rgba(255, 255, 255, 0.3) !important;
+  --background-hover-opacity: 1 !important;
+  --border-radius: 50% !important;
+  --ripple-color: transparent !important;
+}
+
+.add-exercise-header-bar .back-button ion-icon,
+.add-exercise-header-bar .close-button ion-icon {
+  font-size: 22px;
+  color: white;
+}
+
+/* Search Section - Match Exercise page */
+.search-section {
+  --background: var(--ion-background-color);
+  --padding-start: 13px;
+  --padding-end: 13px;
+  --padding-top: 16px;
+  --padding-bottom: 8px;
+  --inner-padding-end: 0px;
+}
+
+.exercise-searchbar {
+  --background: var(--ion-color-light);
+  --border-radius: 12px;
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --color: var(--ion-color-dark);
+  --placeholder-color: var(--ion-color-medium);
+  --icon-color: var(--ion-color-medium);
+}
+
+/* Copy from Last Workout Option - Simple like Exercise page */
+.copy-option {
+  --background: var(--ion-background-color);
+  --padding-start: 13px;
+  --padding-end: 13px;
+  margin: 8px 0px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.copy-option ion-checkbox {
+  --checkmark-color: white;
+  --background-checked: var(--ion-color-danger);
+  --border-color-checked: var(--ion-color-danger);
+  margin-right: 12px;
+}
+
+/* Filter Segments - Simple */
+.filter-segments {
+  --background: var(--ion-color-light);
+  --indicator-color: transparent;
+  --indicator-color-checked: transparent;
+  margin: 8px 13px;
+  width: calc(100% - 26px);
+  box-sizing: border-box;
+  border-radius: 12px;
+}
+
+.filter-segments ion-segment-button {
+  --color: var(--ion-color-medium);
+  --color-checked: var(--ion-color-primary);
+  --background-checked: white;
+  --border-color: transparent;
+  --indicator-color: transparent;
+  --indicator-color-checked: transparent;
+  border-radius: 8px;
+  margin: 2px;
+  font-weight: 500;
+}
+
+/* Exercise List - Match Exercise page exactly */
+.exercise-list {
+  padding: 0 5px;
+  --background: var(--ion-background-color);
+  border-radius: 12px;
+  margin: 0 8px 16px 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.exercise-item {
+  --padding-start: 16px;
+  --padding-end: 8px;
+  --inner-padding-start: 0;
+  --inner-padding-end: 0;
+  --inner-padding-top: 8px;
+  --inner-padding-bottom: 8px;
+  --background: transparent;
+  --border-color: var(--ion-color-light);
+}
+
+.exercise-item.selected {
+  --background: var(--ion-color-primary-tint);
+}
+
+.exercise-label {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.exercise-name {
+  font-size: 1.1rem;
+  font-weight: 700 !important;
+  color: var(--ion-color-dark);
+  margin: 0;
+}
+
+.exercise-item.selected .exercise-name {
+  color: var(--ion-color-primary);
+}
+
+/* Exercise Actions */
+.exercise-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-button {
+  --color: var(--ion-color-medium);
+  --background: rgba(33, 150, 243, 0.1);
+  --border-radius: 50%;
+  --padding-start: 4px;
+  --padding-end: 4px;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  width: 36px;
+  height: 36px;
+  margin-left: 4px;
+}
+
+.info-button ion-icon {
+  font-size: 20px;
+  color: var(--progress-blue);
+}
+
+.info-button:hover {
+  --color: var(--progress-blue);
+}
+
+.selected-icon {
+  font-size: 24px;
+  margin-right: 8px;
+}
+
+/* Add Exercises Footer Button - Simple */
+.add-exercises-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--ion-background-color);
+  padding: 16px;
+  border-top: 1px solid var(--ion-color-light);
+  z-index: 10;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-exercises-button {
+  --background: var(--ion-color-primary);
+  --background-hover: var(--ion-color-primary-shade);
+  --color: white;
+  --border-radius: 12px;
+  height: 48px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .search-section {
+    --padding-start: 12px;
+    --padding-end: 12px;
+  }
+  
+  .copy-option {
+    margin: 8px 12px;
+  }
+  
+  .filter-segments {
+    margin: 12px;
+  }
+  
+  .exercise-list {
+    margin: 0 12px 16px 12px;
+  }
+  
+  .add-exercises-footer {
+    padding: 12px;
+  }
+}

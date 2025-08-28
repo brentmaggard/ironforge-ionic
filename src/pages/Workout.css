@@ -78,9 +78,32 @@
   --background: rgba(255, 255, 255, 0.3);
 }
 
+/* Exercise Button */
+.exercise-button-container {
+  --ion-grid-padding: 16px;
+}
+
+.exercise-button {
+  --border-color: var(--progress-blue);
+  --color: var(--progress-blue);
+  --background-hover: rgba(33, 150, 243, 0.1);
+  --border-radius: 8px;
+  font-weight: 500;
+  height: 44px;
+}
+
+.special-set-button {
+  --border-color: var(--progress-blue);
+  --color: var(--progress-blue);
+  --background-hover: rgba(33, 150, 243, 0.1);
+  --border-radius: 8px;
+  font-weight: 500;
+  height: 44px;
+}
+
 /* Workout Info Card */
 .workout-info-card {
-  margin: 16px 16px 0 16px;
+  margin: 0 16px 0 16px;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   --background: var(--ion-card-background, white);

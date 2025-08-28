@@ -27,6 +27,7 @@ import {
 } from '@ionic/react';
 import { close, add, checkmark, time, barbell, flame, pause, play, settings } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
+import AddExercise from '../components/AddExercise';
 import './Workout.css';
 
 const Workout: React.FC = () => {
@@ -38,6 +39,7 @@ const Workout: React.FC = () => {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [showSettingsActionSheet, setShowSettingsActionSheet] = useState(false);
+  const [showAddExercise, setShowAddExercise] = useState(false);
 
   // Timer effect - starts when component mounts, pauses when isPaused is true
   useEffect(() => {
@@ -63,7 +65,14 @@ const Workout: React.FC = () => {
   };
 
   const handleCancelWorkout = () => {
+    // Reset workout state
+    setElapsedTime(0);
+    setIsPaused(false);
+    setWorkoutStarted(false);
+    setExercises([]);
+    setWorkoutName('New Workout');
     setShowCancelAlert(false);
+    
     history.push('/dashboard');
   };
 
@@ -103,19 +112,27 @@ const Workout: React.FC = () => {
   };
 
   const handleAddExercise = () => {
-    // Navigate to exercise selection - for now just add a sample exercise
-    const sampleExercise = {
+    setShowAddExercise(true);
+  };
+
+  const handleCloseAddExercise = () => {
+    setShowAddExercise(false);
+  };
+
+  const handleAddExerciseToWorkout = (exercise: any) => {
+    // Create workout exercise with default sets
+    const workoutExercise = {
       id: Date.now(),
-      name: 'Barbell Back Squat',
+      name: exercise.name,
       sets: [
-        { reps: 10, weight: 135, completed: false },
-        { reps: 8, weight: 155, completed: false },
-        { reps: 6, weight: 175, completed: false }
+        { reps: 10, weight: 0, completed: false },
+        { reps: 10, weight: 0, completed: false },
+        { reps: 10, weight: 0, completed: false }
       ],
-      primaryMuscles: ['Quads', 'Glutes'],
+      primaryMuscles: exercise.primaryMuscles || exercise.muscleGroups?.slice(0, 2) || ['Unknown'],
       restTime: 180 // seconds
     };
-    setExercises([...exercises, sampleExercise]);
+    setExercises([...exercises, workoutExercise]);
   };
 
   const handleStartWorkout = () => {
@@ -166,6 +183,34 @@ const Workout: React.FC = () => {
       </IonHeader>
       
       <IonContent className="workout-content">
+        
+        {/* Exercise and Special Set Buttons */}
+        <IonGrid className="exercise-button-container">
+          <IonRow>
+            <IonCol size="6">
+              <IonButton 
+                fill="outline" 
+                className="exercise-button"
+                onClick={handleAddExercise}
+                expand="block"
+              >
+                <IonIcon icon={add} slot="start" />
+                Exercise
+              </IonButton>
+            </IonCol>
+            <IonCol size="6">
+              <IonButton 
+                fill="outline" 
+                className="special-set-button"
+                onClick={() => console.log('Special Set clicked')}
+                expand="block"
+              >
+                <IonIcon icon={add} slot="start" />
+                Special Set
+              </IonButton>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
         
         {/* Workout Info Card */}
         <IonCard className="workout-info-card">
@@ -368,6 +413,13 @@ const Workout: React.FC = () => {
             handler: handleCancelWorkout
           }
         ]}
+      />
+
+      {/* Add Exercise Modal */}
+      <AddExercise 
+        isOpen={showAddExercise}
+        onClose={handleCloseAddExercise}
+        onAddExercise={handleAddExerciseToWorkout}
       />
     </IonPage>
   );
