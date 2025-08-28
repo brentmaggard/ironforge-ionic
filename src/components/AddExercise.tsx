@@ -16,7 +16,7 @@ import {
   IonSegment,
   IonSegmentButton
 } from '@ionic/react';
-import { arrowBack, close, checkmarkCircle, add, helpCircleOutline } from 'ionicons/icons';
+import { arrowBack, close, helpCircleOutline } from 'ionicons/icons';
 import './AddExercise.css';
 
 interface Exercise {
@@ -41,7 +41,6 @@ interface AddExerciseProps {
 const AddExercise: React.FC<AddExerciseProps> = ({ isOpen, onClose, onAddExercise }) => {
   const [searchText, setSearchText] = useState('');
   const [selectedSegment, setSelectedSegment] = useState<string>('most-used');
-  const [selectedExercises, setSelectedExercises] = useState<string[]>([]);
   const [copyFromLastWorkout, setCopyFromLastWorkout] = useState(false);
 
   // Reusing the same exercise data from Exercise.tsx
@@ -244,29 +243,19 @@ const AddExercise: React.FC<AddExerciseProps> = ({ isOpen, onClose, onAddExercis
     return a.name.localeCompare(b.name);
   });
 
-  const handleSelectExercise = (exerciseId: string) => {
-    setSelectedExercises(prev => 
-      prev.includes(exerciseId) 
-        ? prev.filter(id => id !== exerciseId)
-        : [...prev, exerciseId]
-    );
+  const handleSelectExercise = (exerciseId: string, event: React.MouseEvent) => {
+    event.stopPropagation();
+    const exercise = exercises.find(ex => ex.id === exerciseId);
+    if (exercise) {
+      onAddExercise(exercise);
+      onClose();
+    }
   };
 
   const handleExerciseInfo = (exerciseId: string, event: React.MouseEvent) => {
     event.stopPropagation();
     console.log('Show info for exercise:', exerciseId);
     // Could open ExerciseDetails modal or show info popover
-  };
-
-  const handleAddSelectedExercises = () => {
-    selectedExercises.forEach(exerciseId => {
-      const exercise = exercises.find(ex => ex.id === exerciseId);
-      if (exercise) {
-        onAddExercise(exercise);
-      }
-    });
-    setSelectedExercises([]);
-    onClose();
   };
 
   const filteredExercises = exercises.filter(exercise => {
@@ -342,9 +331,9 @@ const AddExercise: React.FC<AddExerciseProps> = ({ isOpen, onClose, onAddExercis
           {filteredExercises.map((exercise) => (
             <IonItem 
               key={exercise.id} 
-              className={`exercise-item ${selectedExercises.includes(exercise.id) ? 'selected' : ''}`}
+              className="exercise-item"
               button
-              onClick={() => handleSelectExercise(exercise.id)}
+              onClick={(e) => handleSelectExercise(exercise.id, e)}
             >
               <IonLabel className="exercise-label">
                 <h3 className="exercise-name">{exercise.name}</h3>
@@ -358,34 +347,12 @@ const AddExercise: React.FC<AddExerciseProps> = ({ isOpen, onClose, onAddExercis
                 >
                   <IonIcon icon={helpCircleOutline} />
                 </IonButton>
-                
-                {selectedExercises.includes(exercise.id) && (
-                  <IonIcon 
-                    icon={checkmarkCircle} 
-                    color="primary"
-                    className="selected-icon"
-                  />
-                )}
               </div>
             </IonItem>
           ))}
         </IonList>
 
       </IonContent>
-
-      {/* Add Selected Exercises Button */}
-      {selectedExercises.length > 0 && (
-        <div className="add-exercises-footer">
-          <IonButton 
-            expand="block"
-            className="add-exercises-button"
-            onClick={handleAddSelectedExercises}
-          >
-            <IonIcon icon={add} slot="start" />
-            Add {selectedExercises.length} Exercise{selectedExercises.length > 1 ? 's' : ''}
-          </IonButton>
-        </div>
-      )}
     </IonPage>
   );
 };

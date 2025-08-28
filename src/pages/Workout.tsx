@@ -14,10 +14,8 @@ import {
   IonCardTitle,
   IonItem,
   IonLabel,
-  IonList,
   IonFab,
   IonFabButton,
-  IonChip,
   IonText,
   IonGrid,
   IonRow,
@@ -137,6 +135,22 @@ const Workout: React.FC = () => {
     setExercises([...exercises, workoutExercise]);
   };
 
+  const handleAddSet = (exerciseIndex: number) => {
+    const updatedExercises = [...exercises];
+    const exercise = updatedExercises[exerciseIndex];
+    const lastSet = exercise.sets[exercise.sets.length - 1];
+    
+    // Create new set matching last set's reps and weight
+    const newSet = {
+      reps: lastSet.reps,
+      weight: lastSet.weight,
+      completed: false
+    };
+    
+    exercise.sets.push(newSet);
+    setExercises(updatedExercises);
+  };
+
   const handleStartWorkout = () => {
     setWorkoutStarted(true);
     console.log('Workout started!');
@@ -185,6 +199,63 @@ const Workout: React.FC = () => {
       </IonHeader>
       
       <IonContent className="workout-content">
+        
+        {/* Exercise Cards */}
+        {exercises.map((exercise, index) => (
+          <IonCard key={exercise.id} className="exercise-card">
+            <IonCardHeader>
+              <IonCardTitle className="exercise-name">{exercise.name}</IonCardTitle>
+            </IonCardHeader>
+            
+            {/* Sets Grid */}
+            <IonGrid className="sets-grid">
+              <IonRow className="sets-header-row">
+                <IonCol size="2"><IonText><small>Set</small></IonText></IonCol>
+                <IonCol size="3"><IonText><small>Reps</small></IonText></IonCol>
+                <IonCol size="3"><IonText><small>Weight</small></IonText></IonCol>
+                <IonCol size="2"><IonText><small>Done</small></IonText></IonCol>
+              </IonRow>
+              {exercise.sets.map((set: any, setIndex: number) => (
+                <IonRow key={setIndex} className="set-row">
+                  <IonCol size="2">
+                    <IonText className="set-number">{setIndex + 1}</IonText>
+                  </IonCol>
+                  <IonCol size="3">
+                    <IonText className="set-reps">{set.reps}</IonText>
+                  </IonCol>
+                  <IonCol size="3">
+                    <IonText className="set-weight">{set.weight} lbs</IonText>
+                  </IonCol>
+                  <IonCol size="2">
+                    <IonButton 
+                      fill={set.completed ? "solid" : "outline"} 
+                      size="small"
+                      className={`set-complete-btn ${set.completed ? 'completed' : ''}`}
+                      disabled={!workoutStarted}
+                      onClick={() => {
+                        const updatedExercises = [...exercises];
+                        updatedExercises[index].sets[setIndex].completed = !set.completed;
+                        setExercises(updatedExercises);
+                      }}
+                    >
+                      <IonIcon icon={checkmark} />
+                    </IonButton>
+                  </IonCol>
+                </IonRow>
+              ))}
+            </IonGrid>
+            
+            {/* Add Set Button */}
+            <IonButton 
+              fill="clear" 
+              className="add-set-button"
+              onClick={() => handleAddSet(index)}
+            >
+              <IonIcon icon={add} slot="start" />
+              Add Set
+            </IonButton>
+          </IonCard>
+        ))}
         
         {/* Exercise and Special Set Buttons */}
         <IonGrid className="exercise-button-container">
@@ -235,84 +306,6 @@ const Workout: React.FC = () => {
             </IonItem>
           </IonCardContent>
         </IonCard>
-
-        {/* Exercise List */}
-        {exercises.length > 0 && (
-          <IonCard className="exercises-card">
-            <IonCardHeader>
-              <IonCardTitle>Exercises</IonCardTitle>
-            </IonCardHeader>
-            <IonCardContent className="exercises-content">
-              <IonList className="exercises-list">
-                {exercises.map((exercise, index) => (
-                  <IonItem key={exercise.id} className="exercise-item">
-                    <IonLabel>
-                      <h3 className="exercise-name">{exercise.name}</h3>
-                      <IonGrid className="exercise-details">
-                        <IonRow>
-                          <IonCol>
-                            <div className="muscle-groups">
-                              {exercise.primaryMuscles.map((muscle: string, idx: number) => (
-                                <IonChip key={idx} className="muscle-chip">
-                                  <IonLabel>{muscle}</IonLabel>
-                                </IonChip>
-                              ))}
-                            </div>
-                          </IonCol>
-                        </IonRow>
-                        <IonRow>
-                          <IonCol>
-                            <IonText className="sets-info">
-                              <p>{exercise.sets.length} sets • Rest: {formatRestTime(exercise.restTime)}</p>
-                            </IonText>
-                          </IonCol>
-                        </IonRow>
-                      </IonGrid>
-                      
-                      {/* Sets Grid */}
-                      <IonGrid className="sets-grid">
-                        <IonRow className="sets-header-row">
-                          <IonCol size="2"><IonText><small>Set</small></IonText></IonCol>
-                          <IonCol size="3"><IonText><small>Reps</small></IonText></IonCol>
-                          <IonCol size="3"><IonText><small>Weight</small></IonText></IonCol>
-                          <IonCol size="2"><IonText><small>Done</small></IonText></IonCol>
-                        </IonRow>
-                        {exercise.sets.map((set: any, setIndex: number) => (
-                          <IonRow key={setIndex} className="set-row">
-                            <IonCol size="2">
-                              <IonText className="set-number">{setIndex + 1}</IonText>
-                            </IonCol>
-                            <IonCol size="3">
-                              <IonText className="set-reps">{set.reps}</IonText>
-                            </IonCol>
-                            <IonCol size="3">
-                              <IonText className="set-weight">{set.weight} lbs</IonText>
-                            </IonCol>
-                            <IonCol size="2">
-                              <IonButton 
-                                fill={set.completed ? "solid" : "outline"} 
-                                size="small"
-                                className={`set-complete-btn ${set.completed ? 'completed' : ''}`}
-                                disabled={!workoutStarted}
-                                onClick={() => {
-                                  const updatedExercises = [...exercises];
-                                  updatedExercises[index].sets[setIndex].completed = !set.completed;
-                                  setExercises(updatedExercises);
-                                }}
-                              >
-                                <IonIcon icon={checkmark} />
-                              </IonButton>
-                            </IonCol>
-                          </IonRow>
-                        ))}
-                      </IonGrid>
-                    </IonLabel>
-                  </IonItem>
-                ))}
-              </IonList>
-            </IonCardContent>
-          </IonCard>
-        )}
 
         {/* Empty State */}
         {exercises.length === 0 && (
