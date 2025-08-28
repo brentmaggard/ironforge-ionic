@@ -14,8 +14,6 @@ import {
   IonCardTitle,
   IonItem,
   IonLabel,
-  IonFab,
-  IonFabButton,
   IonText,
   IonGrid,
   IonRow,
@@ -379,14 +377,6 @@ const Workout: React.FC = () => {
           </IonCard>
         )}
 
-        {/* Floating Add Button (when exercises exist) */}
-        {exercises.length > 0 && !workoutStarted && (
-          <IonFab vertical="bottom" horizontal="end" slot="fixed">
-            <IonFabButton onClick={handleAddExercise} className="add-exercise-fab">
-              <IonIcon icon={add} />
-            </IonFabButton>
-          </IonFab>
-        )}
 
       </IonContent>
 

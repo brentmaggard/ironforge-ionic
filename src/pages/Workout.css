@@ -389,16 +389,6 @@
   font-weight: 500;
 }
 
-/* Floating Add Button */
-.add-exercise-fab {
-  --background: var(--progress-blue);
-  --color: white;
-  --box-shadow: 0 4px 16px rgba(33, 150, 243, 0.3);
-}
-
-.add-exercise-fab:hover {
-  --background: #1976D2;
-}
 
 /* Header Button Styling */
 .workout-page-overlay .pause-resume-button,
