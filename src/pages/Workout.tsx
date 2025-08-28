@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   IonContent,
   IonPage,
@@ -22,9 +22,10 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonAlert
+  IonAlert,
+  IonActionSheet
 } from '@ionic/react';
-import { close, add, checkmark, time, barbell, flame } from 'ionicons/icons';
+import { close, add, checkmark, time, barbell, flame, pause, play, settings } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import './Workout.css';
 
@@ -34,6 +35,28 @@ const Workout: React.FC = () => {
   const [exercises, setExercises] = useState<any[]>([]);
   const [workoutStarted, setWorkoutStarted] = useState(false);
   const [showCancelAlert, setShowCancelAlert] = useState(false);
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [showSettingsActionSheet, setShowSettingsActionSheet] = useState(false);
+
+  // Timer effect - starts when component mounts, pauses when isPaused is true
+  useEffect(() => {
+    if (!isPaused) {
+      const interval = setInterval(() => {
+        setElapsedTime(prevTime => prevTime + 1);
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [isPaused]);
+
+  const formatTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
 
   const handleCloseClick = () => {
     setShowCancelAlert(true);
@@ -46,6 +69,37 @@ const Workout: React.FC = () => {
 
   const handleKeepWorkout = () => {
     setShowCancelAlert(false);
+  };
+
+  const handlePauseResume = () => {
+    setIsPaused(!isPaused);
+  };
+
+  const handleSettingsClick = () => {
+    setShowSettingsActionSheet(true);
+  };
+
+  const handleSettingsAction = (action: string) => {
+    setShowSettingsActionSheet(false);
+    
+    switch (action) {
+      case 'rest-timer':
+        console.log('Rest Timer Settings clicked');
+        break;
+      case 'auto-advance':
+        console.log('Auto Advance Settings clicked');
+        break;
+      case 'sound':
+        console.log('Sound Settings clicked');
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleCompleteWorkout = () => {
+    // For now, just log - will implement later
+    console.log('Complete workout clicked');
   };
 
   const handleAddExercise = () => {
@@ -86,27 +140,27 @@ const Workout: React.FC = () => {
         <IonToolbar className="workout-toolbar">
           <IonButtons slot="start">
             <IonButton onClick={handleCloseClick} className="close-button" fill="clear">
-              <div className="close-button-circle">
-                <IonIcon icon={close} />
-              </div>
+              <IonIcon icon={close} />
             </IonButton>
           </IonButtons>
           <IonTitle className="workout-title">
-            {workoutStarted ? 'Active Workout' : 'Workout Builder'}
+            {formatTime(elapsedTime)}
           </IonTitle>
           <IonButtons slot="end">
-            {!workoutStarted && exercises.length > 0 && (
-              <IonButton onClick={handleStartWorkout} className="start-button" fill="solid">
-                <IonIcon icon={barbell} slot="start" />
-                Start
-              </IonButton>
-            )}
-            {workoutStarted && (
-              <IonButton onClick={handleFinishWorkout} className="finish-button" fill="solid">
-                <IonIcon icon={checkmark} slot="start" />
-                Finish
-              </IonButton>
-            )}
+            {/* Pause/Resume Button */}
+            <IonButton onClick={handlePauseResume} className="pause-resume-button" fill="clear">
+              <IonIcon icon={isPaused ? play : pause} />
+            </IonButton>
+            
+            {/* Settings Button */}
+            <IonButton onClick={handleSettingsClick} className="settings-button" fill="clear">
+              <IonIcon icon={settings} />
+            </IonButton>
+            
+            {/* Complete Workout Button */}
+            <IonButton onClick={handleCompleteWorkout} className="complete-button" fill="clear">
+              <IonIcon icon={checkmark} style={{ color: '#4CAF50' }} />
+            </IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
@@ -147,18 +201,26 @@ const Workout: React.FC = () => {
                   <IonItem key={exercise.id} className="exercise-item">
                     <IonLabel>
                       <h3 className="exercise-name">{exercise.name}</h3>
-                      <div className="exercise-details">
-                        <div className="muscle-groups">
-                          {exercise.primaryMuscles.map((muscle: string, idx: number) => (
-                            <IonChip key={idx} className="muscle-chip">
-                              <IonLabel>{muscle}</IonLabel>
-                            </IonChip>
-                          ))}
-                        </div>
-                        <IonText className="sets-info">
-                          <p>{exercise.sets.length} sets • Rest: {formatRestTime(exercise.restTime)}</p>
-                        </IonText>
-                      </div>
+                      <IonGrid className="exercise-details">
+                        <IonRow>
+                          <IonCol>
+                            <div className="muscle-groups">
+                              {exercise.primaryMuscles.map((muscle: string, idx: number) => (
+                                <IonChip key={idx} className="muscle-chip">
+                                  <IonLabel>{muscle}</IonLabel>
+                                </IonChip>
+                              ))}
+                            </div>
+                          </IonCol>
+                        </IonRow>
+                        <IonRow>
+                          <IonCol>
+                            <IonText className="sets-info">
+                              <p>{exercise.sets.length} sets • Rest: {formatRestTime(exercise.restTime)}</p>
+                            </IonText>
+                          </IonCol>
+                        </IonRow>
+                      </IonGrid>
                       
                       {/* Sets Grid */}
                       <IonGrid className="sets-grid">
@@ -237,6 +299,53 @@ const Workout: React.FC = () => {
         )}
 
       </IonContent>
+
+      {/* Pause Overlay */}
+      {isPaused && (
+        <div className="pause-overlay">
+          <div className="pause-content">
+            <IonText className="pause-title">
+              <h2>The workout is paused!</h2>
+            </IonText>
+            <IonText className="pause-timer">
+              <h5>{formatTime(elapsedTime)}</h5>
+            </IonText>
+            <IonButton className="pause-play-icon" fill="clear" onClick={handlePauseResume}>
+              <IonIcon icon={play} />
+            </IonButton>
+          </div>
+        </div>
+      )}
+
+      {/* Settings Action Sheet */}
+      <IonActionSheet
+        isOpen={showSettingsActionSheet}
+        onDidDismiss={() => setShowSettingsActionSheet(false)}
+        cssClass="settings-action-sheet"
+        header="Workout Settings"
+        buttons={[
+          {
+            text: 'Rest Timer Settings',
+            icon: time,
+            handler: () => handleSettingsAction('rest-timer')
+          },
+          {
+            text: 'Auto Advance Sets',
+            icon: play,
+            handler: () => handleSettingsAction('auto-advance')
+          },
+          {
+            text: 'Sound & Notifications',
+            icon: settings,
+            handler: () => handleSettingsAction('sound')
+          },
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            icon: close
+          }
+        ]}
+      />
 
       <IonAlert
         isOpen={showCancelAlert}
