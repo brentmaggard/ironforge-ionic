@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, memo } from 'react';
 import {
   IonCard,
   IonCardHeader,
@@ -11,29 +11,17 @@ import {
   IonText
 } from '@ionic/react';
 import { add, ellipsisVertical } from 'ionicons/icons';
+import { WorkoutExercise, EditField } from '../types/workout';
 import './ExerciseCard.css';
-
-interface WorkoutSet {
-  reps: number;
-  weight: number;
-  completed: boolean;
-}
-
-interface WorkoutExercise {
-  id: number;
-  name: string;
-  sets: WorkoutSet[];
-  primaryMuscles: string[];
-  restTime: number;
-}
 
 interface ExerciseCardProps {
   exercise: WorkoutExercise;
   exerciseIndex: number;
   onSetComplete: (exerciseIndex: number, setIndex: number) => void;
-  onSetEdit: (exerciseIndex: number, setIndex: number, field: 'reps' | 'weight') => void;
+  onSetEdit: (exerciseIndex: number, setIndex: number, field: EditField) => void;
   onSetMenu: (event: Event, exerciseIndex: number, setIndex: number) => void;
   onAddSet: (exerciseIndex: number) => void;
+  isWorkoutActive?: boolean;
 }
 
 const ExerciseCard: React.FC<ExerciseCardProps> = ({
@@ -42,8 +30,26 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
   onSetComplete,
   onSetEdit,
   onSetMenu,
-  onAddSet
+  onAddSet,
+  isWorkoutActive = true
 }) => {
+  // Memoized handler functions
+  const handleSetComplete = useCallback((setIndex: number) => {
+    onSetComplete(exerciseIndex, setIndex);
+  }, [exerciseIndex, onSetComplete]);
+
+  const handleSetEdit = useCallback((setIndex: number, field: EditField) => {
+    onSetEdit(exerciseIndex, setIndex, field);
+  }, [exerciseIndex, onSetEdit]);
+
+  const handleSetMenu = useCallback((event: React.MouseEvent, setIndex: number) => {
+    onSetMenu(event.nativeEvent, exerciseIndex, setIndex);
+  }, [exerciseIndex, onSetMenu]);
+
+  const handleAddSet = useCallback(() => {
+    onAddSet(exerciseIndex);
+  }, [exerciseIndex, onAddSet]);
+
   return (
     <IonCard className="exercise-card">
       <IonCardHeader>
@@ -64,16 +70,23 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
               <IonButton
                 fill="clear"
                 className={`set-complete-btn ${set.completed ? 'completed' : ''}`}
-                onClick={() => onSetComplete(exerciseIndex, setIndex)}
+                onClick={() => handleSetComplete(setIndex)}
+                disabled={!isWorkoutActive}
+                aria-label={`Mark set ${setIndex + 1} as ${set.completed ? 'incomplete' : 'complete'}`}
+                aria-pressed={set.completed}
               >
-                {setIndex + 1}
+                <span aria-hidden="true">{setIndex + 1}</span>
+                <span className="visually-hidden">
+                  Set {setIndex + 1} {set.completed ? 'completed' : 'not completed'}
+                </span>
               </IonButton>
             </IonCol>
             <IonCol size="4">
               <IonButton
                 fill="clear"
                 className="set-edit-btn"
-                onClick={() => onSetEdit(exerciseIndex, setIndex, 'reps')}
+                onClick={() => handleSetEdit(setIndex, 'reps')}
+                aria-label={`Edit reps for set ${setIndex + 1}, currently ${set.reps}`}
               >
                 {set.reps} <IonText className="unit-text">reps</IonText>
               </IonButton>
@@ -82,7 +95,8 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
               <IonButton
                 fill="clear" 
                 className="set-edit-btn"
-                onClick={() => onSetEdit(exerciseIndex, setIndex, 'weight')}
+                onClick={() => handleSetEdit(setIndex, 'weight')}
+                aria-label={`Edit weight for set ${setIndex + 1}, currently ${set.weight} pounds`}
               >
                 {set.weight} <IonText className="unit-text">lbs</IonText>
               </IonButton>
@@ -91,9 +105,10 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
               <IonButton
                 fill="clear"
                 className="set-menu-btn"
-                onClick={(e) => onSetMenu(e.nativeEvent, exerciseIndex, setIndex)}
+                onClick={(e) => handleSetMenu(e, setIndex)}
+                aria-label={`More options for set ${setIndex + 1}`}
               >
-                <IonIcon icon={ellipsisVertical} />
+                <IonIcon icon={ellipsisVertical} aria-hidden="true" />
               </IonButton>
             </IonCol>
           </IonRow>
@@ -104,13 +119,15 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
       <IonButton 
         fill="clear" 
         className="add-set-button"
-        onClick={() => onAddSet(exerciseIndex)}
+        onClick={handleAddSet}
+        aria-label="Add a new set"
       >
-        <IonIcon icon={add} slot="start" />
+        <IonIcon icon={add} slot="start" aria-hidden="true" />
         Add Set
       </IonButton>
     </IonCard>
   );
 };
 
-export default ExerciseCard;
+// Use React.memo to prevent unnecessary re-renders
+export default memo(ExerciseCard);

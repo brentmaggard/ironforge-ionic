@@ -13,6 +13,26 @@
   margin: 0;
 }
 
+/* Muscle Groups */
+.muscle-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.muscle-chip {
+  --background: var(--ion-color-primary);
+  --color: white;
+  margin: 0;
+  height: 24px;
+}
+
+.muscle-chip ion-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
 /* Sets Grid */
 .sets-grid {
   --ion-grid-padding: 0;
@@ -20,7 +40,7 @@
   margin: 0 16px;
   border: 1px solid var(--ion-color-light);
   border-top: none;
-  border-radius: 0 0 12px 12px;
+  border-radius: 12px 12px 12px 12px;
   background: var(--ion-color-light-tint);
 }
 
@@ -106,10 +126,17 @@
   --color: var(--ion-color-primary);
 }
 
+.set-edit-btn:focus-visible {
+  --background: var(--ion-color-light-tint);
+  outline: 2px solid var(--ion-color-primary);
+  outline-offset: 2px;
+}
+
 .set-edit-btn ion-text.unit-text {
-  font-size: 0.7rem;
+  font-size: 0.5rem;
   color: var(--ion-color-medium);
   font-weight: 400;
+  margin-left: 6px;
 }
 
 /* Set Menu Button */
@@ -133,6 +160,11 @@
   --color: var(--ion-color-primary);
 }
 
+.set-menu-btn:focus-visible {
+  outline: 2px solid var(--ion-color-primary);
+  outline-offset: 2px;
+}
+
 .set-menu-btn ion-icon {
   font-size: 20px;
 }
@@ -151,7 +183,12 @@
 }
 
 .add-set-button:hover {
-  --background-hover: var(--ion-color-primary-tint);
+  --background-hover: rgba(33, 150, 243, 0.1);
+}
+
+.add-set-button:focus-visible {
+  outline: 2px solid var(--ion-color-primary);
+  outline-offset: 2px;
 }
 
 .add-set-button ion-icon {
@@ -159,9 +196,63 @@
   margin-right: 4px;
 }
 
+/* Accessibility */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Responsive adjustments */
 @media (max-width: 480px) {
   .exercise-card ion-card-title {
     font-size: 1rem;
+  }
+  
+  .exercise-card {
+    margin: 8px 12px;
+  }
+  
+  .sets-grid {
+    margin: 0 12px;
+  }
+  
+  .set-complete-btn, .set-menu-btn {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+  }
+  
+  .set-edit-btn {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 350px) {
+  .exercise-card {
+    margin: 8px 8px;
+  }
+  
+  .sets-grid {
+    margin: 0 8px;
+  }
+  
+  .set-complete-btn, .set-menu-btn {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    min-height: 28px;
+  }
+  
+  .add-set-button {
+    margin: 8px 8px 12px 8px;
+    width: calc(100% - 16px);
   }
 }

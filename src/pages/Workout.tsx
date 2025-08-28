@@ -27,20 +27,21 @@ import { useHistory } from 'react-router-dom';
 import AddExercise from '../components/AddExercise';
 import ExerciseCard from '../components/ExerciseCard';
 import { useRestTimer } from '../contexts/RestTimerContext';
+import { WorkoutExercise, EditField, SetEditingState } from '../types/workout';
 import './Workout.css';
 
 const Workout: React.FC = () => {
   const history = useHistory();
   const { startRestTimer, resetRestTimer, isTimerVisible, setWorkoutPaused } = useRestTimer();
   const [workoutName, setWorkoutName] = useState('New Workout');
-  const [exercises, setExercises] = useState<any[]>([]);
+  const [exercises, setExercises] = useState<WorkoutExercise[]>([]);
   const [workoutStarted, setWorkoutStarted] = useState(true);
   const [showCancelAlert, setShowCancelAlert] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [showSettingsActionSheet, setShowSettingsActionSheet] = useState(false);
   const [showAddExercise, setShowAddExercise] = useState(false);
-  const [editingSet, setEditingSet] = useState<{exerciseIndex: number, setIndex: number, field: 'reps' | 'weight'} | null>(null);
+  const [editingSet, setEditingSet] = useState<SetEditingState | null>(null);
   const [editValue, setEditValue] = useState('');
   const [setMenuOpen, setSetMenuOpen] = useState<{open: boolean, event?: Event, exerciseIndex?: number, setIndex?: number}>({open: false});
 
@@ -138,7 +139,7 @@ const Workout: React.FC = () => {
 
   const handleAddExerciseToWorkout = (exercise: any) => {
     // Create workout exercise with default sets
-    const workoutExercise = {
+    const workoutExercise: WorkoutExercise = {
       id: Date.now(),
       name: exercise.name,
       sets: [
@@ -147,6 +148,7 @@ const Workout: React.FC = () => {
         { reps: 10, weight: 0, completed: false }
       ],
       primaryMuscles: exercise.primaryMuscles || exercise.muscleGroups?.slice(0, 2) || ['Unknown'],
+      secondaryMuscles: exercise.secondaryMuscles || [],
       restTime: 120 // seconds
     };
     setExercises([...exercises, workoutExercise]);
@@ -191,7 +193,7 @@ const Workout: React.FC = () => {
     }
   };
 
-  const handleEditSet = (exerciseIndex: number, setIndex: number, field: 'reps' | 'weight') => {
+  const handleEditSet = (exerciseIndex: number, setIndex: number, field: EditField) => {
     const currentValue = exercises[exerciseIndex].sets[setIndex][field];
     setEditValue(currentValue.toString());
     setEditingSet({ exerciseIndex, setIndex, field });
@@ -276,6 +278,7 @@ const Workout: React.FC = () => {
             onSetEdit={handleEditSet}
             onSetMenu={handleSetMenu}
             onAddSet={handleAddSet}
+            isWorkoutActive={workoutStarted}
           />
         ))}
         
