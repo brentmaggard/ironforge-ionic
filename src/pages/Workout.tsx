@@ -268,7 +268,7 @@ const Workout: React.FC = () => {
                       className="set-edit-btn"
                       onClick={() => handleEditSet(index, setIndex, 'reps')}
                     >
-                      {set.reps}
+                      {set.reps} <span className="unit-text">reps</span>
                     </IonButton>
                   </IonCol>
                   <IonCol size="4">
@@ -277,7 +277,7 @@ const Workout: React.FC = () => {
                       className="set-edit-btn"
                       onClick={() => handleEditSet(index, setIndex, 'weight')}
                     >
-                      {set.weight} lbs
+                      {set.weight} <span className="unit-text">lbs</span>
                     </IonButton>
                   </IonCol>
                   <IonCol size="2">
