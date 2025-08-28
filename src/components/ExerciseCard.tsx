@@ -75,7 +75,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
                 className="set-edit-btn"
                 onClick={() => onSetEdit(exerciseIndex, setIndex, 'reps')}
               >
-                {set.reps} <span className="unit-text">reps</span>
+                {set.reps} <IonText className="unit-text">reps</IonText>
               </IonButton>
             </IonCol>
             <IonCol size="4">
@@ -84,7 +84,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
                 className="set-edit-btn"
                 onClick={() => onSetEdit(exerciseIndex, setIndex, 'weight')}
               >
-                {set.weight} <span className="unit-text">lbs</span>
+                {set.weight} <IonText className="unit-text">lbs</IonText>
               </IonButton>
             </IonCol>
             <IonCol size="2">
