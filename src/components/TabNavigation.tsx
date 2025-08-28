@@ -18,8 +18,8 @@ const TabNavigation: React.FC = () => {
   const handleWorkoutTabClick = (e: any) => {
     e.preventDefault();
     
-    // Don't show action sheet if already on workout-builder page
-    if (location.pathname === '/workout-builder') {
+    // Don't show action sheet if already on workout page
+    if (location.pathname === '/workout') {
       return;
     }
     
@@ -31,7 +31,7 @@ const TabNavigation: React.FC = () => {
     
     switch (action) {
       case 'start-new':
-        history.push('/workout-builder');
+        history.push('/workout');
         break;
       case 'train-again':
         console.log('Train a logged workout again - Coming Soon');

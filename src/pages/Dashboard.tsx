@@ -20,6 +20,7 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
+import GlobalHeader from '../components/GlobalHeader';
 import './Dashboard.css';
 
 const Dashboard: React.FC = () => {
@@ -111,6 +112,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <IonPage>
+      <GlobalHeader />
       <IonContent className="dashboard-content">
 
         

@@ -16,8 +16,6 @@ import Workout from './pages/Workout';
 import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
 import Exercise from './pages/Exercise';
-import WorkoutBuilder from './pages/WorkoutBuilder';
-import GlobalHeader from './components/GlobalHeader';
 import TabNavigation from './components/TabNavigation';
 
 /* Core CSS required for Ionic components to work properly */
@@ -56,7 +54,6 @@ const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonTabs>
-        <GlobalHeader />
         <IonRouterOutlet>
           <Route exact path="/dashboard">
             <Tab1 />
@@ -81,9 +78,6 @@ const App: React.FC = () => (
       </Route>
       <Route exact path="/exercise">
         <Exercise />
-      </Route>
-      <Route exact path="/workout-builder">
-        <WorkoutBuilder />
       </Route>
     </IonReactRouter>
   </IonApp>

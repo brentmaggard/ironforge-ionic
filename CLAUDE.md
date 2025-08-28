@@ -40,10 +40,10 @@ IronForge is a comprehensive fitness tracking application built with Ionic 8 and
 ## Architecture Decisions
 
 ### 1. Component Structure
-- **Global Header**: Centralized header component with app branding and user menu
+- **Dashboard Header**: IronForge header with app branding and user menu (Dashboard page only)
 - **Tab Navigation**: Extracted bottom tab navigation for reusability
 - **Page-based routing**: Clean separation of concerns with individual page components
-- **Modal Profile Page**: Overlay routing pattern for profile functionality
+- **Custom Page Headers**: Each page has its own appropriate header (Progress, Workout, modal pages)
 
 ### 2. Ionic Framework Standards
 - **Always Use Ionic Components**: Prioritize native Ionic components (IonList, IonItem, IonButton, etc.) over HTML divs for proper mobile behavior and theming
@@ -84,16 +84,17 @@ IronForge is a comprehensive fitness tracking application built with Ionic 8 and
 
 ```
 IronForge App
-├── Global Header (Fixed)
-│   ├── Barbell Icon (rotated -35°)
-│   ├── App Title: "IronForge"
-│   └── Menu (Right)
-│       ├── Profile → Navigates to Profile Page
-│       ├── Settings
-│       └── Logout
-│
 ├── Main Content Area
 │   ├── Dashboard (/dashboard) - Default Route
+│   │   ├── IronForge Header (Dashboard Only)
+│   │   │   ├── Barbell Icon (rotated -35°)
+│   │   │   ├── App Title: "IronForge"
+│   │   │   └── Menu (Right)
+│   │   │       ├── Profile → Navigates to Profile Page
+│   │   │       ├── Exercise Library → Navigates to Exercise Page
+│   │   │       ├── Install App (PWA)
+│   │   │       ├── Settings
+│   │   │       └── Logout
 │   │   ├── Quick Actions
 │   │   │   ├── Start Workout Card
 │   │   │   └── Browse Exercises Card
@@ -111,10 +112,12 @@ IronForge App
 │   │       └── Full Body Beginner - Week 12
 │   │
 │   ├── Progress (/progress)
+│   │   ├── Progress Header ("Progress" title)
 │   │   └── [Placeholder - ExploreContainer]
 │   │
-│   └── Workout (/workout)
-│       └── [Placeholder - ExploreContainer]
+│   └── Workout (/workout) 
+│       ├── Custom Workout Header (Dynamic title, close/start/finish buttons)
+│       └── [Workout content as documented below]
 │
 ├── Exercise Library (/exercise) - Modal Overlay
 │   ├── Custom Header Bar
@@ -211,7 +214,7 @@ IronForge App
 │       ├── Remove Photo
 │       └── Cancel
 │
-├── Workout Builder (/workout-builder) - Modal Overlay
+├── Workout (/workout) - Modal Overlay
 │   ├── Custom Header Bar
 │   │   ├── Back Button (Circular)
 │   │   ├── "Workout Builder" / "Active Workout" Title (Dynamic)
@@ -236,7 +239,7 @@ IronForge App
     ├── Progress (TrendingUp Icon)
     └── Workout (Barbell Icon) → Triggers Action Sheet
         ├── Workout Action Sheet
-        │   ├── "Start New Workout" → Navigates to Workout Builder
+        │   ├── "Start New Workout" → Navigates to Workout
         │   ├── "Train a Logged Workout Again" → Coming Soon
         │   ├── "Plan a Workout" → Coming Soon
         │   └── Cancel
@@ -334,7 +337,7 @@ IronForge App
    - Hoverable muscle group chips with selection states
 
 7. **Navigation Integration**
-   - Accessible via Global Header menu with library icon
+   - Accessible via Dashboard Header menu with library icon
    - Route configured for proper modal overlay behavior
    - Info buttons navigate to detailed exercise pages
    - Consistent with app's navigation patterns
@@ -410,7 +413,7 @@ IronForge App
    - Offline fallback page with IronForge branding
 
 2. **App Installation**
-   - Cross-platform install prompt integration in Global Header menu
+   - Cross-platform install prompt integration in Dashboard Header menu
    - Custom useInstallPrompt hook for installation management
    - Android/Chrome: Native beforeinstallprompt event handling
    - iOS Safari: Custom instruction alert with step-by-step guidance
@@ -445,7 +448,7 @@ IronForge App
    - Proper Ionic CSS variables for backdrop opacity and button styling
    - Clean component implementation following Ionic best practices
 
-2. **WorkoutBuilder Page**
+2. **Workout Page**
    - Custom header with dynamic title (Workout Builder → Active Workout)
    - Context-sensitive action buttons (Start Workout → Finish Workout)
    - Modal overlay positioning outside global header while preserving tab navigation
@@ -465,7 +468,7 @@ IronForge App
    - Sample exercise data with realistic sets/reps/weight structure
 
 5. **Navigation Integration**
-   - WorkoutBuilder route outside IonTabs structure for custom header
+   - Workout route outside IonTabs structure for custom header
    - Preserved bottom tab navigation for seamless app navigation
    - Proper z-index layering (45000) with tab navigation remaining visible
    - Smooth slide-in animation from right matching other modal pages
@@ -474,11 +477,11 @@ IronForge App
 - Clean URL structure (/dashboard, /progress, /workout, /profile, /exercise, /edit-profile, /workout-builder)
 - Default redirect to dashboard
 - Tab highlighting and state management
-- Modal overlay navigation for Profile, EditProfile, Exercise Library, Exercise Details, and WorkoutBuilder pages
-- Global header menu integration for Profile and Exercise Library access
+- Modal overlay navigation for Profile, EditProfile, Exercise Library, Exercise Details, and Workout pages
+- Dashboard header menu integration for Profile and Exercise Library access
 - Exercise Details uses modal-based state management for better UX (no URL routing)
 - Workout tab uses action sheet pattern instead of direct navigation
-- WorkoutBuilder positioned outside global header while preserving bottom tab navigation
+- Each page has appropriate header without conflicts (Dashboard: branded, Progress: simple, Workout: custom)
 
 ### Design System
 - **Color Palette**:
@@ -590,10 +593,45 @@ npm run lint
 - **Service Worker Issues**: Check browser dev tools Application tab for registration status
 
 ---
-*Last Updated: 2025-08-27*
+*Last Updated: 2025-08-28*
 *Generated with Claude Code*
 
-## Recent Updates (2025-08-27)
+## Recent Updates (2025-08-28)
+
+### Header Architecture Refactor
+Following the workout management system implementation, the global header architecture was refactored to eliminate conflicts and provide each page with appropriate header functionality.
+
+#### Problem Identification
+- **Global Header Conflicts**: The centralized global header was interfering with custom page headers, particularly on the Workout page
+- **Double Header Issues**: Progress page had both global header and its own IonHeader, creating visual clutter
+- **Modal Page Independence**: Modal pages (Profile, Exercise, etc.) worked fine with their own headers but global header was unnecessary overhead
+- **Layering Problems**: Global header z-index conflicts with custom workout functionality
+
+#### Architecture Solution
+- **Removed Global Header from App Structure**: Eliminated `<GlobalHeader />` from IonTabs in App.tsx
+- **Dashboard-Specific Header**: Moved GlobalHeader component to Dashboard page only, preserving IronForge branding and menu functionality
+- **Page-Specific Headers**: Each page now manages its own header independently without conflicts
+- **Clean Separation**: Dashboard gets branded header, Progress gets simple header, Workout gets custom header
+
+#### Implementation Details
+- **App.tsx Changes**: Removed GlobalHeader import and usage from IonTabs structure
+- **Dashboard.tsx Enhancement**: Added GlobalHeader as first element in IonPage for branded experience
+- **Preserved Functionality**: Profile, Exercise Library, Install App, and Settings remain accessible via Dashboard header menu
+- **No Breaking Changes**: All existing navigation and functionality maintained
+
+#### User Experience Improvements
+- **Workout Page Liberation**: Custom workout header now operates without interference
+- **Clean Progress Interface**: Simple "Progress" header without branding clutter
+- **Consistent Dashboard Branding**: IronForge header maintains app identity on main page
+- **Modal Page Independence**: Profile, Exercise, EditProfile pages retain their optimized custom headers
+
+#### Technical Benefits
+- **Eliminated Z-Index Conflicts**: No more layering issues between global and custom headers
+- **Reduced Component Coupling**: Each page manages its own header requirements
+- **Performance Optimization**: Header components only loaded where needed
+- **Simplified Navigation Logic**: Clear separation of concerns between page types
+
+This refactor demonstrates successful identification and resolution of architectural conflicts while maintaining all existing functionality and improving the overall user experience.
 
 ### Exercise Details Modal Implementation & Enhancement
 This session involved the complete implementation and enhancement of the ExerciseDetails modal overlay system, transforming it from a basic concept to a fully functional, user-friendly feature.
@@ -705,9 +743,9 @@ Following the PWA implementation, a comprehensive workout management system was 
 - **Clean CSS Styling** - Used Ionic CSS variables (--backdrop-opacity: 0.6) for proper gray backdrop effect
 - **Color-Coded Interface** - Implemented distinct button colors: Start New (blue), Train Again (green), Plan (orange), Cancel (gray)
 - **Component Architecture** - Followed Ionic framework conventions without inline styles or DOM manipulation
-- **Context-Aware Behavior** - Action sheet disabled when already on WorkoutBuilder page to prevent layering issues
+- **Context-Aware Behavior** - Action sheet disabled when already on Workout page to prevent layering issues
 
-#### WorkoutBuilder Page Creation
+#### Workout Page Creation
 - **Custom Header Design** - Dedicated workout header with dynamic title and context-sensitive buttons
 - **Modal Overlay Structure** - Positioned outside global header while preserving bottom tab navigation visibility
 - **Responsive Layout** - Fixed positioning with calculated height (calc(100vh - 56px)) ensuring tabs remain accessible
@@ -734,7 +772,7 @@ Following the PWA implementation, a comprehensive workout management system was 
 - **Back Navigation** - Proper history management with workout session preservation
 
 #### Technical Architecture
-- **Component Separation** - TabNavigation.tsx handles action sheet, WorkoutBuilder.tsx manages workout interface
+- **Component Separation** - TabNavigation.tsx handles action sheet, Workout.tsx manages workout interface
 - **CSS Organization** - Separate styling files with proper Ionic component targeting
 - **State Management** - React hooks for workout state, exercise tracking, and UI interactions
 - **Route Structure** - Outside tabs for header independence, inside app routing for proper navigation
@@ -742,9 +780,9 @@ Following the PWA implementation, a comprehensive workout management system was 
 #### Key Files Created/Modified
 - **src/components/TabNavigation.tsx**: Enhanced workout tab with action sheet functionality
 - **src/components/TabNavigation.css**: Clean Ionic CSS variables for action sheet styling
-- **src/pages/WorkoutBuilder.tsx**: Comprehensive workout creation and tracking interface
-- **src/pages/WorkoutBuilder.css**: Modal overlay styling with tab navigation preservation
-- **src/App.tsx**: Added workout-builder route outside IonTabs structure
+- **src/pages/Workout.tsx**: Comprehensive workout creation and tracking interface
+- **src/pages/Workout.css**: Modal overlay styling with tab navigation preservation
+- **src/App.tsx**: Updated workout route outside IonTabs structure
 
 #### User Experience Achievements
 - **Intuitive Workout Start** - Clear action sheet with 3 distinct workout initiation options
