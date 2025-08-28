@@ -35,19 +35,19 @@
   --min-height: 60px;
 }
 
-.workout-builder-page-overlay .back-button {
-  --color: white;
+.workout-builder-page-overlay .close-button {
+  --color: #F44336;
   width: 40px;
   height: 40px;
   border-radius: 50%;
   --background: transparent;
-  --background-hover: rgba(255, 255, 255, 0.3) !important;
+  --background-hover: rgba(244, 67, 54, 0.2) !important;
   --background-hover-opacity: 1 !important;
   --border-radius: 50% !important;
   --ripple-color: transparent !important;
 }
 
-.workout-builder-page-overlay .back-button-circle {
+.workout-builder-page-overlay .close-button-circle {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -55,9 +55,13 @@
   height: 100%;
 }
 
-.workout-builder-page-overlay .back-button ion-icon {
+.workout-builder-page-overlay .close-button ion-icon {
   font-size: 24px;
-  color: white;
+  color: #F44336;
+}
+
+.workout-builder-page-overlay .close-button:hover ion-icon {
+  color: #D32F2F;
 }
 
 .workout-builder-title {
@@ -313,6 +317,18 @@
 
 .add-exercise-fab:hover {
   --background: #1976D2;
+}
+
+/* Cancel Workout Alert Styling */
+.workout-builder-alert {
+  z-index: 50000 !important;
+  --backdrop-opacity: 0.6;
+  --background: var(--ion-color-light);
+}
+
+.alert-button-confirm {
+  --color: #F44336 !important;
+  font-weight: 600 !important;
 }
 
 /* Page slide-in animation */

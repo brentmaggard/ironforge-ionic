@@ -21,9 +21,10 @@ import {
   IonText,
   IonGrid,
   IonRow,
-  IonCol
+  IonCol,
+  IonAlert
 } from '@ionic/react';
-import { arrowBack, add, checkmark, time, barbell, flame } from 'ionicons/icons';
+import { close, add, checkmark, time, barbell, flame } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import './WorkoutBuilder.css';
 
@@ -32,9 +33,19 @@ const WorkoutBuilder: React.FC = () => {
   const [workoutName, setWorkoutName] = useState('New Workout');
   const [exercises, setExercises] = useState<any[]>([]);
   const [workoutStarted, setWorkoutStarted] = useState(false);
+  const [showCancelAlert, setShowCancelAlert] = useState(false);
 
-  const handleBack = () => {
-    history.goBack();
+  const handleCloseClick = () => {
+    setShowCancelAlert(true);
+  };
+
+  const handleCancelWorkout = () => {
+    setShowCancelAlert(false);
+    history.push('/dashboard');
+  };
+
+  const handleKeepWorkout = () => {
+    setShowCancelAlert(false);
   };
 
   const handleAddExercise = () => {
@@ -74,9 +85,9 @@ const WorkoutBuilder: React.FC = () => {
       <IonHeader className="workout-builder-header-bar">
         <IonToolbar className="workout-builder-toolbar">
           <IonButtons slot="start">
-            <IonButton onClick={handleBack} className="back-button" fill="clear">
-              <div className="back-button-circle">
-                <IonIcon icon={arrowBack} />
+            <IonButton onClick={handleCloseClick} className="close-button" fill="clear">
+              <div className="close-button-circle">
+                <IonIcon icon={close} />
               </div>
             </IonButton>
           </IonButtons>
@@ -139,7 +150,7 @@ const WorkoutBuilder: React.FC = () => {
                       <div className="exercise-details">
                         <div className="muscle-groups">
                           {exercise.primaryMuscles.map((muscle: string, idx: number) => (
-                            <IonChip key={idx} className="muscle-chip" size="small">
+                            <IonChip key={idx} className="muscle-chip">
                               <IonLabel>{muscle}</IonLabel>
                             </IonChip>
                           ))}
@@ -226,6 +237,29 @@ const WorkoutBuilder: React.FC = () => {
         )}
 
       </IonContent>
+
+      <IonAlert
+        isOpen={showCancelAlert}
+        onDidDismiss={() => {
+          handleKeepWorkout();
+        }}
+        cssClass="workout-builder-alert"
+        header="Cancel Workout"
+        message="Are you sure you want to cancel this workout? No data will be saved."
+        buttons={[
+          {
+            text: 'No',
+            role: 'cancel',
+            handler: handleKeepWorkout
+          },
+          {
+            text: 'Yes',
+            role: 'confirm',
+            cssClass: 'alert-button-confirm',
+            handler: handleCancelWorkout
+          }
+        ]}
+      />
     </IonPage>
   );
 };

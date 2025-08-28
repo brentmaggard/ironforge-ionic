@@ -7,15 +7,22 @@ import {
   IonActionSheet
 } from '@ionic/react';
 import { home, trendingUp, barbell, add, repeat, clipboard, close } from 'ionicons/icons';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import './TabNavigation.css';
 
 const TabNavigation: React.FC = () => {
   const [isWorkoutActionSheetOpen, setIsWorkoutActionSheetOpen] = useState(false);
   const history = useHistory();
+  const location = useLocation();
 
-  const handleWorkoutTabClick = (e: React.MouseEvent) => {
+  const handleWorkoutTabClick = (e: any) => {
     e.preventDefault();
+    
+    // Don't show action sheet if already on workout-builder page
+    if (location.pathname === '/workout-builder') {
+      return;
+    }
+    
     setIsWorkoutActionSheetOpen(true);
   };
 
@@ -48,7 +55,7 @@ const TabNavigation: React.FC = () => {
           <IonIcon aria-hidden="true" icon={trendingUp} />
           <IonLabel>Progress</IonLabel>
         </IonTabButton>
-        <IonTabButton tab="workout" onClick={handleWorkoutTabClick}>
+        <IonTabButton tab="workout" href="#" onClick={handleWorkoutTabClick}>
           <IonIcon aria-hidden="true" icon={barbell} />
           <IonLabel>Workout</IonLabel>
         </IonTabButton>
