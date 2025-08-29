@@ -1,7 +1,7 @@
 .dashboard-content {
   --padding-start: 16px;
   --padding-end: 16px;
-  --padding-top: calc(env(safe-area-inset-top, 0px) + 60px);
+  --padding-top: calc(env(safe-area-inset-top, 0px) + 10px);
 }
 
 /* Section Headers */
@@ -103,8 +103,8 @@
 }
 
 .circular-progress {
-  width: 100px;
-  height: 100px;
+  width: 125px;
+  height: 125px;
   position: relative;
   margin-bottom: 8px;
 }

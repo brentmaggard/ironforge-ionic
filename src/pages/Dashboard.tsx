@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router';
 import {
   IonContent,
   IonPage,
@@ -21,9 +22,13 @@ import 'react-circular-progressbar/dist/styles.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import GlobalHeader from '../components/GlobalHeader';
+import WorkoutActionSheet from '../components/WorkoutActionSheet';
 import './Dashboard.css';
 
 const Dashboard: React.FC = () => {
+  const history = useHistory();
+  const [showStartWorkoutActionSheet, setShowStartWorkoutActionSheet] = useState(false);
+
   const progressItems = [
     {
       title: 'Weekly Goal',
@@ -103,7 +108,25 @@ const Dashboard: React.FC = () => {
   };
 
   const handleQuickAction = (action: string) => {
-    console.log(`${action} clicked`);
+    if (action === 'Start Workout') {
+      setShowStartWorkoutActionSheet(true);
+    }
+  };
+
+  const handleWorkoutAction = (action: string) => {
+    setShowStartWorkoutActionSheet(false);
+
+    switch (action) {
+      case 'start-new':
+        history.push('/tabs/workout');
+        break;
+      case 'train-again':
+        console.log('Train a logged workout again - Coming Soon');
+        break;
+      case 'plan-workout':
+        console.log('Plan a workout - Coming Soon');
+        break;
+    }
   };
 
   const handleGoalClick = (goalId: number) => {
@@ -243,6 +266,11 @@ const Dashboard: React.FC = () => {
             </IonItem>
           </IonCardContent>
         </IonCard>
+        <WorkoutActionSheet
+          isOpen={showStartWorkoutActionSheet}
+          onDidDismiss={() => setShowStartWorkoutActionSheet(false)}
+          onAction={handleWorkoutAction}
+        />
       </IonContent>
     </IonPage>
   );

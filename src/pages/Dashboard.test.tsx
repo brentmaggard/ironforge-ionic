@@ -1,6 +1,6 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { IonReactRouter } from '@ionic/react-router';
 import Dashboard from './Dashboard';
 
 // Mock Ionic components
@@ -18,6 +18,7 @@ jest.mock('@ionic/react', () => ({
   IonItem: ({ children }: any) => <div data-testid="ion-item">{children}</div>,
   IonLabel: ({ children }: any) => <div data-testid="ion-label">{children}</div>,
   IonButton: ({ children, ...props }: any) => <button data-testid="ion-button" {...props}>{children}</button>,
+  IonActionSheet: ({ isOpen, header, buttons }: any) => isOpen ? <div data-testid="ion-action-sheet">{header}{buttons.map((b: any) => b.text).join('')}</div> : null,
   IonProgressBar: (props: any) => <div data-testid="ion-progress-bar" {...props}></div>,
   IonAvatar: ({ children }: any) => <div data-testid="ion-avatar">{children}</div>,
 }));
@@ -46,9 +47,9 @@ jest.mock('react-circular-progressbar', () => ({
 }));
 
 const DashboardWrapper = () => (
-  <BrowserRouter>
+  <IonReactRouter>
     <Dashboard />
-  </BrowserRouter>
+  </IonReactRouter>
 );
 
 describe('Dashboard Component', () => {
@@ -103,5 +104,13 @@ describe('Dashboard Component', () => {
     // Check that buttons are properly structured
     const buttons = screen.getAllByTestId('ion-button');
     expect(buttons.length).toBeGreaterThan(0);
+  });
+
+  it('opens the start workout action sheet when "Start Workout" is clicked', () => {
+    render(<DashboardWrapper />);
+    const startWorkoutButton = screen.getByText('Start Workout');
+    fireEvent.click(startWorkoutButton);
+    expect(screen.getByTestId('ion-action-sheet')).toBeInTheDocument();
+    expect(screen.getByText('Start Empty Workout')).toBeInTheDocument();
   });
 });

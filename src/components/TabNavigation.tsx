@@ -4,11 +4,11 @@ import {
   IonTabButton,
   IonIcon,
   IonLabel,
-  IonActionSheet
 } from '@ionic/react';
-import { home, trendingUp, barbell, add, repeat, clipboard, close } from 'ionicons/icons';
+import { home, trendingUp, barbell } from 'ionicons/icons';
 import { useHistory, useLocation } from 'react-router-dom';
 import './TabNavigation.css';
+import WorkoutActionSheet from './WorkoutActionSheet';
 
 const TabNavigation: React.FC = () => {
   const [isWorkoutActionSheetOpen, setIsWorkoutActionSheetOpen] = useState(false);
@@ -61,37 +61,10 @@ const TabNavigation: React.FC = () => {
         </IonTabButton>
       </IonTabBar>
 
-      <IonActionSheet
+      <WorkoutActionSheet
         isOpen={isWorkoutActionSheetOpen}
         onDidDismiss={() => setIsWorkoutActionSheetOpen(false)}
-        cssClass="workout-action-sheet"
-        header="Workout Options"
-        buttons={[
-          {
-            text: 'Start New Workout',
-            icon: add,
-            cssClass: 'workout-action-start',
-            handler: () => handleWorkoutAction('start-new')
-          },
-          {
-            text: 'Train a Logged Workout Again',
-            icon: repeat,
-            cssClass: 'workout-action-repeat',
-            handler: () => handleWorkoutAction('train-again')
-          },
-          {
-            text: 'Plan a Workout',
-            icon: clipboard,
-            cssClass: 'workout-action-plan',
-            handler: () => handleWorkoutAction('plan-workout')
-          },
-          {
-            text: 'Cancel',
-            role: 'cancel',
-            icon: close,
-            cssClass: 'workout-action-cancel'
-          }
-        ]}
+        onAction={handleWorkoutAction}
       />
     </>
   );

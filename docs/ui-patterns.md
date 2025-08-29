@@ -62,3 +62,104 @@
 - **Exercise Page**: Direct IonIcon approach with scoped hover effects
 - **Profile/EditProfile Pages**: Div-based structure with targeted hover styling
 - **Technical Implementation**: Uses `--background-hover: transparent` and `--ripple-color: transparent` to disable default Ionic button backgrounds while maintaining custom circular hover effects
+
+## Component Architecture
+
+- **GlobalHeader**: Centralized header with app branding and user menu
+- **TabNavigation**: Extracted bottom tab navigation for reusability
+- **Page-based routing**: Clean separation of concerns with individual page components
+- **Custom Page Headers**: Each page has its own appropriate header (Progress, Workout, modal pages)
+- **ExerciseCard**: Reusable component for displaying exercise details and sets
+- **RestTimer**: Modernized Ionic-native component for workout rest periods
+- **AddExercise**: Modal component for seamless exercise selection during workouts
+
+## Action Sheets
+
+### WorkoutActionSheet
+
+A reusable action sheet component for initiating workout-related actions.
+
+**File:** `src/components/WorkoutActionSheet.tsx`
+
+**Props:**
+
+*   `isOpen: boolean`: Controls the visibility of the action sheet.
+*   `onDidDismiss: () => void`: A callback function that is called when the action sheet is dismissed.
+*   `onAction: (action: string) => void`: A callback function that is called when an action button is clicked. The `action` string will be one of `'start-new'`, `'train-again'`, or `'plan-workout'`.
+
+**Usage:**
+
+```tsx
+import WorkoutActionSheet from '../components/WorkoutActionSheet';
+
+// ...
+
+const [isOpen, setIsOpen] = useState(false);
+
+const handleAction = (action: string) => {
+  console.log(`Action: ${action}`);
+  setIsOpen(false);
+};
+
+return (
+  <>
+    <IonButton onClick={() => setIsOpen(true)}>Show Action Sheet</IonButton>
+    <WorkoutActionSheet
+      isOpen={isOpen}
+      onDidDismiss={() => setIsOpen(false)}
+      onAction={handleAction}
+    />
+  </>
+);
+```
+
+## Accessibility
+
+- **ARIA Labels**: Descriptive labels for all interactive elements
+- **Screen Reader Support**: Visually hidden text for context and status updates
+- **Focus Management**: Enhanced keyboard navigation with focus-visible styles
+- **Semantic HTML**: Proper use of headings, buttons, and other semantic elements
+
+## Performance Optimization
+
+- **React.memo**: Prevents unnecessary re-renders of components
+- **useCallback**: Memoizes callback functions to optimize child component rendering
+- **Lazy Loading**: Future consideration for route-based code splitting
+- **Image Optimization**: Future consideration for image compression and lazy loading
+
+## PWA Implementation
+
+- **Vite PWA Plugin**: Automatic service worker generation with Workbox
+- **Web App Manifest**: Comprehensive manifest with IronForge branding and theme colors
+- **Offline Support**: Custom offline page and caching strategies
+- **Install Prompt**: Custom hook for cross-platform installation
+
+## Workout Management
+
+- **Action Sheet**: Workout initiation with distinct options
+- **Modal Overlay**: Workout builder interface with custom header
+- **Interactive Sets Grid**: Real-time set completion, editing, and menu actions
+- **State Management**: Dual mode system for planning vs active workouts
+
+## Exercise Library
+
+- **Search & Filter**: Real-time search and segment-based filtering
+- **Multi-select**: Checkbox-based selection for adding multiple exercises
+- **Info Button**: Access to detailed exercise information
+- **Copy Last Workout**: Option to duplicate previous workout sessions
+
+## Profile System
+
+- **Editable Fields**: Inline editing for user profile information
+- **Photo Upload**: Action sheet for camera and photo library access
+- **Settings Navigation**: Links to accessibility, notifications, and other settings
+- **Logout Functionality**: Secure logout with confirmation dialog
+
+## Testing
+
+- **Unit Tests**: Vitest with Testing Library for component testing
+- **E2E Tests**: Cypress for end-to-end user flow testing
+- **Mocking**: Jest mocks for Ionic components and external libraries
+- **Test Coverage**: Comprehensive test suites for all major components and features
+
+*This document is a living reference for the IronForge UI/UX patterns and design system. Please update it as new components and patterns are introduced.*

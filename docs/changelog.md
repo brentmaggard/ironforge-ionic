@@ -597,3 +597,24 @@ Following the RestTimer component modernization, the ExerciseCard component unde
 - **Integration Testing**: Confirmed seamless integration with parent Workout component
 
 This ExerciseCard enhancement establishes a new standard for component development in the IronForge application, demonstrating best practices for TypeScript integration, accessibility implementation, performance optimization, and comprehensive testing strategies.
+### Workout Action Sheet Refactor & Dashboard Integration
+
+To improve code reuse and ensure a consistent user experience, the workout action sheet was refactored into a reusable component and integrated into the Dashboard.
+
+#### Refactoring & Componentization
+- **Created `WorkoutActionSheet.tsx`**: Extracted the `IonActionSheet` from `TabNavigation.tsx` into a new, reusable component.
+- **Props-based API**: The new component accepts `isOpen`, `onDidDismiss`, and `onAction` props for flexible control.
+- **Centralized Logic**: The action sheet's buttons and handlers are now defined in a single location, making them easier to maintain.
+
+#### Dashboard Integration
+- **Replaced Custom Action Sheet**: The custom action sheet in `Dashboard.tsx` was replaced with the new `WorkoutActionSheet` component.
+- **Consistent Behavior**: The "Start Workout" button on the dashboard now opens the exact same action sheet as the "Workout" tab.
+- **Navigation Handling**: The `Dashboard.tsx` component now handles the `onAction` callback to navigate to the workout page when the "Start New Workout" button is clicked.
+
+#### Bug Fixes
+- **Fixed JSX Syntax Error**: Corrected a closing tag error (`</Label>` to `</IonLabel>`) in `Dashboard.tsx`.
+
+#### Benefits
+- **Improved Code Quality**: The new component is more modular, reusable, and easier to maintain.
+- **Consistent User Experience**: Users now see the same workout options regardless of where they start their workout.
+- **Reduced Code Duplication**: The action sheet is now defined in a single place, reducing the overall amount of code.

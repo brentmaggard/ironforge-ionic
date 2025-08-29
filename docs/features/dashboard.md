@@ -1,9 +1,9 @@
 # Dashboard Features
 
 ## Quick Actions Section
-- Start Workout button with plus icon
+- "Start Workout" button opens an action sheet with options to "Start New Workout", "Train a Logged Workout Again", and "Plan a Workout".
 - Browse Exercises button with search icon
-- Clickable cards with console logging
+- Clickable cards with interactive feedback.
 
 ## Swipeable Progress Metrics
 - 6 different fitness metrics
