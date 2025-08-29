@@ -66,15 +66,17 @@ const AppContent: React.FC = () => {
             <Route exact path="/progress">
               <Progress />
             </Route>
-            <Route exact path="/workout">
-              <Workout />
-            </Route>
             <Route exact path="/">
               <Redirect to="/dashboard" />
             </Route>
           </IonRouterOutlet>
           <TabNavigation />
         </IonTabs>
+        
+        {/* Modal-like pages outside tabs */}
+        <Route exact path="/workout">
+          <Workout />
+        </Route>
         <Route exact path="/profile">
           <Profile />
         </Route>

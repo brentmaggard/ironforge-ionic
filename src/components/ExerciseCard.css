@@ -4,6 +4,8 @@
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   --background: var(--ion-card-background, white);
+  position: relative;
+  z-index: 1;
 }
 
 .exercise-card ion-card-title {

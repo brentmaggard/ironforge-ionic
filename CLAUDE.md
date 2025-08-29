@@ -16,9 +16,10 @@ IronForge is a comprehensive fitness tracking application built with Ionic 8 and
 
 ### 1. Component Structure
 - **Dashboard Header**: IronForge header with app branding and user menu (Dashboard page only)
-- **Tab Navigation**: Extracted bottom tab navigation for reusability
-- **Page-based routing**: Clean separation of concerns with individual page components
+- **Tab Navigation**: Extracted bottom tab navigation for main pages with modal support
+- **Modal-based Pages**: Workout and Profile pages as modals outside tab structure
 - **Custom Page Headers**: Each page has its own appropriate header (Progress, Workout, modal pages)
+- **Action Sheet Integration**: Workout tab uses action sheet for workout options
 
 ### 2. Ionic Framework Standards
 - **Always Use Ionic Components**: Prioritize native Ionic components (IonList, IonItem, IonButton, etc.) over HTML divs for proper mobile behavior and theming

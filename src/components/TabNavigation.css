@@ -1,3 +1,14 @@
+/* Tab Navigation Styles */
+ion-tab-bar {
+  position: relative;
+  z-index: 1000;
+}
+
+ion-tab-button {
+  position: relative;
+  z-index: 1001;
+}
+
 /* Workout Action Sheet Styling */
 .workout-action-sheet {
   --backdrop-opacity: 0.6;

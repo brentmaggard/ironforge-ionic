@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   IonTabBar,
   IonTabButton,
@@ -14,6 +14,32 @@ const TabNavigation: React.FC = () => {
   const [isWorkoutActionSheetOpen, setIsWorkoutActionSheetOpen] = useState(false);
   const history = useHistory();
   const location = useLocation();
+
+  // Force tab selection based on current route
+  useEffect(() => {
+    console.log('Current location:', location.pathname);
+    const selectedTab = {
+      '/dashboard': 'tab1',
+      '/progress': 'tab2',
+    }[location.pathname];
+    
+    // Clear any selected tabs when on workout page
+    if (location.pathname === '/workout') {
+      const tabBar = document.querySelector('ion-tab-bar');
+      tabBar?.querySelectorAll('ion-tab-button').forEach((tab) => {
+        (tab as any).selected = false;
+      });
+      return;
+    }
+    
+    if (selectedTab) {
+      const tabBar = document.querySelector('ion-tab-bar');
+      const tab = tabBar?.querySelector(`ion-tab-button[tab="${selectedTab}"]`);
+      if (tab) {
+        (tab as any).selected = true;
+      }
+    }
+  }, [location.pathname]);
 
   const handleWorkoutTabClick = (e: any) => {
     e.preventDefault();
@@ -47,15 +73,41 @@ const TabNavigation: React.FC = () => {
   return (
     <>
       <IonTabBar slot="bottom">
-        <IonTabButton tab="dashboard" href="/dashboard">
+        <IonTabButton 
+          tab="tab1" 
+          href="/dashboard"
+          selected={location.pathname === '/dashboard'}
+          onClick={(e) => {
+            if (location.pathname === '/dashboard') {
+              e.preventDefault();
+              return;
+            }
+            history.push('/dashboard');
+          }}
+        >
           <IonIcon aria-hidden="true" icon={home} />
           <IonLabel>Dashboard</IonLabel>
         </IonTabButton>
-        <IonTabButton tab="progress" href="/progress">
+        <IonTabButton 
+          tab="tab2" 
+          href="/progress"
+          selected={location.pathname === '/progress'}
+          onClick={(e) => {
+            if (location.pathname === '/progress') {
+              e.preventDefault();
+              return;
+            }
+            history.push('/progress');
+          }}
+        >
           <IonIcon aria-hidden="true" icon={trendingUp} />
           <IonLabel>Progress</IonLabel>
         </IonTabButton>
-        <IonTabButton tab="workout" href="#" onClick={handleWorkoutTabClick}>
+        <IonTabButton 
+          tab="workout"
+          href="#"
+          selected={location.pathname === '/workout'}
+          onClick={handleWorkoutTabClick}>
           <IonIcon aria-hidden="true" icon={barbell} />
           <IonLabel>Workout</IonLabel>
         </IonTabButton>

@@ -1,5 +1,99 @@
 # App Routing & Navigation
 
+## Routing Structure
+
+### Tab-based Navigation
+- **Dashboard** (`/dashboard`) - Default route
+- **Progress** (`/progress`) - Analytics and progress tracking
+- Both routes are managed within the `IonTabs` component for seamless tab navigation
+
+### Modal Pages (Outside Tab Structure)
+- **Workout** (`/workout`) - Positioned outside `IonTabs` for modal-like behavior
+- **Profile** (`/profile`) - Modal overlay with independent navigation
+- **Exercise Library** (`/exercise`) - Modal overlay for exercise browsing
+- **Exercise Details** (`/exercise-details/:exerciseId`) - Modal for detailed exercise information
+
+## Navigation Patterns
+
+### Tab Navigation
+- Implemented through `TabNavigation` component
+- Uses `IonTabBar` and `IonTabButton` components
+- Dashboard and Progress tabs use direct routing
+- Workout tab implements action sheet pattern instead of direct navigation
+
+### Action Sheet Integration
+- Workout tab click triggers action sheet instead of direct navigation
+- Options include:
+  - Start New Workout
+  - Train Again (Coming Soon)
+  - Plan Workout (Coming Soon)
+
+### Modal Navigation
+- Modal pages use `IonModal` or similar overlay patterns
+- Maintain visibility of tab navigation where appropriate
+- Proper z-index management for layering modals above content
+
+## Implementation Details
+
+### App.tsx Structure
+```tsx
+<IonReactRouter>
+  <IonRouterOutlet>
+    <IonTabs>
+      {/* Tab-based routes */}
+      <IonRouterOutlet>
+        <Route exact path="/dashboard">
+          <Dashboard />
+        </Route>
+        <Route exact path="/progress">
+          <Progress />
+        </Route>
+        <Route exact path="/">
+          <Redirect to="/dashboard" />
+        </Route>
+      </IonRouterOutlet>
+      <TabNavigation />
+    </IonTabs>
+    
+    {/* Modal-like pages outside tabs */}
+    <Route exact path="/workout">
+      <Workout />
+    </Route>
+    <Route exact path="/profile">
+      <Profile />
+    </Route>
+  </IonRouterOutlet>
+</IonReactRouter>
+```
+
+### TabNavigation Component
+- Manages tab selection state
+- Clears selection when on modal pages
+- Implements action sheet for workout tab
+- Uses proper tab attributes for Ionic integration
+
+## Best Practices
+
+1. **Modal Page Implementation**
+   - Position modals outside `IonTabs` structure
+   - Maintain proper z-index hierarchy
+   - Consider tab visibility requirements
+
+2. **Tab Navigation**
+   - Use appropriate tab attributes
+   - Implement clear visual feedback
+   - Handle navigation state properly
+
+3. **Action Sheet Pattern**
+   - Use for complex navigation decisions
+   - Provide clear action descriptions
+   - Handle dismissal gracefully
+
+4. **Route Management**
+   - Keep tab routes within `IonTabs`
+   - Modal routes outside tab structure
+   - Implement proper route guards when needed
+
 ## App Page Hierarchy
 
 ```

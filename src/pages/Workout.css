@@ -5,7 +5,7 @@
   left: 0;
   width: 100vw;
   height: calc(100vh - 56px); /* Don't cover the tab bar area */
-  z-index: 45000 !important; 
+  z-index: 10; /* Lower z-index to not interfere with tab navigation */
   background: var(--ion-background-color, #f8f9fa);
   animation: slideInFromRight 0.3s ease-out;
 }
