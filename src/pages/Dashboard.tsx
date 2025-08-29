@@ -169,11 +169,11 @@ const Dashboard: React.FC = () => {
                         trailColor: `${item.color}20`
                       })}
                     />
+                    <div className="progress-content">
+                      <IonText className="progress-value">{item.value}</IonText>
+                      <IonText className="progress-label">{item.label}</IonText>
+                    </div>
                   </IonCardContent>
-                  <div className="progress-content">
-                    <IonText className="progress-value">{item.value}</IonText>
-                    <IonText className="progress-label">{item.label}</IonText>
-                  </div>
                   <IonText className="progress-title">
                     <p>{item.title}</p>
                   </IonText>

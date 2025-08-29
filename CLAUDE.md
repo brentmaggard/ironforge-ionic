@@ -750,6 +750,23 @@ The `TabNavigation.tsx` component reimplements native `IonTabBar` functionality:
 This review establishes a roadmap for bringing IronForge into full compliance with Ionic React best practices, ensuring long-term maintainability and optimal user experience.
 
 ---
+
+## Testing & Development Standards
+
+### Test Coverage Requirements
+- **Unit Tests**: Vitest + @testing-library/react for all components
+- **E2E Tests**: Cypress with mobile viewports (375x667 iPhone SE minimum)  
+- **MSW Integration**: Mock service worker for API testing and future backend integration
+- **Performance Testing**: Loading time validation, skeleton timing, infinite scroll behavior
+- **Accessibility Testing**: Screen reader support, ARIA attributes, keyboard navigation
+
+### Performance Optimization Standards
+- **Long Lists**: Always implement IonSkeletonText + IonInfiniteScroll for lists >10 items
+- **Loading States**: Realistic timing (800ms-1.5s) with professional animations
+- **Pagination**: 20-item initial display, 20-item incremental loading
+- **Mobile Performance**: Prevent rendering large datasets simultaneously on mobile devices
+
+---
 *Last Updated: 2025-08-29*
 *Generated with Claude Code*
 

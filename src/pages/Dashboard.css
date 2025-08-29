@@ -111,7 +111,7 @@
 
 .progress-content {
   position: absolute;
-  top: 35%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
@@ -255,19 +255,6 @@
 
 /* Responsive adjustments for mobile */
 @media (max-width: 768px) {
-  .progress-item .circular-progress {
-    width: 70px;
-    height: 70px;
-  }
-  
-  .progress-value {
-    font-size: 0.9rem;
-  }
-  
-  .progress-label {
-    font-size: 0.65rem;
-  }
-  
   .action-card-content {
     padding: 20px 12px;
   }
