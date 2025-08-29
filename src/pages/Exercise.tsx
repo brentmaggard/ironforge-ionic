@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   IonContent,
   IonPage,
@@ -16,7 +16,10 @@ import {
   IonModal,
   IonCheckbox,
   IonChip,
-  IonBadge
+  IonBadge,
+  IonSkeletonText,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent
 } from '@ionic/react';
 import { arrowBack, add, helpCircleOutline, ellipsisVertical, heart, bookmark, share, trash, optionsOutline, person, barbell, walk, accessibility } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
@@ -35,6 +38,9 @@ const Exercise: React.FC = () => {
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
   const [exerciseDetailsOpen, setExerciseDetailsOpen] = useState(false);
   const [selectedExerciseId, setSelectedExerciseId] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [displayCount, setDisplayCount] = useState(20);
+  const pageRef = useRef<HTMLIonPageElement>(null);
 
   const handleBack = () => {
     history.goBack();
@@ -284,6 +290,13 @@ const Exercise: React.FC = () => {
     setActiveMuscleFilter(activeMuscleFilter === muscleGroup ? null : muscleGroup);
   };
 
+  const handleMuscleChipKeyDown = (event: React.KeyboardEvent, muscle: string) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleMuscleChipClick(muscle);
+    }
+  };
+
   const handleApplyFilters = () => {
     // Apply muscle group filter from drawer selections
     if (selectedMuscleGroups.length === 1) {
@@ -295,6 +308,47 @@ const Exercise: React.FC = () => {
       setActiveMuscleFilter(selectedMuscleGroups[0]);
     }
     setFilterDrawerOpen(false);
+  };
+
+  // Simulate initial loading
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Focus management for modal overlay
+  useEffect(() => {
+    if (pageRef.current) {
+      // Focus the first interactive element when modal opens
+      const focusableElement = pageRef.current.querySelector('ion-button, ion-searchbar, input') as HTMLElement;
+      if (focusableElement) {
+        setTimeout(() => {
+          focusableElement.focus();
+        }, 300); // Allow for animation to complete
+      }
+
+      // Focus trap for keyboard navigation
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          handleBack();
+        }
+      };
+
+      document.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, []);
+
+  // Load more exercises for infinite scroll
+  const loadMoreExercises = (event: CustomEvent<void>) => {
+    setTimeout(() => {
+      setDisplayCount(prev => Math.min(prev + 20, exercises.length));
+      (event.target as HTMLIonInfiniteScrollElement).complete();
+    }, 500);
   };
 
   const filteredExercises = exercises.filter(exercise => {
@@ -310,17 +364,17 @@ const Exercise: React.FC = () => {
   });
 
   return (
-    <IonPage className="exercise-page-overlay">
+    <IonPage ref={pageRef} className="exercise-page-overlay" role="dialog" aria-label="Exercise Library">
       <IonHeader className="exercise-header-bar">
         <IonToolbar className="exercise-toolbar">
           <IonButtons slot="start">
-            <IonButton onClick={handleBack} className="back-button" fill="clear">
+            <IonButton onClick={handleBack} className="back-button" fill="clear" aria-label="Back to dashboard">
               <IonIcon icon={arrowBack} className="back-button-icon" />
             </IonButton>
           </IonButtons>
           <IonTitle className="exercise-title">Exercise Library</IonTitle>
           <IonButtons slot="end">
-            <IonButton onClick={handleAddExercise} className="add-button" fill="clear">
+            <IonButton onClick={handleAddExercise} className="add-button" fill="clear" aria-label="Add new exercise">
               <IonIcon icon={add} className="add-button-icon" />
             </IonButton>
           </IonButtons>
@@ -342,54 +396,107 @@ const Exercise: React.FC = () => {
             className="filter-button"
             onClick={() => setFilterDrawerOpen(true)}
             slot="end"
+            aria-label="Open exercise filters"
           >
             <IonIcon icon={optionsOutline} />
           </IonButton>
         </IonItem>
 
         {/* Exercise List */}
-        <IonList className="exercise-list">
-          {filteredExercises.map((exercise, index) => (
-            <IonItem key={index} className="exercise-item">
-              <IonLabel className="exercise-info">
-                <h3 className="exercise-name">{exercise.name}</h3>
-                <div className="workout-count">
-                  <IonBadge color="primary" className="completion-badge">{exercise.completionCount}</IonBadge>
-                  <span className="logged-text">Logged workouts</span>
-                </div>
-                <div className="muscle-groups">
-                  {exercise.muscleGroups.map((muscle, muscleIndex) => (
-                    <IonChip 
-                      key={muscleIndex} 
-                      className={`muscle-group-tag ${activeMuscleFilter === muscle ? 'active' : ''}`}
-                      onClick={() => handleMuscleChipClick(muscle)}
-                    >
-                      <IonLabel>{muscle}</IonLabel>
-                    </IonChip>
-                  ))}
-                </div>
-              </IonLabel>
-              
-              <IonButton
-                fill="clear"
-                className="info-button"
-                onClick={() => handleExerciseInfo(exercise.id)}
-                slot="end"
-              >
-                <IonIcon icon={helpCircleOutline} />
-              </IonButton>
-              
-              <IonButton
-                fill="clear"
-                className="menu-button"
-                onClick={(e) => handleExerciseMenu(e.nativeEvent, exercise.name)}
-                slot="end"
-              >
-                <IonIcon icon={ellipsisVertical} />
-              </IonButton>
-            </IonItem>
-          ))}
-        </IonList>
+        {isLoading ? (
+          <IonList className="exercise-list">
+            {[...Array(5)].map((_, i) => (
+              <IonItem key={i} className="exercise-item">
+                <IonLabel>
+                  <h3><IonSkeletonText animated style={{ width: '60%' }} /></h3>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                    <IonSkeletonText animated style={{ width: '30px', height: '20px' }} />
+                    <IonSkeletonText animated style={{ width: '100px' }} />
+                  </div>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <IonSkeletonText animated style={{ width: '60px', height: '24px', borderRadius: '12px' }} />
+                    <IonSkeletonText animated style={{ width: '80px', height: '24px', borderRadius: '12px' }} />
+                  </div>
+                </IonLabel>
+                <IonSkeletonText animated style={{ width: '24px', height: '24px' }} slot="end" />
+                <IonSkeletonText animated style={{ width: '24px', height: '24px' }} slot="end" />
+              </IonItem>
+            ))}
+          </IonList>
+        ) : (
+          <IonList className="exercise-list">
+            {filteredExercises.slice(0, displayCount).map((exercise, index) => (
+              <IonItem key={index} className="exercise-item">
+                <IonLabel className="exercise-info">
+                  <h3 className="exercise-name">{exercise.name}</h3>
+                  <div className="workout-count">
+                    <IonBadge color="primary" className="completion-badge">{exercise.completionCount}</IonBadge>
+                    <span className="logged-text">Logged workouts</span>
+                  </div>
+                  <div className="muscle-groups">
+                    {exercise.muscleGroups.map((muscle, muscleIndex) => (
+                      <IonChip 
+                        key={muscleIndex} 
+                        className={`muscle-group-tag ${activeMuscleFilter === muscle ? 'active' : ''}`}
+                        onClick={() => handleMuscleChipClick(muscle)}
+                        onKeyDown={(e) => handleMuscleChipKeyDown(e, muscle)}
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`Filter by ${muscle} exercises`}
+                        aria-pressed={activeMuscleFilter === muscle}
+                      >
+                        <IonLabel>{muscle}</IonLabel>
+                      </IonChip>
+                    ))}
+                  </div>
+                </IonLabel>
+                
+                <IonButton
+                  fill="clear"
+                  className="info-button"
+                  onClick={() => handleExerciseInfo(exercise.id)}
+                  slot="end"
+                  aria-label={`View ${exercise.name} details`}
+                >
+                  <IonIcon icon={helpCircleOutline} />
+                </IonButton>
+                
+                <IonButton
+                  fill="clear"
+                  className="menu-button"
+                  onClick={(e) => handleExerciseMenu(e.nativeEvent, exercise.name)}
+                  slot="end"
+                  aria-label={`More options for ${exercise.name}`}
+                >
+                  <IonIcon icon={ellipsisVertical} />
+                </IonButton>
+              </IonItem>
+            ))}
+          </IonList>
+        )}
+
+        {/* Screen reader announcements */}
+        <div 
+          aria-live="polite" 
+          aria-atomic="true" 
+          className="sr-only"
+          aria-label={`Showing ${Math.min(displayCount, filteredExercises.length)} of ${filteredExercises.length} exercises`}
+        >
+          {!isLoading && `${Math.min(displayCount, filteredExercises.length)} exercises found`}
+        </div>
+        
+        {!isLoading && (
+          <IonInfiniteScroll 
+            onIonInfinite={loadMoreExercises} 
+            threshold="100px" 
+            disabled={displayCount >= filteredExercises.length}
+          >
+            <IonInfiniteScrollContent
+              loadingSpinner="bubbles"
+              loadingText="Loading more exercises..."
+            />
+          </IonInfiniteScroll>
+        )}
 
         {/* Exercise Menu Popover */}
         <IonPopover

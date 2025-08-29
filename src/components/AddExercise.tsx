@@ -14,7 +14,10 @@ import {
   IonItem,
   IonCheckbox,
   IonSegment,
-  IonSegmentButton
+  IonSegmentButton,
+  IonSkeletonText,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent
 } from '@ionic/react';
 import { arrowBack, close, helpCircleOutline } from 'ionicons/icons';
 import './AddExercise.css';
@@ -42,6 +45,8 @@ const AddExercise: React.FC<AddExerciseProps> = ({ isOpen, onClose, onAddExercis
   const [searchText, setSearchText] = useState('');
   const [selectedSegment, setSelectedSegment] = useState<string>('most-used');
   const [copyFromLastWorkout, setCopyFromLastWorkout] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [displayCount, setDisplayCount] = useState(20);
 
   // Reusing the same exercise data from Exercise.tsx
   const exercises = [
@@ -266,6 +271,26 @@ const AddExercise: React.FC<AddExerciseProps> = ({ isOpen, onClose, onAddExercis
     return matchesSearch;
   });
 
+  // Simulate initial loading
+  React.useEffect(() => {
+    if (isOpen) {
+      setIsLoading(true);
+      setDisplayCount(20);
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 800);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  // Load more exercises for infinite scroll
+  const loadMoreExercises = (event: CustomEvent<void>) => {
+    setTimeout(() => {
+      setDisplayCount(prev => Math.min(prev + 20, filteredExercises.length));
+      (event.target as HTMLIonInfiniteScrollElement).complete();
+    }, 500);
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -273,7 +298,7 @@ const AddExercise: React.FC<AddExerciseProps> = ({ isOpen, onClose, onAddExercis
       <IonHeader className="add-exercise-header-bar">
         <IonToolbar className="add-exercise-toolbar">
           <IonButtons slot="start">
-            <IonButton onClick={onClose} className="back-button" fill="clear">
+            <IonButton onClick={onClose} className="back-button" fill="clear" aria-label="Cancel adding exercise">
               <IonIcon icon={arrowBack} />
             </IonButton>
           </IonButtons>
@@ -283,6 +308,7 @@ const AddExercise: React.FC<AddExerciseProps> = ({ isOpen, onClose, onAddExercis
               onClick={onClose} 
               className="close-button" 
               fill="clear"
+              aria-label="Close add exercise"
             >
               <IonIcon icon={close} />
             </IonButton>
@@ -327,30 +353,54 @@ const AddExercise: React.FC<AddExerciseProps> = ({ isOpen, onClose, onAddExercis
         </IonSegment>
 
         {/* Exercise List */}
-        <IonList className="exercise-list">
-          {filteredExercises.map((exercise) => (
-            <IonItem 
-              key={exercise.id} 
-              className="exercise-item"
-              button
-              onClick={(e) => handleSelectExercise(exercise.id, e)}
-            >
-              <IonLabel className="exercise-label">
-                <h3 className="exercise-name">{exercise.name}</h3>
-              </IonLabel>
-              
-              <div className="exercise-actions">
-                <IonButton
-                  fill="clear"
-                  className="info-button"
-                  onClick={(e) => handleExerciseInfo(exercise.id, e)}
-                >
-                  <IonIcon icon={helpCircleOutline} />
-                </IonButton>
-              </div>
-            </IonItem>
-          ))}
-        </IonList>
+        {isLoading ? (
+          <IonList className="exercise-list">
+            {[...Array(8)].map((_, i) => (
+              <IonItem key={i} className="exercise-item">
+                <IonLabel>
+                  <h3><IonSkeletonText animated style={{ width: '65%' }} /></h3>
+                </IonLabel>
+                <IonSkeletonText animated style={{ width: '24px', height: '24px' }} slot="end" />
+              </IonItem>
+            ))}
+          </IonList>
+        ) : (
+          <IonList className="exercise-list">
+            {filteredExercises.slice(0, displayCount).map((exercise) => (
+              <IonItem 
+                key={exercise.id} 
+                className="exercise-item"
+                button
+                onClick={(e) => handleSelectExercise(exercise.id, e)}
+              >
+                <IonLabel className="exercise-label">
+                  <h3 className="exercise-name">{exercise.name}</h3>
+                </IonLabel>
+                
+                <div className="exercise-actions">
+                  <IonButton
+                    fill="clear"
+                    className="info-button"
+                    onClick={(e) => handleExerciseInfo(exercise.id, e)}
+                    aria-label={`View ${exercise.name} details`}
+                  >
+                    <IonIcon icon={helpCircleOutline} />
+                  </IonButton>
+                </div>
+              </IonItem>
+            ))}
+          </IonList>
+        )}
+        
+        {!isLoading && (
+          <IonInfiniteScroll 
+            onIonInfinite={loadMoreExercises} 
+            threshold="100px" 
+            disabled={displayCount >= filteredExercises.length}
+          >
+            <IonInfiniteScrollContent loadingSpinner="bubbles" loadingText="Loading more exercises..." />
+          </IonInfiniteScroll>
+        )}
 
       </IonContent>
     </IonPage>

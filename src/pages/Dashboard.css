@@ -48,20 +48,17 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 16px;
+  font-size: 28px;
 }
 
 .action-icon.green {
   background: var(--icon-background-green);
-  color: var(--progress-green);
+  --color: var(--progress-green);
 }
 
 .action-icon.blue {
   background: var(--icon-background-blue);
-  color: var(--progress-blue);
-}
-
-.action-icon ion-icon {
-  font-size: 28px;
+  --color: var(--progress-blue);
 }
 
 .action-card h3 {
@@ -99,6 +96,10 @@
   align-items: center;
   text-align: center;
   position: relative;
+  --background: transparent;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
 }
 
 .circular-progress {
@@ -123,13 +124,13 @@
 .progress-value {
   font-size: 1rem;
   font-weight: 700;
-  color: var(--ion-color-dark);
+  --color: var(--ion-color-dark);
   line-height: 1;
 }
 
 .progress-label {
   font-size: 0.7rem;
-  color: var(--ion-color-medium);
+  --color: var(--ion-color-medium);
   line-height: 1;
 }
 
@@ -164,9 +165,6 @@
   align-items: center;
   justify-content: center;
   margin-right: 16px;
-}
-
-.goal-icon ion-icon {
   font-size: 24px;
 }
 

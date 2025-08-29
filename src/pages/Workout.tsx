@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   IonContent,
   IonPage,
@@ -44,6 +44,7 @@ const Workout: React.FC = () => {
   const [editingSet, setEditingSet] = useState<SetEditingState | null>(null);
   const [editValue, setEditValue] = useState('');
   const [setMenuOpen, setSetMenuOpen] = useState<{open: boolean, event?: Event, exerciseIndex?: number, setIndex?: number}>({open: false});
+  const pageRef = useRef<HTMLIonPageElement>(null);
 
   // Timer effect - starts when component mounts, pauses when isPaused is true
   useEffect(() => {
@@ -62,6 +63,30 @@ const Workout: React.FC = () => {
       setWorkoutPaused(false);
     };
   }, [setWorkoutPaused]);
+
+  // Focus management for modal overlay
+  useEffect(() => {
+    if (pageRef.current) {
+      const focusableElement = pageRef.current.querySelector('ion-button') as HTMLElement;
+      if (focusableElement) {
+        setTimeout(() => {
+          focusableElement.focus();
+        }, 300);
+      }
+
+      // Escape key handler for modal
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          handleCloseClick();
+        }
+      };
+
+      document.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, []);
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
@@ -236,11 +261,11 @@ const Workout: React.FC = () => {
   };
 
   return (
-    <IonPage className="workout-page-overlay">
+    <IonPage ref={pageRef} className="workout-page-overlay" role="dialog" aria-label="Workout Builder">
       <IonHeader className="workout-header-bar">
         <IonToolbar className="workout-toolbar">
           <IonButtons slot="start">
-            <IonButton onClick={handleCloseClick} className="close-button" fill="clear">
+            <IonButton onClick={handleCloseClick} className="close-button" fill="clear" aria-label="Close workout">
               <IonIcon icon={close} />
             </IonButton>
           </IonButtons>
@@ -249,17 +274,17 @@ const Workout: React.FC = () => {
           </IonTitle>
           <IonButtons slot="end">
             {/* Pause/Resume Button */}
-            <IonButton onClick={handlePauseResume} className="pause-resume-button" fill="clear">
+            <IonButton onClick={handlePauseResume} className="pause-resume-button" fill="clear" aria-label={isPaused ? "Resume workout" : "Pause workout"}>
               <IonIcon icon={isPaused ? play : pause} />
             </IonButton>
             
             {/* Settings Button */}
-            <IonButton onClick={handleSettingsClick} className="settings-button" fill="clear">
+            <IonButton onClick={handleSettingsClick} className="settings-button" fill="clear" aria-label="Workout settings">
               <IonIcon icon={settings} />
             </IonButton>
             
             {/* Complete Workout Button */}
-            <IonButton onClick={handleCompleteWorkout} className="complete-button" fill="clear">
+            <IonButton onClick={handleCompleteWorkout} className="complete-button" fill="clear" aria-label="Complete workout">
               <IonIcon icon={checkmark} style={{ color: '#4CAF50' }} />
             </IonButton>
           </IonButtons>
@@ -267,6 +292,15 @@ const Workout: React.FC = () => {
       </IonHeader>
       
       <IonContent className="workout-content">
+        
+        {/* Screen reader announcement for workout timer */}
+        <div 
+          aria-live="polite" 
+          aria-atomic="false" 
+          className="sr-only"
+        >
+          Workout time: {formatTime(elapsedTime)}
+        </div>
         
         {/* Exercise Cards */}
         {exercises.map((exercise, index) => (
@@ -362,7 +396,7 @@ const Workout: React.FC = () => {
             <IonText className="pause-timer">
               <h5>{formatTime(elapsedTime)}</h5>
             </IonText>
-            <IonButton className="pause-play-icon" fill="clear" onClick={handlePauseResume}>
+            <IonButton className="pause-play-icon" fill="clear" onClick={handlePauseResume} aria-label="Resume workout">
               <IonIcon icon={play} />
             </IonButton>
           </div>

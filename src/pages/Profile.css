@@ -57,6 +57,11 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
+.back-button:focus-visible, .edit-button:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
 .back-button-circle ion-icon, .edit-button-circle ion-icon {
   font-size: 22px;
   color: white;

@@ -90,6 +90,18 @@
   transform: scale(1.05);
 }
 
+/* Focus indicators for timer buttons */
+.rest-timer-reset:focus-visible,
+.rest-timer-control:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+.rest-timer-reset:focus,
+.rest-timer-control:focus {
+  --background: rgba(255, 255, 255, 0.3) !important;
+}
+
 /* Responsive adjustments */
 @media (max-width: 480px) {
   .rest-timer-overlay {

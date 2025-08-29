@@ -276,6 +276,28 @@
   --background-hover: rgba(76, 175, 80, 0.2) !important;
 }
 
+/* Focus indicators for header buttons */
+.workout-page-overlay .pause-resume-button:focus-visible,
+.workout-page-overlay .settings-button:focus-visible,
+.workout-page-overlay .complete-button:focus-visible,
+.workout-page-overlay .close-button:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Pause Overlay */
 .pause-overlay {
   position: fixed;

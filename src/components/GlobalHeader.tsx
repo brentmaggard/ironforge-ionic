@@ -72,7 +72,7 @@ const GlobalHeader: React.FC = () => {
         </IonButtons>
         <IonTitle>IronForge</IonTitle>
         <IonButtons slot="end">
-          <IonButton id="menu-trigger" onClick={() => setIsMenuOpen(true)}>
+          <IonButton id="menu-trigger" onClick={() => setIsMenuOpen(true)} aria-label="Open main menu">
             <IonIcon icon={menuOutline} />
           </IonButton>
           <IonPopover

@@ -103,6 +103,17 @@ const RestTimer: React.FC<RestTimerProps> = ({
     }, 500); // Small delay to show 0:00
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent, action: 'reset' | 'pause') => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      if (action === 'reset') {
+        handleReset();
+      } else {
+        handlePauseResume();
+      }
+    }
+  };
+
   if (!isVisible || workoutPaused) {
     return null;
   }
@@ -117,6 +128,8 @@ const RestTimer: React.FC<RestTimerProps> = ({
                 fill="clear"
                 className="rest-timer-reset"
                 onClick={handleReset}
+                onKeyDown={(e) => handleKeyDown(e, 'reset')}
+                aria-label="Reset rest timer"
               >
                 <IonIcon icon={refresh} />
               </IonButton>
@@ -135,6 +148,8 @@ const RestTimer: React.FC<RestTimerProps> = ({
                 fill="clear"
                 className="rest-timer-control"
                 onClick={handlePauseResume}
+                onKeyDown={(e) => handleKeyDown(e, 'pause')}
+                aria-label={isPaused ? "Resume rest timer" : "Pause rest timer"}
               >
                 <IonIcon icon={isPaused ? play : pause} />
               </IonButton>

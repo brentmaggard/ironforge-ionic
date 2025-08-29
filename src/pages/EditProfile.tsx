@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   IonContent,
   IonPage,
@@ -33,6 +33,7 @@ const EditProfile: React.FC = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [showActionSheet, setShowActionSheet] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const pageRef = useRef<HTMLIonPageElement>(null);
 
   const handleBack = () => {
     history.goBack();
@@ -64,12 +65,36 @@ const EditProfile: React.FC = () => {
     }
   };
 
+  // Focus management for modal overlay
+  useEffect(() => {
+    if (pageRef.current) {
+      const focusableElement = pageRef.current.querySelector('input, ion-input') as HTMLElement;
+      if (focusableElement) {
+        setTimeout(() => {
+          focusableElement.focus();
+        }, 300);
+      }
+
+      // Escape key handler for modal
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          handleBack();
+        }
+      };
+
+      document.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, []);
+
   return (
-    <IonPage className="edit-profile-page-overlay">
+    <IonPage ref={pageRef} className="edit-profile-page-overlay" role="dialog" aria-label="Edit Profile">
       <IonHeader className="edit-profile-header-bar">
         <IonToolbar className="edit-profile-toolbar">
           <IonButtons slot="start">
-            <IonButton onClick={handleBack} className="back-button" fill="clear">
+            <IonButton onClick={handleBack} className="back-button" fill="clear" aria-label="Cancel editing">
               <div className="back-button-circle">
                 <IonIcon icon={arrowBack} />
               </div>
@@ -77,7 +102,7 @@ const EditProfile: React.FC = () => {
           </IonButtons>
           <IonTitle className="edit-profile-title">Edit Profile</IonTitle>
           <IonButtons slot="end">
-            <IonButton onClick={handleSave} className="save-button" fill="clear">
+            <IonButton onClick={handleSave} className="save-button" fill="clear" aria-label="Save profile changes">
               <div className="save-button-circle">
                 <IonIcon icon={checkmark} />
               </div>
@@ -91,13 +116,15 @@ const EditProfile: React.FC = () => {
         {/* Profile Photo Section */}
         <div className="edit-profile-photo-section">
           <div className="edit-profile-photo-wrapper">
-            <IonAvatar className="edit-main-profile-avatar" onClick={() => setShowActionSheet(true)}>
-              {profileImage ? (
-                <img src={profileImage} alt="Profile" />
-              ) : (
-                <IonIcon icon={person} className="edit-main-avatar-placeholder" />
-              )}
-            </IonAvatar>
+            <IonButton fill="clear" onClick={() => setShowActionSheet(true)} aria-label="Change profile photo" className="edit-avatar-button">
+              <IonAvatar className="edit-main-profile-avatar">
+                {profileImage ? (
+                  <img src={profileImage} alt="Profile" />
+                ) : (
+                  <IonIcon icon={person} className="edit-main-avatar-placeholder" />
+                )}
+              </IonAvatar>
+            </IonButton>
             
             <IonButton 
               fill="solid" 

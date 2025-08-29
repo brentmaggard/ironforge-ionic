@@ -51,11 +51,21 @@
   margin-bottom: 12px;
 }
 
+.edit-avatar-button {
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  margin: 0;
+  --background-hover: transparent;
+  --background-focused: transparent;
+  --color: inherit;
+}
+
 .edit-main-profile-avatar {
   width: 120px;
   height: 120px;
   border: 4px solid var(--ion-color-light);
-  cursor: pointer;
   transition: transform 0.2s ease;
   display: flex;
   align-items: center;
@@ -63,7 +73,7 @@
   background: var(--ion-color-light);
 }
 
-.edit-main-profile-avatar:hover {
+.edit-avatar-button:hover .edit-main-profile-avatar {
   transform: scale(1.05);
 }
 
@@ -120,6 +130,11 @@
 
 .back-button:hover .back-button-circle, .save-button:hover .save-button-circle {
   background: rgba(255, 255, 255, 0.3);
+}
+
+.back-button:focus-visible, .save-button:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
 }
 
 .back-button-circle ion-icon, .save-button-circle ion-icon {

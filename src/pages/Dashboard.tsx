@@ -121,9 +121,7 @@ const Dashboard: React.FC = () => {
             <IonCol size="6">
               <IonCard className="action-card" button onClick={() => handleQuickAction('Start Workout')}>
                 <IonCardContent className="action-card-content">
-                  <div className="action-icon green">
-                    <IonIcon icon={add} />
-                  </div>
+                  <IonIcon icon={add} slot="start" color="success" className="action-icon green" />
                   <IonText>
                     <h3>Start Workout</h3>
                     <p>Begin a new workout</p>
@@ -134,9 +132,7 @@ const Dashboard: React.FC = () => {
             <IonCol size="6">
               <IonCard className="action-card" button onClick={() => handleQuickAction('Browse Exercises')}>
                 <IonCardContent className="action-card-content">
-                  <div className="action-icon blue">
-                    <IonIcon icon={search} />
-                  </div>
+                  <IonIcon icon={search} slot="start" color="primary" className="action-icon blue" />
                   <IonText>
                     <h3>Browse Exercises</h3>
                     <p>52+ exercises</p>
@@ -163,8 +159,8 @@ const Dashboard: React.FC = () => {
           >
             {progressItems.map((item, index) => (
               <SwiperSlide key={index}>
-                <div className="progress-item">
-                  <div className="circular-progress">
+                <IonCard className="progress-item">
+                  <IonCardContent className="circular-progress">
                     <CircularProgressbar
                       value={item.progress}
                       text=""
@@ -173,15 +169,15 @@ const Dashboard: React.FC = () => {
                         trailColor: `${item.color}20`
                       })}
                     />
-                  </div>
+                  </IonCardContent>
                   <div className="progress-content">
-                    <div className="progress-value">{item.value}</div>
-                    <div className="progress-label">{item.label}</div>
+                    <IonText className="progress-value">{item.value}</IonText>
+                    <IonText className="progress-label">{item.label}</IonText>
                   </div>
                   <IonText className="progress-title">
                     <p>{item.title}</p>
                   </IonText>
-                </div>
+                </IonCard>
               </SwiperSlide>
             ))}
           </Swiper>
@@ -202,20 +198,18 @@ const Dashboard: React.FC = () => {
             <IonCard key={goal.id} className="goal-card" button onClick={() => handleGoalClick(goal.id)}>
               <IonCardContent>
                 <IonItem lines="none" className="goal-content">
-                  <div className="goal-icon" slot="start" style={{ backgroundColor: `${goal.color}20` }}>
-                    <IonIcon icon={goal.icon} style={{ color: goal.color }} />
-                  </div>
+                  <IonIcon icon={goal.icon} slot="start" className="goal-icon" style={{ backgroundColor: `${goal.color}20`, color: goal.color }} />
                   <IonLabel className="goal-info">
                     <h3>{goal.title}</h3>
                     <p>{goal.current} {goal.unit} → {goal.target} {goal.unit}</p>
                   </IonLabel>
                   <div className="goal-stats" slot="end">
-                    <IonText className="progress-percentage">
+                    <IonLabel className="progress-percentage">
                       {goal.progress}%
-                    </IonText>
-                    <IonText className="days-left">
+                    </IonLabel>
+                    <IonLabel className="days-left">
                       <p>{goal.daysLeft} days left</p>
-                    </IonText>
+                    </IonLabel>
                   </div>
                 </IonItem>
                 <IonProgressBar value={goal.progress / 100} color="warning" className="goal-progress" />

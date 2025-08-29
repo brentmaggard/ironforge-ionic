@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   IonContent,
   IonPage,
@@ -24,6 +24,7 @@ import './Profile.css';
 const Profile: React.FC = () => {
   const history = useHistory();
   const [profileImage] = useState<string | null>(null);
+  const pageRef = useRef<HTMLIonPageElement>(null);
 
   const handleBack = () => {
     history.goBack();
@@ -33,12 +34,36 @@ const Profile: React.FC = () => {
     history.push('/edit-profile');
   };
 
+  // Focus management for modal overlay
+  useEffect(() => {
+    if (pageRef.current) {
+      const focusableElement = pageRef.current.querySelector('ion-button') as HTMLElement;
+      if (focusableElement) {
+        setTimeout(() => {
+          focusableElement.focus();
+        }, 300);
+      }
+
+      // Escape key handler for modal
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          handleBack();
+        }
+      };
+
+      document.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, []);
+
   return (
-    <IonPage className="profile-page-overlay">
+    <IonPage ref={pageRef} className="profile-page-overlay" role="dialog" aria-label="User Profile">
       <IonHeader className="profile-header-bar">
         <IonToolbar className="profile-toolbar">
           <IonButtons slot="start">
-            <IonButton onClick={handleBack} className="back-button" fill="clear">
+            <IonButton onClick={handleBack} className="back-button" fill="clear" aria-label="Back to dashboard">
               <div className="back-button-circle">
                 <IonIcon icon={arrowBack} />
               </div>
@@ -46,7 +71,7 @@ const Profile: React.FC = () => {
           </IonButtons>
           <IonTitle className="profile-title">My Profile</IonTitle>
           <IonButtons slot="end">
-            <IonButton onClick={handleEditProfile} className="edit-button" fill="clear">
+            <IonButton onClick={handleEditProfile} className="edit-button" fill="clear" aria-label="Edit profile">
               <div className="edit-button-circle">
                 <IonIcon icon={pencil} />
               </div>

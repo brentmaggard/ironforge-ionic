@@ -261,11 +261,11 @@ const ExerciseDetails: React.FC<ExerciseDetailsProps> = ({ exerciseId, isOpen, o
 
   if (!exercise) {
     return (
-      <IonPage className="exercise-details-page-overlay">
+      <IonPage className="exercise-details-page-overlay" role="dialog" aria-label="Exercise Details">
         <IonHeader className="exercise-details-header-bar">
           <IonToolbar className="exercise-details-toolbar">
             <IonButtons slot="start">
-              <IonButton onClick={handleClose} className="close-button" fill="clear">
+              <IonButton onClick={handleClose} className="close-button" fill="clear" aria-label="Close exercise details">
                 <IonIcon icon={close} className="close-button-icon" />
               </IonButton>
             </IonButtons>
@@ -287,11 +287,11 @@ const ExerciseDetails: React.FC<ExerciseDetailsProps> = ({ exerciseId, isOpen, o
   }
 
   return (
-    <IonPage className="exercise-details-page-overlay">
+    <IonPage className="exercise-details-page-overlay" role="dialog" aria-label="Exercise Details">
       <IonHeader className="exercise-details-header-bar">
         <IonToolbar className="exercise-details-toolbar">
           <IonButtons slot="start">
-            <IonButton onClick={handleClose} className="close-button" fill="clear">
+            <IonButton onClick={handleClose} className="close-button" fill="clear" aria-label="Close exercise details">
               <IonIcon icon={close} className="close-button-icon" />
             </IonButton>
           </IonButtons>
@@ -400,6 +400,7 @@ const ExerciseDetails: React.FC<ExerciseDetailsProps> = ({ exerciseId, isOpen, o
                       handleSimilarExerciseInfo(similarExercise.id);
                     }}
                     slot="end"
+                    aria-label={`View ${similarExercise.name} details`}
                   >
                     <IonIcon icon={helpCircleOutline} />
                   </IonButton>
