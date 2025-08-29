@@ -20,6 +20,12 @@
 - Empty state with motivational messaging and first exercise CTA
 - Floating Action Button for adding exercises during workout building
 
+### Add Warm-up Set Functionality
+- **"Warm-up" Button**: A small button with a plus icon and "Warm-up" text is placed above the set list, left-aligned.
+- **Dynamic Warm-up Set Addition**: When pressed, it adds a new warm-up set above the first working set.
+- **Visual Distinction**: Warm-up sets are visually distinct with a person icon in the set number column and a lighter background color.
+- **Default Values**: Warm-up sets are initialized with default reps and weight (half of the first working set's values).
+
 ## Workout State Management
 - Planning vs Active workout modes with visual indicators
 - Set completion tracking with interactive buttons
@@ -57,7 +63,7 @@
 ## Interactive Sets Grid Implementation
 
 ### Interactive Set Completion System
-- **Clickable Set Numbers** - Each set number becomes an interactive button for marking set completion status
+- **Clickable Set Numbers** - Each set number becomes an interactive button for marking set completion status, including warm-up sets.
 - **Visual Completion States** - Completed sets display with green border, faded green background, and green text while maintaining set number visibility
 - **Proper Ionic Buttons** - Replaced generic divs with IonButton components using `fill="clear"` for native touch interactions
 - **Circular Design** - 32px circular buttons with `--border-radius: 50%` and proper 2px borders for professional appearance

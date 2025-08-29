@@ -195,6 +195,22 @@ const Workout: React.FC = () => {
     setExercises(updatedExercises);
   };
 
+  const handleAddWarmupSet = (exerciseIndex: number) => {
+    const updatedExercises = [...exercises];
+    const exercise = updatedExercises[exerciseIndex];
+    const firstSet = exercise.sets[0] || { reps: 12, weight: 50, completed: false };
+
+    const newSet = {
+      reps: Math.round(firstSet.reps / 2),
+      weight: Math.round(firstSet.weight / 2),
+      completed: false,
+      type: 'warm-up' as const
+    };
+
+    exercise.sets.unshift(newSet);
+    setExercises(updatedExercises);
+  };
+
   const handleSetComplete = (exerciseIndex: number, setIndex: number) => {
     const updatedExercises = [...exercises];
     const wasCompleted = updatedExercises[exerciseIndex].sets[setIndex].completed;
@@ -312,6 +328,7 @@ const Workout: React.FC = () => {
             onSetEdit={handleEditSet}
             onSetMenu={handleSetMenu}
             onAddSet={handleAddSet}
+            onAddWarmupSet={handleAddWarmupSet}
             isWorkoutActive={workoutStarted}
           />
         ))}

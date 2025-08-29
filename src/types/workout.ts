@@ -7,6 +7,7 @@ export interface WorkoutSet {
   reps: number;
   weight: number;
   completed: boolean;
+  type?: 'warm-up' | 'normal';
 }
 
 export type EditField = 'reps' | 'weight';
