@@ -23,7 +23,7 @@ interface ExerciseCardProps {
   onAddSet: (exerciseIndex: number) => void;
   onAddWarmupSet: (exerciseIndex: number) => void;
   onExerciseHelp?: (exerciseIndex: number) => void;
-  onExerciseMenu?: (event: Event, exerciseIndex: number) => void;
+  onOpenExerciseMenu: (exerciseId: string, exerciseIndex: number) => void;
   isWorkoutActive?: boolean;
 }
 
@@ -36,7 +36,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
   onAddSet,
   onAddWarmupSet,
   onExerciseHelp,
-  onExerciseMenu,
+  onOpenExerciseMenu,
   isWorkoutActive = true
 }) => {
   // Memoized handler functions
@@ -66,11 +66,9 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
     }
   }, [exerciseIndex, onExerciseHelp]);
 
-  const handleExerciseMenu = useCallback((event: React.MouseEvent) => {
-    if (onExerciseMenu) {
-      onExerciseMenu(event.nativeEvent, exerciseIndex);
-    }
-  }, [exerciseIndex, onExerciseMenu]);
+  const handleExerciseMenu = useCallback(() => {
+    onOpenExerciseMenu(exercise.id.toString(), exerciseIndex);
+  }, [exercise.id, exerciseIndex, onOpenExerciseMenu]);
 
   const workingSets = exercise.sets.filter(set => set.type !== 'warm-up');
 
@@ -90,16 +88,14 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
                 <IonIcon icon={helpCircleOutline} />
               </IonButton>
             )}
-            {onExerciseMenu && (
-              <IonButton
-                fill="clear"
-                className="exercise-menu-button"
-                onClick={handleExerciseMenu}
-                aria-label={`More options for ${exercise.name}`}
-              >
-                <IonIcon icon={ellipsisVertical} />
-              </IonButton>
-            )}
+            <IonButton
+              fill="clear"
+              className="exercise-menu-button"
+              onClick={handleExerciseMenu}
+              aria-label={`More options for ${exercise.name}`}
+            >
+              <IonIcon icon={ellipsisVertical} />
+            </IonButton>
           </div>
         </div>
       </IonCardHeader>

@@ -1,0 +1,210 @@
+/* Full-screen overlay modal with transparent background and blur */
+.exercise-menu-modal {
+  --width: 100%;
+  --height: 100%;
+  --border-radius: 0;
+  --backdrop-opacity: 0;
+}
+
+/* Custom backdrop with transparent blur effect */
+.exercise-menu-modal::part(backdrop) {
+  background: rgba(0, 0, 0, 0.15) !important;
+  backdrop-filter: blur(15px) !important;
+  -webkit-backdrop-filter: blur(15px) !important;
+}
+
+/* Ensure modal content is transparent with blur */
+.exercise-menu-modal::part(content) {
+  background: rgba(var(--ion-background-color-rgb, 255, 255, 255), 0.85) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+}
+
+.exercise-menu-content {
+  --background: transparent;
+  --color: var(--ion-text-color);
+  --padding-top: 12px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-bottom: 20px;
+}
+
+/* Header styling using Ionic components */
+.exercise-menu-modal ion-header {
+  --background: transparent;
+}
+
+.exercise-menu-modal ion-toolbar {
+  --background: rgba(var(--ion-background-color-rgb, 255, 255, 255), 0.95);
+  --border-color: var(--ion-color-step-150);
+  --border-width: 0 0 1px 0;
+}
+
+.exercise-menu-modal ion-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--ion-text-color);
+}
+
+/* Cards use Ionic theming with solid background */
+.exercise-menu-modal ion-card {
+  --background: var(--ion-card-background, var(--ion-background-color, #ffffff));
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  margin-bottom: 6px;
+}
+
+.exercise-menu-modal ion-card-content {
+  padding: 8px;
+}
+
+.exercise-menu-modal ion-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ion-text-color);
+  margin: 0;
+}
+
+.exercise-menu-modal ion-card-header {
+  padding: 12px 16px 8px 16px;
+}
+
+
+/* Stats items */
+.stat-item {
+  --background: transparent;
+  --padding-start: 8px;
+  --padding-end: 8px;
+}
+
+.stat-item ion-label {
+  text-align: center;
+  color: var(--ion-text-color);
+}
+
+.premium-label {
+  color: var(--ion-color-danger);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-top: 4px;
+}
+
+.default-label {
+  color: var(--ion-color-medium);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* List items styling - ultra compact */
+.exercise-menu-modal ion-list {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+.exercise-menu-modal ion-item {
+  --background: transparent;
+  --color: var(--ion-text-color);
+  --border-color: transparent;
+  --padding-start: 12px;
+  --padding-end: 8px;
+  --min-height: 24px;
+  --padding-top: 1px;
+  --padding-bottom: 1px;
+  margin-bottom: 0;
+  border-radius: 6px;
+}
+
+.exercise-menu-modal ion-item:hover {
+  --background: var(--ion-color-step-50);
+}
+
+.exercise-menu-modal ion-item ion-icon {
+  color: var(--ion-color-medium);
+  margin-right: 12px;
+}
+
+.exercise-menu-modal ion-item ion-label {
+  color: var(--ion-text-color);
+  font-weight: 500;
+}
+
+/* Push chevron forward icons more to the right */
+.exercise-menu-modal ion-item ion-icon[slot="end"] {
+  margin-left: auto;
+  margin-right: 4px;
+}
+
+/* Toggle group styling */
+.toggle-group {
+  min-width: 120px;
+}
+
+.toggle-group ion-col {
+  padding: 4px;
+}
+
+.toggle-group ion-label {
+  font-size: 0.75rem;
+  color: var(--ion-color-medium);
+  margin-bottom: 4px;
+  display: block;
+}
+
+.toggle-group ion-toggle {
+  --handle-width: 16px;
+  --handle-height: 16px;
+  --track-width: 32px;
+  --track-height: 20px;
+}
+
+/* Footer styling using Ionic components */
+.exercise-menu-modal ion-footer ion-toolbar {
+  --background: rgba(var(--ion-background-color-rgb, 255, 255, 255), 0.9);
+  --border-color: var(--ion-color-step-150);
+  --border-width: 1px 0 0 0;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  padding: 12px 16px;
+}
+
+/* Actions section without card */
+.actions-section {
+  margin: 12px 0;
+  padding: 0 16px;
+}
+
+.change-exercise-button {
+  --border-color: var(--ion-color-primary);
+  --color: var(--ion-color-primary);
+  --border-width: 2px;
+  font-weight: 600;
+}
+
+.close-button {
+  --color: var(--ion-color-medium);
+  font-weight: 500;
+}
+
+/* Essential mobile adjustments */
+@media (max-width: 480px) {
+  .exercise-menu-content {
+    --padding-start: 12px;
+    --padding-end: 12px;
+  }
+  
+  .toggle-group {
+    min-width: 100px;
+  }
+  
+  .exercise-menu-modal ion-card-header {
+    padding: 8px 12px 6px 12px;
+  }
+  
+  .exercise-menu-modal ion-footer ion-toolbar {
+    padding: 10px 12px;
+  }
+}

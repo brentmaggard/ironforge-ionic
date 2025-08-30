@@ -19,16 +19,17 @@ import {
   IonAlert,
   IonActionSheet,
   IonPopover,
-  IonInput,
   IonList
 } from '@ionic/react';
 import { close, add, checkmark, time, barbell, flame, pause, play, settings } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import AddExercise from '../components/AddExercise';
 import ExerciseCard from '../components/ExerciseCard';
+import ExerciseMenuModal from '../components/ExerciseMenuModal';
 import ExerciseDetails from './ExerciseDetails';
 import { useRestTimer } from '../contexts/RestTimerContext';
 import { WorkoutExercise, EditField, SetEditingState } from '../types/workout';
+import { ExerciseMenuState } from '../types/exercise-menu';
 import './Workout.css';
 
 const Workout: React.FC = () => {
@@ -47,7 +48,7 @@ const Workout: React.FC = () => {
   const [setMenuOpen, setSetMenuOpen] = useState<{open: boolean, event?: Event, exerciseIndex?: number, setIndex?: number}>({open: false});
   const [exerciseDetailsOpen, setExerciseDetailsOpen] = useState(false);
   const [selectedExerciseId, setSelectedExerciseId] = useState<string>('');
-  const [exerciseMenuOpen, setExerciseMenuOpen] = useState<{open: boolean, event?: Event, exerciseIndex?: number}>({open: false});
+  const [exerciseMenuState, setExerciseMenuState] = useState<ExerciseMenuState>({ open: false });
   const pageRef = useRef<HTMLIonPageElement>(null);
 
   // Timer effect - starts when component mounts, pauses when isPaused is true
@@ -272,8 +273,54 @@ const Workout: React.FC = () => {
     setExerciseDetailsOpen(true);
   };
 
-  const handleExerciseMenu = (event: Event, exerciseIndex: number) => {
-    setExerciseMenuOpen({ open: true, event, exerciseIndex });
+  const handleOpenExerciseMenu = (exerciseId: string, exerciseIndex: number) => {
+    setExerciseMenuState({
+      open: true,
+      exerciseId,
+      exerciseIndex
+    });
+  };
+
+  const handleCloseExerciseMenu = () => {
+    setExerciseMenuState({ open: false });
+  };
+
+  // Exercise menu action handlers
+  const handleDeleteExercise = (exerciseId: string) => {
+    const updatedExercises = exercises.filter(exercise => exercise.id.toString() !== exerciseId);
+    setExercises(updatedExercises);
+    handleCloseExerciseMenu();
+  };
+
+  const handleChangeExercise = (exerciseId: string) => {
+    console.log('Change exercise:', exerciseId);
+    handleCloseExerciseMenu();
+    // This would open exercise selection modal
+    setShowAddExercise(true);
+  };
+
+  const handleShowRecords = (exerciseId: string) => {
+    console.log('Show records:', exerciseId);
+    handleCloseExerciseMenu();
+    // This would navigate to records page
+  };
+
+  const handleShowHistory = (exerciseId: string) => {
+    console.log('Show history:', exerciseId);
+    handleCloseExerciseMenu();
+    // This would navigate to history page
+  };
+
+  const handleEditComment = (exerciseId: string) => {
+    console.log('Edit comment:', exerciseId);
+    handleCloseExerciseMenu();
+    // This would open comment editor
+  };
+
+  const handleReorderExercises = () => {
+    console.log('Reorder exercises');
+    handleCloseExerciseMenu();
+    // This would open reorder interface
   };
 
   const handleCloseExerciseDetails = () => {
@@ -355,7 +402,7 @@ const Workout: React.FC = () => {
             onAddSet={handleAddSet}
             onAddWarmupSet={handleAddWarmupSet}
             onExerciseHelp={handleExerciseHelp}
-            onExerciseMenu={handleExerciseMenu}
+            onOpenExerciseMenu={handleOpenExerciseMenu}
             isWorkoutActive={workoutStarted}
           />
         ))}
@@ -554,27 +601,18 @@ const Workout: React.FC = () => {
         </IonContent>
       </IonPopover>
 
-      {/* Exercise Menu Popover */}
-      <IonPopover
-        isOpen={exerciseMenuOpen.open}
-        event={exerciseMenuOpen.event}
-        onDidDismiss={() => setExerciseMenuOpen({open: false})}
-        showBackdrop={true}
-      >
-        <IonContent>
-          <IonList>
-            <IonItem button onClick={() => setExerciseMenuOpen({open: false})}>
-              <IonLabel>Placeholder Action 1</IonLabel>
-            </IonItem>
-            <IonItem button onClick={() => setExerciseMenuOpen({open: false})}>
-              <IonLabel>Placeholder Action 2</IonLabel>
-            </IonItem>
-            <IonItem button onClick={() => setExerciseMenuOpen({open: false})} lines="none">
-              <IonLabel>Placeholder Action 3</IonLabel>
-            </IonItem>
-          </IonList>
-        </IonContent>
-      </IonPopover>
+      {/* Exercise Menu Modal */}
+      <ExerciseMenuModal
+        isOpen={exerciseMenuState.open}
+        exercise={exerciseMenuState.exerciseIndex !== undefined ? exercises[exerciseMenuState.exerciseIndex] : undefined}
+        onDismiss={handleCloseExerciseMenu}
+        onDelete={handleDeleteExercise}
+        onChangeExercise={handleChangeExercise}
+        onShowRecords={handleShowRecords}
+        onShowHistory={handleShowHistory}
+        onEditComment={handleEditComment}
+        onReorderExercises={handleReorderExercises}
+      />
 
       {/* Exercise Details Modal */}
       <ExerciseDetails

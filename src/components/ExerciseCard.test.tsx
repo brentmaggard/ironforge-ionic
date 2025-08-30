@@ -50,7 +50,9 @@ describe('ExerciseCard', () => {
     onSetComplete: vi.fn(),
     onSetEdit: vi.fn(),
     onSetMenu: vi.fn(),
-    onAddSet: vi.fn()
+    onAddSet: vi.fn(),
+    onAddWarmupSet: vi.fn(),
+    onOpenExerciseMenu: vi.fn()
   };
 
   beforeEach(() => {
