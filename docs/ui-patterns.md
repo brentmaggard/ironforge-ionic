@@ -69,9 +69,30 @@
 - **TabNavigation**: Extracted bottom tab navigation for reusability
 - **Page-based routing**: Clean separation of concerns with individual page components
 - **Custom Page Headers**: Each page has its own appropriate header (Progress, Workout, modal pages)
-- **ExerciseCard**: Reusable component for displaying exercise details and sets
+- **ExerciseCard**: Reusable component for displaying exercise details and sets with help and menu actions
 - **RestTimer**: Modernized Ionic-native component for workout rest periods
 - **AddExercise**: Modal component for seamless exercise selection during workouts
+
+## Exercise Card Action Buttons Pattern
+
+### Help & Menu Integration
+- **Question Mark Icon (helpCircleOutline)** - Opens ExerciseDetails modal for exercise information
+- **3-Dot Menu Icon (ellipsisVertical)** - Opens IonPopover with exercise management options
+- **Header Layout** - Flex positioning with exercise name on left, action buttons on right
+- **Accessibility** - Full ARIA label support with descriptive action descriptions
+- **Responsive Sizing** - Icons scale appropriately across mobile breakpoints
+
+### Modal Integration from Workout Context
+- **Seamless Navigation** - Question mark leverages existing ExerciseDetails modal component
+- **State Management** - Proper modal and popover state handling in parent Workout component  
+- **Exercise ID Conversion** - Automatic exercise name to ID conversion for modal integration
+- **Context Preservation** - Workout timer and session state maintained during modal interactions
+
+### Icon Button Styling
+- **Clear Fill** - Uses `fill="clear"` for transparent backgrounds with hover effects
+- **Circular Design** - Consistent button sizing matching existing exercise card patterns
+- **Action Positioning** - Right-aligned button group for intuitive interaction
+- **Visual Hierarchy** - Icons sized appropriately without overwhelming exercise name
 
 ## Action Sheets
 

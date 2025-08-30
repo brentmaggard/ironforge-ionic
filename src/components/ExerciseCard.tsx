@@ -10,7 +10,7 @@ import {
   IonIcon,
   IonText
 } from '@ionic/react';
-import { add, ellipsisVertical, person } from 'ionicons/icons';
+import { add, ellipsisVertical, person, helpCircleOutline } from 'ionicons/icons';
 import { WorkoutExercise, EditField } from '../types/workout';
 import './ExerciseCard.css';
 
@@ -22,6 +22,8 @@ interface ExerciseCardProps {
   onSetMenu: (event: Event, exerciseIndex: number, setIndex: number) => void;
   onAddSet: (exerciseIndex: number) => void;
   onAddWarmupSet: (exerciseIndex: number) => void;
+  onExerciseHelp?: (exerciseIndex: number) => void;
+  onExerciseMenu?: (event: Event, exerciseIndex: number) => void;
   isWorkoutActive?: boolean;
 }
 
@@ -33,6 +35,8 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
   onSetMenu,
   onAddSet,
   onAddWarmupSet,
+  onExerciseHelp,
+  onExerciseMenu,
   isWorkoutActive = true
 }) => {
   // Memoized handler functions
@@ -56,12 +60,48 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
     onAddWarmupSet(exerciseIndex);
   }, [exerciseIndex, onAddWarmupSet]);
 
+  const handleExerciseHelp = useCallback(() => {
+    if (onExerciseHelp) {
+      onExerciseHelp(exerciseIndex);
+    }
+  }, [exerciseIndex, onExerciseHelp]);
+
+  const handleExerciseMenu = useCallback((event: React.MouseEvent) => {
+    if (onExerciseMenu) {
+      onExerciseMenu(event.nativeEvent, exerciseIndex);
+    }
+  }, [exerciseIndex, onExerciseMenu]);
+
   const workingSets = exercise.sets.filter(set => set.type !== 'warm-up');
 
   return (
     <IonCard className="exercise-card">
       <IonCardHeader>
-        <IonCardTitle className="exercise-name">{exercise.name}</IonCardTitle>
+        <div className="exercise-header">
+          <IonCardTitle className="exercise-name">{exercise.name}</IonCardTitle>
+          <div className="exercise-actions">
+            {onExerciseHelp && (
+              <IonButton
+                fill="clear"
+                className="exercise-help-button"
+                onClick={handleExerciseHelp}
+                aria-label={`View details for ${exercise.name}`}
+              >
+                <IonIcon icon={helpCircleOutline} />
+              </IonButton>
+            )}
+            {onExerciseMenu && (
+              <IonButton
+                fill="clear"
+                className="exercise-menu-button"
+                onClick={handleExerciseMenu}
+                aria-label={`More options for ${exercise.name}`}
+              >
+                <IonIcon icon={ellipsisVertical} />
+              </IonButton>
+            )}
+          </div>
+        </div>
       </IonCardHeader>
       
       <div className="add-warmup-button-wrapper">
@@ -80,8 +120,8 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
       <IonGrid className="sets-grid">
         <IonRow className="sets-header-row">
           <IonCol size="2"><IonText><small>Set</small></IonText></IonCol>
-          <IonCol size="4"><IonText><small>Reps</small></IonText></IonCol>
           <IonCol size="4"><IonText><small>Weight</small></IonText></IonCol>
+          <IonCol size="4"><IonText><small>Reps</small></IonText></IonCol>
           <IonCol size="2"></IonCol>
         </IonRow>
         {exercise.sets.map((set, setIndex) => {
@@ -111,22 +151,22 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
               </IonCol>
               <IonCol size="4">
                 <IonButton
-                  fill="clear"
-                  className="set-edit-btn"
-                  onClick={() => handleSetEdit(setIndex, 'reps')}
-                  aria-label={`Edit reps for set ${isWarmup ? 'Warm-up' : workingSetIndex + 1}, currently ${set.reps}`}
-                >
-                  {set.reps} <IonText className="unit-text">reps</IonText>
-                </IonButton>
-              </IonCol>
-              <IonCol size="4">
-                <IonButton
                   fill="clear" 
                   className="set-edit-btn"
                   onClick={() => handleSetEdit(setIndex, 'weight')}
                   aria-label={`Edit weight for set ${isWarmup ? 'Warm-up' : workingSetIndex + 1}, currently ${set.weight} pounds`}
                 >
                   {set.weight} <IonText className="unit-text">lbs</IonText>
+                </IonButton>
+              </IonCol>
+              <IonCol size="4">
+                <IonButton
+                  fill="clear"
+                  className="set-edit-btn"
+                  onClick={() => handleSetEdit(setIndex, 'reps')}
+                  aria-label={`Edit reps for set ${isWarmup ? 'Warm-up' : workingSetIndex + 1}, currently ${set.reps}`}
+                >
+                  {set.reps} <IonText className="unit-text">reps</IonText>
                 </IonButton>
               </IonCol>
               <IonCol size="2">

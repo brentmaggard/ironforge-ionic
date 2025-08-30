@@ -26,6 +26,7 @@ import { close, add, checkmark, time, barbell, flame, pause, play, settings } fr
 import { useHistory } from 'react-router-dom';
 import AddExercise from '../components/AddExercise';
 import ExerciseCard from '../components/ExerciseCard';
+import ExerciseDetails from './ExerciseDetails';
 import { useRestTimer } from '../contexts/RestTimerContext';
 import { WorkoutExercise, EditField, SetEditingState } from '../types/workout';
 import './Workout.css';
@@ -44,6 +45,9 @@ const Workout: React.FC = () => {
   const [editingSet, setEditingSet] = useState<SetEditingState | null>(null);
   const [editValue, setEditValue] = useState('');
   const [setMenuOpen, setSetMenuOpen] = useState<{open: boolean, event?: Event, exerciseIndex?: number, setIndex?: number}>({open: false});
+  const [exerciseDetailsOpen, setExerciseDetailsOpen] = useState(false);
+  const [selectedExerciseId, setSelectedExerciseId] = useState<string>('');
+  const [exerciseMenuOpen, setExerciseMenuOpen] = useState<{open: boolean, event?: Event, exerciseIndex?: number}>({open: false});
   const pageRef = useRef<HTMLIonPageElement>(null);
 
   // Timer effect - starts when component mounts, pauses when isPaused is true
@@ -260,6 +264,27 @@ const Workout: React.FC = () => {
     setSetMenuOpen({ open: true, event, exerciseIndex, setIndex });
   };
 
+  const handleExerciseHelp = (exerciseIndex: number) => {
+    const exercise = exercises[exerciseIndex];
+    // Convert exercise name to ID format (lowercase, hyphenated)
+    const exerciseId = exercise.name.toLowerCase().replace(/\s+/g, '-');
+    setSelectedExerciseId(exerciseId);
+    setExerciseDetailsOpen(true);
+  };
+
+  const handleExerciseMenu = (event: Event, exerciseIndex: number) => {
+    setExerciseMenuOpen({ open: true, event, exerciseIndex });
+  };
+
+  const handleCloseExerciseDetails = () => {
+    setExerciseDetailsOpen(false);
+    setSelectedExerciseId('');
+  };
+
+  const handleNavigateToSimilar = (exerciseId: string) => {
+    setSelectedExerciseId(exerciseId);
+  };
+
   const handleStartWorkout = () => {
     setWorkoutStarted(true);
     console.log('Workout started!');
@@ -329,6 +354,8 @@ const Workout: React.FC = () => {
             onSetMenu={handleSetMenu}
             onAddSet={handleAddSet}
             onAddWarmupSet={handleAddWarmupSet}
+            onExerciseHelp={handleExerciseHelp}
+            onExerciseMenu={handleExerciseMenu}
             isWorkoutActive={workoutStarted}
           />
         ))}
@@ -526,6 +553,36 @@ const Workout: React.FC = () => {
           </IonList>
         </IonContent>
       </IonPopover>
+
+      {/* Exercise Menu Popover */}
+      <IonPopover
+        isOpen={exerciseMenuOpen.open}
+        event={exerciseMenuOpen.event}
+        onDidDismiss={() => setExerciseMenuOpen({open: false})}
+        showBackdrop={true}
+      >
+        <IonContent>
+          <IonList>
+            <IonItem button onClick={() => setExerciseMenuOpen({open: false})}>
+              <IonLabel>Placeholder Action 1</IonLabel>
+            </IonItem>
+            <IonItem button onClick={() => setExerciseMenuOpen({open: false})}>
+              <IonLabel>Placeholder Action 2</IonLabel>
+            </IonItem>
+            <IonItem button onClick={() => setExerciseMenuOpen({open: false})} lines="none">
+              <IonLabel>Placeholder Action 3</IonLabel>
+            </IonItem>
+          </IonList>
+        </IonContent>
+      </IonPopover>
+
+      {/* Exercise Details Modal */}
+      <ExerciseDetails
+        exerciseId={selectedExerciseId}
+        isOpen={exerciseDetailsOpen}
+        onClose={handleCloseExerciseDetails}
+        onNavigateToSimilar={handleNavigateToSimilar}
+      />
 
       {/* Add Exercise Modal */}
       <AddExercise 

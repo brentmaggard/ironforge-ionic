@@ -83,6 +83,33 @@
 - **Menu Options** - Duplicate Set, Insert Set Above/Below, Delete Set functionality with proper danger styling
 - **Consistent Icon Sizing** - 20px ellipsis icon following established app patterns from Exercise page
 
+## Exercise Card Help & Menu Enhancement
+
+### New Action Button Integration
+- **Question Mark Icon** - Added helpCircleOutline icon that opens ExerciseDetails modal from workout context
+- **3-Dot Exercise Menu** - Added ellipsisVertical icon that opens IonPopover with exercise-level actions
+- **Exercise Header Layout** - New flex layout with exercise name on left, action buttons on right
+- **Full Accessibility** - Complete ARIA label implementation for screen reader support
+- **Responsive Design** - Icons scale properly across all mobile breakpoints
+
+### Modal Integration from Workout Context
+- **ExerciseDetails Integration** - Question mark leverages existing ExerciseDetails modal component (same as Exercise Library)
+- **Workout State Preservation** - Modal state management in Workout.tsx maintains timer and session data
+- **Exercise ID Conversion** - Automatic conversion from exercise name to ID for modal compatibility
+- **Seamless User Experience** - Users can access detailed exercise information without leaving workout session
+
+### Exercise Menu System
+- **IonPopover Implementation** - 3-dot menu opens native Ionic popover with backdrop and proper positioning
+- **Placeholder Content** - Currently shows placeholder options for future workout management features
+- **State Management** - Proper popover state handling with onDidDismiss callbacks
+- **Consistent Styling** - Menu styling matches existing app patterns and IronForge design system
+
+### Component Architecture Enhancement
+- **Enhanced Props Interface** - Added onExerciseHelp and onExerciseMenu optional callback props
+- **Event Handling** - Proper React event handling with useCallback optimization for performance
+- **TypeScript Integration** - Full type safety with proper interface definitions
+- **Ionic Component Usage** - Uses IonButton with fill="clear" for native mobile interaction patterns
+
 ## Rest Timer System
 
 ### RestTimer Component Enhancement

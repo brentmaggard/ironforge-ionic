@@ -34,16 +34,16 @@ interface ExerciseDetailsProps {
 const ExerciseDetails: React.FC<ExerciseDetailsProps> = ({ exerciseId, isOpen, onClose, onNavigateToSimilar }) => {
   const contentRef = useRef<HTMLIonContentElement>(null);
   
+  // Scroll to top when exercise changes
+  useEffect(() => {
+    if (isOpen && contentRef.current && exerciseId) {
+      contentRef.current.scrollToTop(300); // 300ms smooth scroll animation
+    }
+  }, [exerciseId, isOpen]);
+
   if (!isOpen) {
     return null;
   }
-
-  // Scroll to top when exercise changes
-  useEffect(() => {
-    if (contentRef.current && exerciseId) {
-      contentRef.current.scrollToTop(300); // 300ms smooth scroll animation
-    }
-  }, [exerciseId]);
 
   const handleClose = () => {
     onClose();

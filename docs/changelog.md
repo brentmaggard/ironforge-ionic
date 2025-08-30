@@ -1,6 +1,51 @@
 # Development Changelog
 
-## Recent Updates (2025-08-28)
+## Recent Updates (2025-08-29)
+
+### Exercise Card Help & Menu Icons Enhancement
+Following the workout action sheet refactoring, the ExerciseCard component was enhanced with new action icons to provide users with quick access to exercise information and management options directly from the workout interface.
+
+#### New Action Button Integration
+- **Question Mark Icon (helpCircleOutline)** - Added help icon that opens ExerciseDetails modal from workout context
+- **3-Dot Menu Icon (ellipsisVertical)** - Added menu icon that opens IonPopover with exercise-level management options
+- **Exercise Header Layout** - Implemented new flex layout with exercise name on left, action buttons grouped on right
+- **Responsive Icon Design** - Icons scale appropriately across all mobile breakpoints with consistent sizing
+- **Full Accessibility Support** - Complete ARIA label implementation with descriptive action descriptions for screen readers
+
+#### Modal Integration from Workout Context
+- **ExerciseDetails Integration** - Question mark leverages existing ExerciseDetails modal component (identical to Exercise Library experience)
+- **Workout State Preservation** - Proper modal state management in Workout.tsx maintains timer, session data, and workout progress
+- **Exercise ID Conversion** - Automatic conversion from exercise name to ID for seamless modal integration
+- **Seamless User Experience** - Users can access detailed exercise information without interrupting workout session or losing context
+
+#### Exercise Menu System Implementation
+- **IonPopover Integration** - 3-dot menu opens native Ionic popover with proper backdrop and positioning
+- **Placeholder Content Structure** - Established framework for future workout management features (edit exercise, remove from workout, etc.)
+- **State Management** - Proper popover state handling with onDidDismiss callbacks and event propagation
+- **Consistent Styling** - Menu styling matches existing app patterns and IronForge design system
+
+#### Component Architecture Enhancement
+- **Enhanced Props Interface** - Added onExerciseHelp and onExerciseMenu optional callback props for flexible integration
+- **Performance Optimization** - Implemented useCallback hooks for event handlers to prevent unnecessary re-renders
+- **TypeScript Integration** - Full type safety with proper interface definitions and event typing
+- **Ionic Component Standards** - Uses IonButton with fill="clear" for native mobile interaction patterns and accessibility
+
+#### Technical Implementation Details
+- **Event Handling** - Proper React event handling with nativeEvent passing for popover positioning
+- **CSS Integration** - New exercise-actions class for flex layout with exercise-help-button and exercise-menu-button styling
+- **Component Communication** - Clean callback pattern for parent-child communication without tight coupling
+- **React Hook Compliance** - Fixed React Hook rules violation in ExerciseDetails.tsx during integration testing
+
+#### User Experience Achievements
+- **Contextual Information Access** - Users can view detailed exercise information without leaving workout session
+- **Intuitive Icon Placement** - Action buttons logically positioned in exercise card header for easy discovery
+- **Consistent Interaction Patterns** - Question mark icon provides same experience as Exercise Library for familiarity
+- **Future Feature Foundation** - Exercise menu system ready for workout management features like exercise removal, modification, notes, etc.
+- **Accessibility Excellence** - Full screen reader support with descriptive labels for all interactive elements
+
+This enhancement transforms the ExerciseCard component from a display-only element to an interactive workout management tool while maintaining the existing functionality and design consistency throughout the IronForge application.
+
+## Previous Updates (2025-08-28)
 
 ### Workout Page Timer and Header Controls Implementation
 Following the header architecture refactor, the workout page was enhanced with a comprehensive timer system and professional header controls for workout management.

@@ -8,11 +8,66 @@
   z-index: 1;
 }
 
+.exercise-card ion-card-header {
+  padding-bottom: 0px;
+}
+
+.exercise-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .exercise-card ion-card-title {
   font-size: 1.2rem;
   font-weight: 600;
   color: var(--ion-color-dark);
   margin: 0;
+  flex: 1;
+}
+
+.exercise-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 8px;
+}
+
+.exercise-help-button,
+.exercise-menu-button {
+  --color: var(--ion-color-medium);
+  --background: transparent;
+  --background-hover: var(--ion-color-light-tint);
+  --border-radius: 50%;
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  min-width: 32px;
+  min-height: 32px;
+}
+
+.exercise-help-button:hover,
+.exercise-menu-button:hover {
+  --color: var(--ion-color-primary);
+}
+
+.exercise-help-button:focus-visible,
+.exercise-menu-button:focus-visible {
+  outline: 2px solid var(--ion-color-primary);
+  outline-offset: 2px;
+}
+
+.exercise-help-button ion-icon {
+  font-size: 24px;
+}
+
+.exercise-menu-button ion-icon {
+  font-size: 20px;
 }
 
 /* Muscle Groups */
@@ -68,7 +123,7 @@
 }
 
 .set-row ion-col {
-  padding: 12px 4px;
+  padding: 4px 4px;
   text-align: center;
   display: flex;
   align-items: center;
@@ -169,7 +224,7 @@
 .add-warmup-button-wrapper {
   display: flex;
   justify-content: flex-start;
-  margin: 8px 16px 0px 16px;
+  margin: 0px 16px 0px 16px;
 }
 
 .add-warmup-button {
@@ -266,6 +321,22 @@
     min-height: 30px;
   }
   
+  .exercise-help-button,
+  .exercise-menu-button {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+  }
+  
+  .exercise-help-button ion-icon {
+    font-size: 22px;
+  }
+  
+  .exercise-menu-button ion-icon {
+    font-size: 18px;
+  }
+  
   .set-edit-btn {
     font-size: 0.8rem;
   }
@@ -285,6 +356,22 @@
     height: 28px;
     min-width: 28px;
     min-height: 28px;
+  }
+  
+  .exercise-help-button,
+  .exercise-menu-button {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    min-height: 28px;
+  }
+  
+  .exercise-help-button ion-icon {
+    font-size: 20px;
+  }
+  
+  .exercise-menu-button ion-icon {
+    font-size: 16px;
   }
   
   .add-set-button {

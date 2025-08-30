@@ -119,4 +119,4 @@ Complete technical documentation available in the [/docs](docs/) directory:
 *Generated with Claude Code*
 
 ## Recent Development
-Latest enhancements include workout timer system, performance testing, PWA implementation, and component architecture improvements. Complete development history in [changelog.md](docs/changelog.md).
+Latest enhancements include Exercise Card help and menu icons, workout action sheet refactoring, and component architecture improvements. Complete development history in [changelog.md](docs/changelog.md).
